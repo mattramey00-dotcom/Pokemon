@@ -464,6 +464,10 @@
     <h2>Train</h2>
     <p class="sub">Drill the deck until the lines are automatic — quiz yourself, run scenarios, and test your openers.</p>
 
+    <h3>Coach — what should I do?</h3>
+    <p class="sub" style="margin-bottom:10px">Answer a couple of quick questions about the board and get your priority play for this turn.</p>
+    <div id="coach"></div>
+
     <h3>Flashcards</h3>
     <div class="scorebar">
       <div class="chip gg"><b id="fcRight">0</b>Got it</div>
@@ -681,6 +685,50 @@
     get(k,f){try{const v=localStorage.getItem(k);return v?JSON.parse(v):f;}catch(e){return f;}},
     set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
   };
+
+  /* ===== coach: what should I do? ===== */
+  const COACH={
+    start:'q1',
+    nodes:{
+      q1:{q:'Do you have a Basic Pokémon in play and a stable board?',yes:'q2',no:'a_consistency'},
+      q2:{q:'Is Grimmsnarl ex in play and powered up (Punk Up done)?',yes:'q3',no:'a_attacker'},
+      q3:{q:'Is Froslass in play and spreading damage?',yes:'q4',no:'a_froslass'},
+      q4:{q:'Does a Munkidori have Darkness Energy attached?',yes:'q5',no:'a_munki'},
+      q5:{q:'Is your Active in danger — heavy damage, or about to be Knocked Out?',yes:'a_shift',no:'q6'},
+      q6:{q:'Is there a softer target on their bench (a setup piece or low-HP Pokémon) worth dragging up?',yes:'a_boss',no:'a_attack'}
+    },
+    advice:{
+      a_consistency:['v-bad','Stabilize first','Consistency beats damage when you\'re shaky. Dig with Lillie\'s Determination / Poké Pad and play Spikemuth Gym to fetch a Marnie\'s Pokémon. Don\'t throw attackers into a brick — get your board legal and stable before anything else.'],
+      a_attacker:['v-ok','Get your attacker online','Your #1 job this turn: Rare Candy an Impidimp into Grimmsnarl ex, then Punk Up to pull Darkness from your deck — and make sure one lands on a Munkidori. No attacker, no game plan.'],
+      a_froslass:['v-ok','Set up Froslass','Evolve Snorunt → Froslass so it spreads a counter onto every Ability Pokémon between turns. That spread is the damage Munkidori later moves. Bench it behind a wall so it survives.'],
+      a_munki:['v-ok','Load a Munkidori','Get Darkness onto a Munkidori (Punk Up is the easiest way). Without Darkness attached, Adrena-Brain can\'t move counters — your heal-and-shift engine is offline.'],
+      a_shift:['v-keep','Shift damage with Munkidori','Use Adrena-Brain now: each Munkidori moves up to 3 counters off your Pokémon onto their key target. You heal your attacker AND pile damage where it matters. Two Munkidori = up to 60 moved.'],
+      a_boss:['v-keep','Boss the soft target','Play Boss\'s Orders to drag up that benched piece — a Dusknoir or other setup Pokémon, or a low-HP sitting duck — and KO it. Trade up on prizes or remove their engine before they stabilize.'],
+      a_attack:['v-keep','Swing and disrupt','You\'re set up — attack for 180 to the Active + 30 to a benched Pokémon, lining up a multi-prize turn. Before you pass, ask whether Judge or Petrel would wreck their hand. Patience wins the grind.']
+    }
+  };
+  const coachEl=document.getElementById('coach');
+  let coachAt=COACH.start,coachHist=[];
+  function coachRender(){
+    if(COACH.advice[coachAt]){
+      const a=COACH.advice[coachAt];
+      coachEl.innerHTML=`<div class="verdict ${a[0]}"><b>▶ ${a[1]}</b>${a[2]}</div>`+
+        `<button class="reset-btn" id="coachRestart" style="margin-top:12px">↺ Start over</button>`;
+      document.getElementById('coachRestart').addEventListener('click',coachReset);
+    }else{
+      const n=COACH.nodes[coachAt];
+      coachEl.innerHTML=`<div class="card raised"><p style="color:var(--paper);font-weight:600;font-size:15px">${n.q}</p>`+
+        `<div class="row" style="margin-top:12px"><button class="btn" style="flex:1" data-coach="no">No</button>`+
+        `<button class="btn primary" style="flex:1" data-coach="yes">Yes</button></div>`+
+        (coachHist.length?`<button class="btn ghost sm" id="coachBack" style="margin-top:10px">‹ Back</button>`:'')+`</div>`;
+      const back=document.getElementById('coachBack');
+      if(back)back.addEventListener('click',()=>{coachAt=coachHist.pop();coachRender();});
+    }
+  }
+  function coachReset(){coachAt=COACH.start;coachHist=[];coachRender();}
+  coachEl.addEventListener('click',e=>{const b=e.target.closest('[data-coach]');if(!b)return;
+    const n=COACH.nodes[coachAt];coachHist.push(coachAt);coachAt=n[b.dataset.coach];coachRender();});
+  coachReset();
 
   /* ===== glossary ===== */
   const GLOSS={
