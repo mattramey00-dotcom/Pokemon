@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0d0a14">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Grimmsnarl">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<title>Grimmsnarl Field Manual</title>
+<style>
+  :root{
+    --void:#0d0a14;        /* near-black violet */
+    --slate:#171221;       /* card bg */
+    --slate2:#1f1830;      /* raised */
+    --fog:#8b7fb0;         /* muted lavender text */
+    --mist:#c7bce0;        /* secondary text */
+    --paper:#ece6fb;       /* primary text */
+    --hex:#9d5cff;         /* punk purple accent */
+    --hex-soft:#6b3fb0;
+    --frost:#5ad6e6;       /* froslass cyan */
+    --ember:#ff6b6b;       /* danger red */
+    --gold:#f5c451;        /* highlight */
+    --grass:#6bd47a;       /* the weakness */
+    --line:rgba(157,92,255,.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--void);
+    color:var(--paper);
+    font-family:"Segoe UI",system-ui,-apple-system,sans-serif;
+    line-height:1.55;
+    padding-bottom:88px;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(ellipse 60% 40% at 80% 0%, rgba(157,92,255,.10), transparent 70%),
+      radial-gradient(ellipse 50% 35% at 10% 100%, rgba(90,214,230,.07), transparent 70%);
+  }
+
+  /* ---- Header ---- */
+  header{
+    padding:30px 20px 22px;
+    border-bottom:1px solid var(--line);
+    position:relative;
+  }
+  .eyebrow{
+    font-size:11px;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--hex);font-weight:700;margin-bottom:10px;
+  }
+  h1{
+    font-family:"Georgia",serif;
+    font-size:34px;line-height:1.02;font-weight:800;
+    letter-spacing:-.5px;
+  }
+  h1 .small{display:block;font-size:15px;font-weight:400;font-style:italic;color:var(--mist);letter-spacing:0;margin-top:6px;font-family:"Segoe UI",sans-serif}
+  .badge{
+    display:inline-block;margin-top:14px;font-size:11px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--frost);
+    border:1px solid rgba(90,214,230,.3);border-radius:999px;
+    padding:4px 11px;
+  }
+
+  /* ---- Tabs ---- */
+  nav{
+    position:fixed;bottom:0;left:0;right:0;z-index:50;
+    display:flex;background:rgba(15,11,22,.94);
+    backdrop-filter:blur(14px);
+    border-top:1px solid var(--line);
+    padding:6px 4px calc(6px + env(safe-area-inset-bottom));
+  }
+  nav button{
+    flex:1;background:none;border:none;color:var(--fog);
+    font-size:10px;letter-spacing:.04em;font-weight:600;
+    padding:8px 2px 6px;cursor:pointer;font-family:inherit;
+    display:flex;flex-direction:column;align-items:center;gap:4px;
+    border-radius:10px;transition:color .2s,background .2s;
+  }
+  nav button .ic{font-size:19px;line-height:1}
+  nav button.on{color:var(--paper);background:rgba(157,92,255,.13)}
+  nav button.on .ic{filter:drop-shadow(0 0 6px var(--hex))}
+
+  /* ---- Sections ---- */
+  main{padding:20px 16px 10px;max-width:680px;margin:0 auto}
+  .view{display:none;animation:fade .35s ease}
+  .view.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  h2{font-family:"Georgia",serif;font-size:22px;margin:4px 0 4px;font-weight:700}
+  .sub{color:var(--fog);font-size:13px;margin-bottom:18px}
+  h3{font-size:15px;letter-spacing:.02em;margin:22px 0 10px;color:var(--mist);
+     display:flex;align-items:center;gap:9px}
+  h3::before{content:"";width:18px;height:2px;background:var(--hex);border-radius:2px}
+
+  .card{
+    background:var(--slate);border:1px solid var(--line);border-radius:14px;
+    padding:15px 16px;margin-bottom:13px;
+  }
+  .card.raised{background:var(--slate2)}
+  p{font-size:14px;color:var(--mist);margin-bottom:8px}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--paper);font-weight:700}
+  .hi{color:var(--gold)}
+  .cy{color:var(--frost)}
+  .pu{color:var(--hex);font-weight:600}
+
+  /* ---- Decklist ---- */
+  .deck-meta{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+  .chip{background:var(--slate2);border:1px solid var(--line);border-radius:10px;
+        padding:8px 13px;font-size:12px;flex:1;min-width:88px;text-align:center}
+  .chip b{display:block;font-size:21px;color:var(--hex);font-family:Georgia,serif}
+  .chip.f b{color:var(--frost)}
+  .chip.g b{color:var(--gold)}
+
+  .line-row{
+    display:flex;align-items:center;gap:11px;padding:9px 4px;
+    border-bottom:1px solid rgba(255,255,255,.04);
+  }
+  .line-row:last-child{border-bottom:none}
+  .qty{
+    font-family:Georgia,serif;font-weight:700;font-size:15px;color:var(--void);
+    background:var(--hex);min-width:26px;height:26px;border-radius:7px;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .line-row.key .qty{background:var(--gold)}
+  .line-row.energy .qty{background:var(--frost)}
+  .nm{font-size:14px;color:var(--paper);font-weight:600;flex:1}
+  .nm small{display:block;font-weight:400;color:var(--fog);font-size:11.5px;margin-top:1px}
+  .set{font-size:10px;color:var(--fog);letter-spacing:.05em}
+
+  .grp-label{font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+             color:var(--hex);font-weight:700;margin:18px 0 4px}
+
+  /* ---- Pros / cons ---- */
+  .pc{display:grid;gap:11px}
+  .pc-block{border-radius:13px;padding:14px 15px;border:1px solid}
+  .pros{background:rgba(107,212,122,.06);border-color:rgba(107,212,122,.22)}
+  .cons{background:rgba(255,107,107,.06);border-color:rgba(255,107,107,.22)}
+  .pc-block h4{font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:9px;display:flex;align-items:center;gap:7px}
+  .pros h4{color:var(--grass)}
+  .cons h4{color:var(--ember)}
+  .pc-block ul{list-style:none}
+  .pc-block li{font-size:13.5px;color:var(--mist);padding-left:18px;position:relative;margin-bottom:7px;line-height:1.45}
+  .pros li::before{content:"+";position:absolute;left:2px;color:var(--grass);font-weight:800}
+  .cons li::before{content:"–";position:absolute;left:2px;color:var(--ember);font-weight:800}
+
+  /* ---- Turn checklist (interactive) ---- */
+  .step{
+    background:var(--slate);border:1px solid var(--line);border-radius:13px;
+    margin-bottom:11px;overflow:hidden;transition:border-color .2s;
+  }
+  .step.done{border-color:rgba(107,212,122,.4)}
+  .step-head{display:flex;align-items:flex-start;gap:12px;padding:13px 15px;cursor:pointer}
+  .tick{
+    width:24px;height:24px;border-radius:7px;border:2px solid var(--hex-soft);
+    flex-shrink:0;display:flex;align-items:center;justify-content:center;
+    font-size:14px;color:var(--void);transition:.2s;margin-top:1px;
+  }
+  .step.done .tick{background:var(--grass);border-color:var(--grass)}
+  .step.done .tick::after{content:"✓"}
+  .step-t{flex:1}
+  .step-n{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--hex);font-weight:700}
+  .step-title{font-size:14.5px;color:var(--paper);font-weight:600;margin-top:2px}
+  .step.done .step-title{color:var(--fog);text-decoration:line-through}
+  .step-body{font-size:13px;color:var(--mist);padding:0 15px 14px 51px}
+
+  .reset-btn{
+    width:100%;background:var(--slate2);border:1px solid var(--line);color:var(--mist);
+    padding:12px;border-radius:11px;font-size:13px;font-weight:600;font-family:inherit;
+    cursor:pointer;margin-top:6px;letter-spacing:.03em;
+  }
+  .reset-btn:active{background:var(--slate)}
+
+  /* ---- Matchups ---- */
+  .mu{border-radius:13px;border:1px solid var(--line);margin-bottom:11px;overflow:hidden;background:var(--slate)}
+  .mu-head{display:flex;align-items:center;gap:11px;padding:13px 15px;cursor:pointer}
+  .tier{width:34px;height:34px;border-radius:9px;flex-shrink:0;display:flex;
+        align-items:center;justify-content:center;font-family:Georgia,serif;
+        font-weight:800;font-size:16px;color:var(--void)}
+  .t-good{background:var(--grass)}
+  .t-even{background:var(--gold)}
+  .t-bad{background:var(--ember)}
+  .mu-name{flex:1}
+  .mu-name b{font-size:14.5px;display:block}
+  .mu-name span{font-size:11.5px;color:var(--fog)}
+  .arrow{color:var(--fog);font-size:13px;transition:transform .25s}
+  .mu.open .arrow{transform:rotate(90deg)}
+  .mu-body{max-height:0;overflow:hidden;transition:max-height .3s ease}
+  .mu.open .mu-body{max-height:300px}
+  .mu-body div{padding:0 15px 14px;font-size:13px;color:var(--mist)}
+
+  /* ---- Quick rules / glossary ---- */
+  .gloss dt{font-size:14px;color:var(--paper);font-weight:700;margin-top:13px}
+  .gloss dd{font-size:13px;color:var(--mist);margin-top:2px}
+  .callout{border-left:3px solid var(--gold);background:rgba(245,196,81,.06);
+           padding:11px 14px;border-radius:0 10px 10px 0;margin:14px 0;font-size:13.5px;color:var(--mist)}
+  .callout.warn{border-color:var(--ember);background:rgba(255,107,107,.06)}
+  .callout b{color:var(--paper)}
+
+  footer{text-align:center;font-size:11px;color:var(--fog);padding:24px 16px 8px;line-height:1.6}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Standard Format · Field Manual</div>
+  <h1>Marnie's Grimmsnarl<span class="small">Spread · disrupt · grind them out.</span></h1>
+  <span class="badge" id="netBadge">◆ Checking…</span>
+</header>
+
+<main>
+  <!-- ============ DECK ============ -->
+  <section class="view on" id="deck">
+    <h2>Practice Decklist</h2>
+    <p class="sub">A standard 60-card tournament-style list. Gold = the cards your whole game runs on.</p>
+
+    <div class="deck-meta">
+      <div class="chip"><b>21</b>Pokémon</div>
+      <div class="chip g"><b>30</b>Trainer</div>
+      <div class="chip f"><b>9</b>Energy</div>
+    </div>
+
+    <div class="card" style="padding:8px 14px">
+      <div class="grp-label">Pokémon — 21</div>
+      <div class="line-row"><span class="qty">3</span><span class="nm">Marnie's Impidimp <small>Basic · start of the line</small></span><span class="set">DRI 134</span></div>
+      <div class="line-row"><span class="qty">2</span><span class="nm">Marnie's Morgrem <small>Stage 1</small></span><span class="set">DRI 135</span></div>
+      <div class="line-row key"><span class="qty">3</span><span class="nm">Marnie's Grimmsnarl ex <small>Main attacker · 180 + 30 bench</small></span><span class="set">DRI 136</span></div>
+      <div class="line-row"><span class="qty">3</span><span class="nm">Snorunt <small>Basic · evolves to Froslass</small></span><span class="set">ASC 227</span></div>
+      <div class="line-row key"><span class="qty">3</span><span class="nm">Froslass <small>Auto-spreads damage every turn</small></span><span class="set">TWM 174</span></div>
+      <div class="line-row key"><span class="qty">4</span><span class="nm">Munkidori <small>Moves damage off you, onto them</small></span><span class="set">SFA 72</span></div>
+      <div class="line-row"><span class="qty">1</span><span class="nm">Budew <small>Early item-lock tech (great vs Dawn Zard)</small></span><span class="set">ASC 221</span></div>
+      <div class="line-row"><span class="qty">1</span><span class="nm">Tatsugiri <small>Draw/consistency support</small></span><span class="set">TWM 131</span></div>
+      <div class="line-row"><span class="qty">1</span><span class="nm">Yveltal <small>Dark attacker / tech</small></span><span class="set">MEG 88</span></div>
+    </div>
+
+    <div class="card" style="padding:8px 14px">
+      <div class="grp-label">Trainer — 30</div>
+      <div class="line-row key"><span class="qty">4</span><span class="nm">Team Rocket's Petrel <small>Supporter · hand disruption</small></span><span class="set">DRI 176</span></div>
+      <div class="line-row key"><span class="qty">4</span><span class="nm">Lillie's Determination <small>Main draw Supporter (post-Iono)</small></span><span class="set">MEG 184</span></div>
+      <div class="line-row"><span class="qty">1</span><span class="nm">Judge <small>Reset both hands to 4</small></span><span class="set">DRI 222</span></div>
+      <div class="line-row"><span class="qty">3</span><span class="nm">Boss's Orders <small>Drag up a target</small></span><span class="set">PAL 265</span></div>
+      <div class="line-row key"><span class="qty">4</span><span class="nm">Poké Pad <small>Item · draw/consistency engine</small></span><span class="set">POR 113</span></div>
+      <div class="line-row"><span class="qty">3</span><span class="nm">Buddy-Buddy Poffin <small>2 small Basics from deck</small></span><span class="set">TWM 223</span></div>
+      <div class="line-row key"><span class="qty">3</span><span class="nm">Rare Candy <small>Basic → Stage 2 instantly</small></span><span class="set">GRI 165</span></div>
+      <div class="line-row"><span class="qty">2</span><span class="nm">Night Stretcher <small>Recover Pokémon/Energy</small></span><span class="set">SSP 251</span></div>
+      <div class="line-row"><span class="qty">1</span><span class="nm">Air Balloon <small>Tool · free-ish retreat, anti deck-out</small></span><span class="set">SSH 213</span></div>
+      <div class="line-row"><span class="qty">1</span><span class="nm">Unfair Stamp <small>ACE SPEC · disrupt + draw 5</small></span><span class="set">TWM 165</span></div>
+      <div class="line-row key"><span class="qty">4</span><span class="nm">Spikemuth Gym <small>★ Search any Marnie's Pokémon</small></span><span class="set">DRI 169</span></div>
+    </div>
+
+    <div class="card" style="padding:8px 14px">
+      <div class="grp-label">Energy — 9</div>
+      <div class="line-row energy"><span class="qty">9</span><span class="nm">Basic Darkness Energy <small>Mono-Dark — keeps Punk Up &amp; Munkidori online</small></span><span class="set">MEE 7</span></div>
+    </div>
+
+    <div class="callout"><b>Why so few Energy:</b> Grimmsnarl's <span class="pu">Punk Up</span> pulls up to five Darkness straight from the deck, so you don't need to draw into it manually. 9 is plenty — more would clog your draws.</div>
+    <div class="callout warn"><b>Post-rotation note:</b> This is the verified 2026-legal build (post G-rotation). Iono, Nest Ball, TM: Evolution and TM: Devolution are <b>gone from Standard</b> — the deck now leans on Lillie's Determination, Team Rocket's Petrel, Poké Pad and Judge for draw/disruption. Always re-check card legality before a sanctioned event.</div>
+  </section>
+
+  <!-- ============ PROS / CONS ============ -->
+  <section class="view" id="pros">
+    <h2>Strengths &amp; Weaknesses</h2>
+    <p class="sub">Know what the deck wants to do — and exactly where it falls apart.</p>
+    <div class="pc">
+      <div class="pc-block pros">
+        <h4>◆ What it's great at</h4>
+        <ul>
+          <li><b>Self-powering attacker.</b> Punk Up loads energy from the deck, so Grimmsnarl can attack the turn it evolves.</li>
+          <li><b>Two-target damage.</b> 180 to the Active plus 30 to a benched Pokémon sets up multi-prize turns.</li>
+          <li><b>Heals itself.</b> Munkidori shovels your own damage onto the opponent, punishing 2-hit-KO attempts.</li>
+          <li><b>Hard to one-shot.</b> Stage 2 ex bulk means most non-Grass decks can't KO it in one hit.</li>
+          <li><b>Strong disruption.</b> Team Rocket's Petrel, Judge, Boss's Orders and Budew let you stall and stunt their setup.</li>
+          <li><b>Skill-rewarding.</b> In practiced hands it wins almost every game it doesn't brick.</li>
+        </ul>
+      </div>
+      <div class="pc-block cons">
+        <h4>◆ Where it struggles</h4>
+        <ul>
+          <li><b>Bricks often.</b> Stage 2 + two support lines = clunky opening hands. Bad hand = bad game.</li>
+          <li><b>Slow.</b> It's a grind deck. High tie rate — "there is no Game 3" if you stumble early.</li>
+          <li><b>Grass weakness.</b> Grass attackers (e.g. Mega Venusaur) hit Grimmsnarl for double — a real threat.</li>
+          <li><b>Aggro &amp; Mega pressure.</b> Fast decks and Mega Feraligatr's hitting power can race you before you set up.</li>
+          <li><b>Froslass is fragile.</b> It's your only self-damage source — lose it and the engine sputters.</li>
+          <li><b>Tight bench.</b> Froslass + Munkidori eat bench space, leaving little room for support.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout warn"><b>One-line takeaway:</b> Every decision should buy consistency. Mulligan your hands honestly, don't overload your bench into your own Froslass damage, and respect Grass decks.</div>
+  </section>
+
+  <!-- ============ TURN PLAY ============ -->
+  <section class="view" id="play">
+    <h2>Turn-by-Turn Checklist</h2>
+    <p class="sub">Tap each step as you do it during a practice game. Order matters — work top to bottom.</p>
+
+    <h3>Game setup</h3>
+    <div id="setup-steps"></div>
+    <h3>Every turn (in this order)</h3>
+    <div id="turn-steps"></div>
+
+    <button class="reset-btn" id="resetBtn">↺ Reset checklist for next game</button>
+    <div class="callout" style="margin-top:16px"><b>Energy rule to never forget:</b> you may attach only <b>one</b> Energy from your hand per turn — but Punk Up's attachments come from your deck and don't count against that limit.</div>
+  </section>
+
+  <!-- ============ MATCHUPS ============ -->
+  <section class="view" id="match">
+    <h2>Matchup Cheat Sheet</h2>
+    <p class="sub">Tap a matchup to expand the game plan. Color = how the matchup leans for you.</p>
+
+    <div class="mu open" data-mu>
+      <div class="mu-head"><span class="tier t-bad">✕</span><span class="mu-name"><b>Mega Venusaur</b><span>Grass — hits your weakness</span></span><span class="arrow">▶</span></div>
+      <div class="mu-body"><div>Rough matchup: Grass weakness lets it KO Grimmsnarl efficiently. <b>Plan:</b> don't present a lone Grimmsnarl; spread hard with Froslass + Munkidori so you can trade prizes even when your attacker falls. Use Boss's Orders to pick off their setup before they stabilize, and aim for a fast, aggressive line rather than a grind.</div></div>
+    </div>
+
+    <div class="mu" data-mu>
+      <div class="mu-head"><span class="tier t-bad">✕</span><span class="mu-name"><b>Mega Feraligatr</b><span>Sheer hitting power</span></span><span class="arrow">▶</span></div>
+      <div class="mu-body"><div>Loses to raw damage output — it hits hard enough to push through your bulk. <b>Plan:</b> race it. Use Munkidori healing to survive a hit, Unfair Stamp to disrupt its setup turn, and Boss's Orders to remove its key attacker rather than trading head-on.</div></div>
+    </div>
+
+    <div class="mu" data-mu>
+      <div class="mu-head"><span class="tier t-even">=</span><span class="mu-name"><b>Dragapult ex</b><span>The format's top deck</span></span><span class="arrow">▶</span></div>
+      <div class="mu-body"><div>The big survivor of rotation and still king — dicey, especially with Dusknoir. <b>Plan:</b> it spreads damage too, so Munkidori's damage-shifting is huge here. Keep your board healthy, use Judge/Petrel to disrupt their hand, and Boss up their Dusknoir or Drakloak before they snowball.</div></div>
+    </div>
+
+    <div class="mu" data-mu>
+      <div class="mu-head"><span class="tier t-even">=</span><span class="mu-name"><b>Well-built Team Rocket's decks</b><span>Punish your slow setup</span></span><span class="arrow">▶</span></div>
+      <div class="mu-body"><div>Tricky because you're a Stage 2 deck with a relatively slow setup — they exploit that. <b>Plan:</b> mulligan for a fast Spikemuth Gym + Rare Candy line, lead Budew to slow them, and don't over-commit Pokémon you can't protect.</div></div>
+    </div>
+
+    <div class="mu" data-mu>
+      <div class="mu-head"><span class="tier t-good">✓</span><span class="mu-name"><b>Other Stage 2 decks</b><span>Your natural prey</span></span><span class="arrow">▶</span></div>
+      <div class="mu-body"><div>Grimmsnarl has a built-in edge against slower Stage 2 evolution decks. <b>Plan:</b> play your normal grindy game — spread with Froslass, shift with Munkidori, swing for 180+30. Your damage math out-races their setup.</div></div>
+    </div>
+
+    <div class="mu" data-mu>
+      <div class="mu-head"><span class="tier t-good">✓</span><span class="mu-name"><b>Most everything else</b><span>The broad field</span></span><span class="arrow">▶</span></div>
+      <div class="mu-body"><div>Outside its weakness and the two Mega problem decks, Grimmsnarl does well against the bulk of the field. <b>Plan:</b> the 3× Boss's Orders shines against slower decks — pressure setup, drag up sitting ducks, let Froslass + Munkidori bury them. Patience wins.</div></div>
+    </div>
+
+    <div class="callout"><b>Reading the colors:</b> <span style="color:var(--grass)">✓ favored</span> · <span style="color:var(--gold)">= skill matchup</span> · <span style="color:var(--ember)">✕ uphill</span>. Even the ✕ games are winnable with a good opener — they just punish bricks hard.</div>
+  </section>
+
+  <!-- ============ RULES / SECRETS ============ -->
+  <section class="view" id="rules">
+    <h2>Secrets &amp; Quick Rules</h2>
+    <p class="sub">Tech tricks for this deck, plus the core rules a beginner needs at the table.</p>
+
+    <h3>Deck secrets</h3>
+    <div class="card raised"><p><b class="pu">Punk Up feeds Munkidori.</b> Punk Up pulls Darkness from your deck onto your Marnie's Pokémon — make sure a Munkidori ends up with Darkness so its Adrena-Brain can move damage that turn.</p></div>
+    <div class="card raised"><p><b class="cy">Run 4 Munkidori for a reason.</b> Multiple Munkidori let you shift big chunks of damage each turn and punish 2-hit-KO attempts by healing yourself — the more in play, the more you move.</p></div>
+    <div class="card raised"><p><b class="hi">Unfair Stamp is your comeback button.</b> As an ACE SPEC you get one — save it to disrupt their hand on a key turn while refilling your own to 5.</p></div>
+    <div class="card raised"><p><b class="pu">Team Rocket's Petrel + Judge.</b> With Iono gone, these are your hand disruption. Use them when the opponent is holding a loaded hand, especially before they combo off.</p></div>
+    <div class="card raised"><p><b class="cy">Spikemuth Gym = your tutor.</b> It fetches <i>any</i> Marnie's Pokémon, so it pulls every stage of the Grimmsnarl line. Keep one in play — you run 4 for consistency.</p></div>
+    <div class="card raised"><p><b class="cy">Protect Froslass.</b> It's your only self-damage source. If it dies before you've banked damage on your own board, your engine stalls — bench it behind something when you can.</p></div>
+    <div class="card raised"><p><b class="hi">Air Balloon vs. deck-out.</b> Against grindy/mill plans, Air Balloon keeps you mobile and helps avoid being decked out in long games.</p></div>
+
+    <h3>Core rules (beginner)</h3>
+    <dl class="gloss">
+      <dt>Going first?</dt><dd>You skip your attack on turn one. Use the turn to flood your bench with Impidimp and Snorunt.</dd>
+      <dt>One Energy per turn</dt><dd>From your hand. Punk Up's deck-attachments are extra and don't count.</dd>
+      <dt>One Supporter per turn</dt><dd>Lillie's Determination, Team Rocket's Petrel, Judge, Boss's Orders all share this limit. Items (Poké Pad, Poffin, Rare Candy) are unlimited.</dd>
+      <dt>Evolving</dt><dd>Can't evolve a Pokémon the turn you played it (Rare Candy is the exception — it jumps a Basic straight to Stage 2).</dd>
+      <dt>Prizes</dt><dd>Take 1 per Knock Out — but <b>2</b> for KOing an ex. Remember the opponent takes 2 when they KO <i>your</i> Grimmsnarl.</dd>
+      <dt>Bench limit</dt><dd>Max 5 benched Pokémon. With Froslass + Munkidori eating slots, plan your space.</dd>
+      <dt>Win conditions</dt><dd>Take all 6 prizes · opponent has no Pokémon in play · opponent can't draw at start of turn.</dd>
+    </dl>
+
+    <div class="callout"><b>Damage counters vs. HP:</b> Froslass places <i>counters</i> (10 each). A Pokémon is Knocked Out when counters meet or exceed its HP — Munkidori just relocates those counters before they finish you off.</div>
+  </section>
+</main>
+
+<nav>
+  <button class="on" data-go="deck"><span class="ic">🃏</span>Deck</button>
+  <button data-go="pros"><span class="ic">⚖️</span>Pros/Cons</button>
+  <button data-go="play"><span class="ic">✓</span>Play</button>
+  <button data-go="match"><span class="ic">⚔️</span>Matchups</button>
+  <button data-go="rules"><span class="ic">💡</span>Secrets</button>
+</nav>
+
+<footer>
+  Reference for the Marnie's Grimmsnarl ex archetype (Standard).<br>Save this page to your home screen to use it offline at the table.
+</footer>
+
+<script>
+  /* ---- tab switching ---- */
+  const views=document.querySelectorAll('.view');
+  const btns=document.querySelectorAll('nav button');
+  btns.forEach(b=>b.addEventListener('click',()=>{
+    const id=b.dataset.go;
+    views.forEach(v=>v.classList.toggle('on',v.id===id));
+    btns.forEach(x=>x.classList.toggle('on',x===b));
+    window.scrollTo({top:0,behavior:'smooth'});
+  }));
+
+  /* ---- build interactive checklist ---- */
+  const setup=[
+    ["Mulligan check","Confirm you have a Basic Pokémon. No Basic = reveal hand, reshuffle, redraw 7 (opponent draws +1)."],
+    ["Coin flip","Winner picks who goes first. Going SECOND is usually better here — lets you start evolving and use Budew turn 1."],
+    ["Place Active + Bench","Lead with Impidimp (or Budew vs. fast decks). Bench more Impidimp + Snorunt face-down. Bench space is precious."],
+    ["Set 6 Prizes","Top 6 cards face-down. Flip your Pokémon up. Begin."]
+  ];
+  const turn=[
+    ["Draw","Draw your card for the turn."],
+    ["Draw engine","Use Lillie's Determination (or Poké Pad) to dig. Hold Petrel/Judge for when you want to disrupt their hand instead."],
+    ["Play Spikemuth Gym","Search any Marnie's Pokémon — pull the Grimmsnarl stages you're missing. You run 4, so lean on it."],
+    ["Set up evolutions","Use Rare Candy to jump Impidimp straight to Grimmsnarl ex, and evolve Snorunt → Froslass."],
+    ["Evolve Grimmsnarl → Punk Up","Evolve, then use Punk Up to pull up to 5 Darkness from your deck onto your Marnie's Pokémon (get one onto a Munkidori)."],
+    ["Spread with Froslass","Its ability places counters on every Pokémon with an ability, both sides, between turns."],
+    ["Shift damage with Munkidori","Move the counters off YOUR board onto a key opposing target (needs Darkness attached)."],
+    ["Attack","Swing for 180 to the Active + 30 to a benched Pokémon. Line up multi-prize turns. (This ends your turn.)"]
+  ];
+  function render(list,el,prefix){
+    el.innerHTML=list.map((s,i)=>`
+      <div class="step" data-step>
+        <div class="step-head">
+          <div class="tick"></div>
+          <div class="step-t">
+            <div class="step-n">${prefix} ${i+1}</div>
+            <div class="step-title">${s[0]}</div>
+          </div>
+        </div>
+        <div class="step-body">${s[1]}</div>
+      </div>`).join('');
+  }
+  render(setup,document.getElementById('setup-steps'),'Setup');
+  render(turn,document.getElementById('turn-steps'),'Step');
+
+  document.querySelectorAll('[data-step]').forEach(st=>{
+    st.querySelector('.step-head').addEventListener('click',()=>st.classList.toggle('done'));
+  });
+  document.getElementById('resetBtn').addEventListener('click',()=>{
+    document.querySelectorAll('[data-step]').forEach(s=>s.classList.remove('done'));
+  });
+
+  /* ---- live offline status badge ---- */
+  const badge=document.getElementById('netBadge');
+  function netStatus(){
+    if(navigator.onLine){
+      badge.textContent='◆ Online — runs offline too';
+      badge.style.color='var(--frost)';
+      badge.style.borderColor='rgba(90,214,230,.3)';
+    }else{
+      badge.textContent='◆ Offline — working perfectly';
+      badge.style.color='var(--grass)';
+      badge.style.borderColor='rgba(107,212,122,.4)';
+    }
+  }
+  netStatus();
+  window.addEventListener('online',netStatus);
+  window.addEventListener('offline',netStatus);
+</script>
+</body>
+</html>
