@@ -432,6 +432,11 @@
   document.querySelectorAll('[data-step]').forEach(st=>{
     st.querySelector('.step-head').addEventListener('click',()=>st.classList.toggle('done'));
   });
+
+  /* ---- matchup expand/collapse ---- */
+  document.querySelectorAll('[data-mu]').forEach(mu=>{
+    mu.querySelector('.mu-head').addEventListener('click',()=>mu.classList.toggle('open'));
+  });
   document.getElementById('resetBtn').addEventListener('click',()=>{
     document.querySelectorAll('[data-step]').forEach(s=>s.classList.remove('done'));
   });
