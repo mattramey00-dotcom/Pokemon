@@ -131,6 +131,8 @@
   .nm{font-size:14px;color:var(--paper);font-weight:600;flex:1}
   .nm small{display:block;font-weight:400;color:var(--fog);font-size:11.5px;margin-top:1px}
   .set{font-size:10px;color:var(--fog);letter-spacing:.05em}
+  #deck .line-row{cursor:pointer}
+  #deck .line-row:active{background:rgba(157,92,255,.07)}
 
   .grp-label{font-size:11px;letter-spacing:.18em;text-transform:uppercase;
              color:var(--hex);font-weight:700;margin:18px 0 4px}
@@ -303,7 +305,7 @@
   <!-- ============ DECK ============ -->
   <section class="view on" id="deck">
     <h2>Practice Decklist</h2>
-    <p class="sub">A standard 60-card tournament-style list. Gold = the cards your whole game runs on.</p>
+    <p class="sub">A standard 60-card tournament-style list. Gold = the cards your whole game runs on. <span style="color:var(--frost)">Tap any card for its role.</span></p>
 
     <div class="deck-meta">
       <div class="chip"><b>21</b>Pokémon</div>
@@ -493,11 +495,20 @@
       <span id="scCount" style="margin-left:auto;color:var(--fog);font-size:12px"></span>
     </div>
 
+    <h3>Sequencing puzzles</h3>
+    <p class="sub" style="margin-bottom:10px">Tap your plays in the order you'd make them, then check. Bad sequencing is the quietest way to lose.</p>
+    <div id="seq"></div>
+
     <h3>Mulligan / opener check</h3>
     <p class="sub" style="margin-bottom:10px">Tap the key cards in your opening 7, then judge the hand.</p>
     <div class="row g" id="openerChips"></div>
     <button class="btn primary" id="openerCheck" style="width:100%;margin-top:13px">Judge my opener</button>
     <div id="openerVerdict"></div>
+
+    <h3>Opening-hand simulator</h3>
+    <p class="sub" style="margin-bottom:10px">Deal a real random 7-card hand from the 60-card list, make your call, then see if it was right.</p>
+    <div id="handArea"></div>
+    <button class="btn primary" id="dealBtn" style="width:100%;margin-top:12px">Deal 7 cards</button>
 
     <h3>The dream opening line</h3>
     <div class="card raised">
@@ -979,6 +990,124 @@
     ta.addEventListener('click',e=>e.stopPropagation());
     ta.addEventListener('input',()=>{NOTES[key]=ta.value;store.set('gs_notes',NOTES);});
     mu.querySelector('.mu-body').appendChild(ta);
+  });
+
+  /* ===== sequencing puzzles ===== */
+  const PUZZLES=[
+    {p:'Turn 2, going second. Impidimp is already in play. Hand: Rare Candy, Grimmsnarl ex, Lillie\'s Determination, Spikemuth Gym.',
+     steps:['Lillie\'s Determination — draw first','Spikemuth Gym — search a missing piece','Rare Candy → Grimmsnarl ex','Punk Up — attack (ends your turn)'],
+     e:'Always draw and search BEFORE you commit Rare Candy — you might find something that changes the plan, and you can\'t un-Candy. Punk Up is an attack, so it\'s always last.'},
+    {p:'Your Grimmsnarl is badly damaged and dies next turn. You have 2 Munkidori with Darkness, Boss\'s Orders, and a charged attacker.',
+     steps:['Munkidori — shift damage off you onto their target','Boss\'s Orders — drag up what you want to KO','Attack for 180 + 30'],
+     e:'Heal yourself with Munkidori first so you survive and add damage, THEN set up the KO with Boss, then swing. Attacking first can leave you dead on the return.'},
+    {p:'You\'re set up and ahead. Their hand is loaded and they\'re about to combo off. You have a charged attacker and Judge.',
+     steps:['Attack for 180 + 30 — take your damage','Judge — reset their loaded hand to 4 as you pass'],
+     e:'Take your damage first, then end the turn by Judging their loaded hand down to 4 so they draw into a wrecked hand. Note: Judge and Boss are both Supporters, so you only get one per turn.'}
+  ];
+  let pzCur=0,pzChosen=[],pzShuf=[],pzChecked=false,pzOK=false;
+  const seqEl=document.getElementById('seq');
+  function pzInit(){pzChosen=[];pzChecked=false;pzShuf=shuffle(PUZZLES[pzCur].steps.map((_,i)=>i));pzRender();}
+  function pzRender(){
+    const pz=PUZZLES[pzCur],avail=pzShuf.filter(i=>!pzChosen.includes(i));
+    let h=`<div class="card raised"><p style="color:var(--paper);font-weight:600">${pz.p}</p>`;
+    h+=`<div class="grp-label" style="margin-top:13px">Tap plays in order</div>`;
+    h+=avail.length?avail.map(i=>`<button class="opt" data-pzadd="${i}">${pz.steps[i]}</button>`).join(''):'<p class="sub" style="margin:6px 0 0">All plays placed — check your order.</p>';
+    h+=`<div class="grp-label" style="margin-top:15px">Your order</div>`;
+    h+=pzChosen.length?pzChosen.map((i,pos)=>`<button class="opt ${pzChecked?(i===pos?'correct':'wrong'):''}" data-pzrem="${pos}"><b>${pos+1}.</b> ${pz.steps[i]}</button>`).join(''):'<p class="sub" style="margin:6px 0 0">Nothing placed yet.</p>';
+    h+=`<div class="row" style="margin-top:13px"><button class="btn ghost sm" data-pz="reset">Reset</button><button class="btn primary sm" data-pz="check" style="flex:1">Check order</button></div>`;
+    if(pzChecked)h+=`<div class="explain" style="margin-top:12px">${pzOK?'<b style="color:var(--grass)">Perfect sequence. </b>':'<b style="color:var(--ember)">Not quite — see the order above. </b>'}${pz.e}</div>`;
+    h+=`</div><div class="row" style="margin-top:8px;align-items:center"><button class="btn ghost sm" data-pz="prev">‹ Prev</button><button class="btn ghost sm" data-pz="next">Next ›</button><span style="margin-left:auto;color:var(--fog);font-size:12px">${pzCur+1} / ${PUZZLES.length}</span></div>`;
+    seqEl.innerHTML=h;
+  }
+  seqEl.addEventListener('click',e=>{
+    const add=e.target.closest('[data-pzadd]'),rem=e.target.closest('[data-pzrem]'),nav=e.target.closest('[data-pz]');
+    if(add){pzChosen.push(+add.dataset.pzadd);pzChecked=false;pzRender();}
+    else if(rem){if(pzChecked)return;pzChosen.splice(+rem.dataset.pzrem,1);pzRender();}
+    else if(nav){const a=nav.dataset.pz;
+      if(a==='reset'){pzChosen=[];pzChecked=false;pzRender();}
+      else if(a==='check'){pzChecked=true;pzOK=pzChosen.length===PUZZLES[pzCur].steps.length&&pzChosen.every((i,pos)=>i===pos);pzRender();}
+      else if(a==='prev'){pzCur=(pzCur-1+PUZZLES.length)%PUZZLES.length;pzInit();}
+      else if(a==='next'){pzCur=(pzCur+1)%PUZZLES.length;pzInit();}}
+  });
+  pzInit();
+
+  /* ===== opening-hand simulator ===== */
+  const DECKLIST=[
+    ['Marnie\'s Impidimp',3,'basic'],['Marnie\'s Morgrem',2,''],['Marnie\'s Grimmsnarl ex',3,''],
+    ['Snorunt',3,'basic'],['Froslass',3,''],['Munkidori',4,'basic'],['Budew',1,'basic'],
+    ['Tatsugiri',1,'basic'],['Yveltal',1,'basic'],['Team Rocket\'s Petrel',4,''],
+    ['Lillie\'s Determination',4,'draw'],['Judge',1,''],['Boss\'s Orders',3,''],['Poké Pad',4,'draw'],
+    ['Buddy-Buddy Poffin',3,'draw'],['Rare Candy',3,'candy'],['Night Stretcher',2,''],
+    ['Air Balloon',1,''],['Unfair Stamp',1,''],['Spikemuth Gym',4,'search'],['Basic Darkness Energy',9,'energy']
+  ];
+  const DECK=[];DECKLIST.forEach(c=>{for(let k=0;k<c[1];k++)DECK.push({name:c[0],tag:c[2]});});
+  let currentHand=null,handCalled=null;
+  function gradeHand(hand){
+    const tags=hand.map(c=>c.tag);
+    const hasBasic=tags.includes('basic');
+    const support=hand.filter(c=>c.tag==='draw'||c.tag==='search').length;
+    const hasImp=hand.some(c=>c.name==='Marnie\'s Impidimp');
+    const hasCandy=tags.includes('candy'),hasSearch=tags.includes('search');
+    if(!hasBasic)return{rec:'mull',why:'No Basic Pokémon in the hand — you legally MUST mulligan.'};
+    if(support>=1&&(hasImp||hasSearch))return{rec:'keep',why:'A Basic, draw/search to dig, and a path to your attacker. '+(hasImp&&hasCandy?'Impidimp + Rare Candy means a fast Grimmsnarl. ':'')+'Snap keep.'};
+    if(support>=1)return{rec:'keep',why:'You can start and dig with your draw/search to find the rest of the line. A fine keep.'};
+    return{rec:'mull',why:'You have a Basic but no draw or search to dig out of it — this stalls badly. Mulligan-tier, especially on the play.'};
+  }
+  const handArea=document.getElementById('handArea');
+  function handRender(){
+    if(!currentHand){handArea.innerHTML='<p class="sub" style="margin:0">Tap "Deal 7 cards" to start.</p>';return;}
+    let h='<div class="card raised"><div class="grp-label">Your opening 7</div>';
+    h+='<div style="display:flex;flex-direction:column;gap:5px;margin-top:7px">'+
+      currentHand.map(c=>`<div style="font-size:13.5px;color:${c.tag==='basic'?'var(--frost)':'var(--mist)'}">${c.tag==='basic'?'● ':'○ '}${c.name}</div>`).join('')+'</div>';
+    h+='<div style="font-size:11px;color:var(--fog);margin-top:8px">● = Basic Pokémon (you need at least one to start)</div>';
+    if(!handCalled){
+      h+='<div class="row" style="margin-top:14px"><button class="btn" style="flex:1" data-call="mull">Mulligan</button><button class="btn primary" style="flex:1" data-call="keep">Keep</button></div>';
+    }else{
+      const g=gradeHand(currentHand),right=g.rec===handCalled;
+      h+=`<div class="verdict ${right?'v-keep':'v-bad'}" style="margin-top:14px"><b>${right?'✓ Right call':'✗ Reconsider'}</b>${g.why}</div>`;
+    }
+    handArea.innerHTML=h+'</div>';
+  }
+  document.getElementById('dealBtn').addEventListener('click',()=>{
+    currentHand=shuffle(DECK).slice(0,7);handCalled=null;handRender();
+  });
+  handArea.addEventListener('click',e=>{const b=e.target.closest('[data-call]');if(!b||handCalled)return;
+    handCalled=b.dataset.call;handRender();});
+  handRender();
+
+  /* ===== interactive decklist (tap a card for its role) ===== */
+  const CARD_ROLES={
+    'Marnie\'s Impidimp':['Basic Pokémon · ×3','The start of your attacker line. Open with it and Rare Candy up to Grimmsnarl ex. Bench extras early.'],
+    'Marnie\'s Morgrem':['Stage 1 · ×2','The middle of the line — usually skipped via Rare Candy, but a backup route to Grimmsnarl if you can\'t Candy.'],
+    'Marnie\'s Grimmsnarl ex':['Stage 2 ex · ×3','Your main attacker. Punk Up loads Darkness straight from the deck; it then hits 180 to the Active + 30 to a benched Pokémon.'],
+    'Snorunt':['Basic Pokémon · ×3','Evolves into Froslass, your spread engine. Bench it early so Froslass is online when you need it.'],
+    'Froslass':['Stage 1 · ×3','Spreads a damage counter onto every Ability Pokémon between turns — the damage Munkidori then moves. Your only self-damage source; protect it.'],
+    'Munkidori':['Basic Pokémon · ×4','With Darkness attached, moves up to 3 counters off your Pokémon onto the opponent. Heals you and pressures them. You run 4 to move big chunks.'],
+    'Budew':['Basic Pokémon · ×1','Turn-1 tech to slow fast decks while you set up your Stage 2 line.'],
+    'Tatsugiri':['Basic Pokémon · ×1','Draw/consistency support to smooth your setup.'],
+    'Yveltal':['Basic Pokémon · ×1','A Dark attacker / tech option for specific board states.'],
+    'Team Rocket\'s Petrel':['Supporter · ×4','Hand disruption that shrinks the opponent\'s options — a key piece of your post-Iono disruption.'],
+    'Lillie\'s Determination':['Supporter · ×4','Your main draw engine after Iono\'s rotation. Lean on it to dig.'],
+    'Judge':['Supporter · ×1','Resets both hands to 4 — disruption when the opponent is loaded.'],
+    'Boss\'s Orders':['Supporter · ×3','Drags a benched Pokémon into the Active spot to KO setup pieces or sitting ducks. The 3-count shines vs slower decks.'],
+    'Poké Pad':['Item · ×4','Draw/consistency you can play every turn — unlike Supporters, it doesn\'t use your one-per-turn slot.'],
+    'Buddy-Buddy Poffin':['Item · ×3','Pulls 2 small Basics from the deck to flood your bench early.'],
+    'Rare Candy':['Item · ×3','Jumps a Basic straight to Stage 2 (Impidimp → Grimmsnarl ex), skipping Morgrem. The exception to the no-evolve-turn-played rule.'],
+    'Night Stretcher':['Item · ×2','Recovers a Pokémon or Energy from your discard — rebuild after trades.'],
+    'Air Balloon':['Tool · ×1','Cheap retreat and an anti-deck-out tool for long, grindy games.'],
+    'Unfair Stamp':['ACE SPEC Item · ×1','Comeback button — disrupt their hand while you draw 5. One per deck.'],
+    'Spikemuth Gym':['Stadium · ×4','Searches ANY Marnie\'s Pokémon — your tutor for every stage of the Grimmsnarl line. Run 4 for consistency.'],
+    'Basic Darkness Energy':['Energy · ×9','Mono-Dark fuel for Punk Up and Munkidori. Only 9 because Punk Up pulls Darkness from the deck for you.']
+  };
+  document.querySelectorAll('#deck .line-row').forEach(row=>{
+    row.addEventListener('click',()=>{
+      const name=row.querySelector('.nm').firstChild.textContent.trim();
+      const r=CARD_ROLES[name];if(!r)return;
+      document.getElementById('glName').textContent=name;
+      document.getElementById('glTyp').textContent=r[0];
+      document.getElementById('glText').textContent=r[1];
+      glModal.classList.add('on');
+    });
   });
 </script>
 </body>
