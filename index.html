@@ -190,7 +190,7 @@
   .arrow{color:var(--fog);font-size:13px;transition:transform .25s}
   .mu.open .arrow{transform:rotate(90deg)}
   .mu-body{max-height:0;overflow:hidden;transition:max-height .3s ease}
-  .mu.open .mu-body{max-height:300px}
+  .mu.open .mu-body{max-height:600px}
   .mu-body div{padding:0 15px 14px;font-size:13px;color:var(--mist)}
 
   /* ---- Quick rules / glossary ---- */
@@ -200,6 +200,93 @@
            padding:11px 14px;border-radius:0 10px 10px 0;margin:14px 0;font-size:13.5px;color:var(--mist)}
   .callout.warn{border-color:var(--ember);background:rgba(255,107,107,.06)}
   .callout b{color:var(--paper)}
+
+  /* ---- Shared controls (train / tools / log) ---- */
+  .btn{background:var(--slate2);border:1px solid var(--line);color:var(--paper);
+       padding:11px 14px;border-radius:11px;font-size:13px;font-weight:600;
+       font-family:inherit;cursor:pointer;letter-spacing:.02em;transition:transform .12s,background .15s}
+  .btn:active{transform:scale(.97)}
+  .btn.primary{background:var(--hex);color:var(--void);border-color:transparent}
+  .btn.ghost{background:transparent}
+  .btn.sm{padding:7px 11px;font-size:12px;border-radius:9px}
+  .btn.sel{background:var(--hex);color:var(--void);border-color:transparent}
+  .row{display:flex;gap:9px;flex-wrap:wrap}
+  .row.g{gap:7px}
+  .field{width:100%;background:var(--slate);border:1px solid var(--line);color:var(--paper);
+         border-radius:10px;padding:10px 12px;font-size:14px;margin-top:6px;font-family:inherit}
+  .field:focus{outline:none;border-color:var(--hex)}
+  label.lbl{font-size:12px;color:var(--fog);font-weight:600;letter-spacing:.04em;display:block;margin-top:12px}
+
+  /* ---- Flashcards ---- */
+  .flash{background:var(--slate2);border:1px solid var(--line);border-radius:16px;
+         padding:28px 22px;min-height:160px;display:flex;flex-direction:column;
+         align-items:center;justify-content:center;text-align:center;cursor:pointer}
+  .flash .q{font-size:17px;color:var(--paper);font-weight:600;line-height:1.4}
+  .flash .a{font-size:14px;color:var(--frost);margin-top:14px;line-height:1.55}
+  .flash .hint{font-size:10px;color:var(--fog);letter-spacing:.16em;text-transform:uppercase;margin-top:16px}
+  .scorebar{display:flex;gap:8px;margin:0 0 14px}
+  .scorebar .chip{cursor:default}
+  .scorebar .chip.gg b{color:var(--grass)}
+  .scorebar .chip.rr b{color:var(--ember)}
+
+  /* ---- Scenario / quiz options ---- */
+  .opt{display:block;width:100%;text-align:left;margin-top:9px;background:var(--slate);
+       border:1px solid var(--line);color:var(--mist);padding:12px 14px;border-radius:11px;
+       font-size:13.5px;font-family:inherit;cursor:pointer;transition:.15s}
+  .opt:active{border-color:var(--hex)}
+  .opt.correct{border-color:var(--grass);background:rgba(107,212,122,.12);color:var(--paper)}
+  .opt.wrong{border-color:var(--ember);background:rgba(255,107,107,.12);color:var(--paper)}
+  .opt.dim{opacity:.5}
+  .explain{margin-top:12px;font-size:13px;color:var(--mist);border-left:3px solid var(--hex);
+           padding:9px 13px;background:rgba(157,92,255,.06);border-radius:0 10px 10px 0}
+  .verdict{margin-top:14px;border-radius:12px;padding:13px 15px;font-size:13.5px;border:1px solid}
+  .verdict b{display:block;font-size:15px;margin-bottom:4px}
+  .v-keep{background:rgba(107,212,122,.08);border-color:rgba(107,212,122,.35)} .v-keep b{color:var(--grass)}
+  .v-ok{background:rgba(245,196,81,.08);border-color:rgba(245,196,81,.35)} .v-ok b{color:var(--gold)}
+  .v-bad{background:rgba(255,107,107,.08);border-color:rgba(255,107,107,.35)} .v-bad b{color:var(--ember)}
+
+  /* ---- Counters (prize / damage) ---- */
+  .counter{display:flex;align-items:center;justify-content:space-between;
+           background:var(--slate);border:1px solid var(--line);border-radius:13px;
+           padding:11px 14px;margin-bottom:10px}
+  .counter .cn{font-size:14px;font-weight:600;color:var(--paper);flex:1}
+  .counter .cn small{display:block;color:var(--fog);font-size:11px;font-weight:400}
+  .stepper{display:flex;align-items:center;gap:12px}
+  .stepper button{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);
+                  background:var(--slate2);color:var(--paper);font-size:20px;cursor:pointer;
+                  display:flex;align-items:center;justify-content:center;font-family:inherit}
+  .stepper button:active{background:var(--hex);color:var(--void)}
+  .stepper .val{font-family:Georgia,serif;font-size:22px;font-weight:700;min-width:34px;text-align:center}
+  .stepper .val.ko{color:var(--ember)}
+
+  .bigcoin{font-size:42px;text-align:center;margin:4px 0 10px;height:48px}
+  .clock{font-family:Georgia,serif;font-size:36px;text-align:center;letter-spacing:1px;color:var(--paper)}
+
+  /* ---- Journal ---- */
+  .record{display:flex;gap:8px;margin-bottom:16px}
+  .log-entry{background:var(--slate);border:1px solid var(--line);border-radius:12px;
+             padding:11px 13px;margin-bottom:9px;display:flex;gap:11px;align-items:flex-start}
+  .res{width:30px;height:30px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;
+       justify-content:center;font-weight:800;font-family:Georgia,serif;color:var(--void);font-size:14px}
+  .res.W{background:var(--grass)} .res.L{background:var(--ember)} .res.T{background:var(--gold)}
+  .log-entry .le{flex:1;font-size:13.5px}
+  .log-entry .le b{color:var(--paper)}
+  .log-entry .le small{display:block;color:var(--fog);margin-top:2px;font-size:12px}
+  .del{background:none;border:none;color:var(--fog);font-size:19px;cursor:pointer;padding:0 4px;line-height:1}
+
+  /* ---- Matchup notes ---- */
+  .mu-note{display:block;margin:-2px 15px 14px;width:calc(100% - 30px);min-height:54px;resize:vertical}
+
+  /* ---- Glossary modal ---- */
+  .gl{color:var(--frost);border-bottom:1px dashed rgba(90,214,230,.5);cursor:pointer}
+  .modal{position:fixed;inset:0;z-index:100;background:rgba(8,5,14,.72);backdrop-filter:blur(5px);
+         display:none;align-items:center;justify-content:center;padding:24px}
+  .modal.on{display:flex;animation:fade .2s ease}
+  .modal-card{background:var(--slate2);border:1px solid var(--line);border-radius:16px;padding:22px;max-width:340px;width:100%}
+  .modal-card h4{font-size:18px;color:var(--hex);margin-bottom:3px;font-family:Georgia,serif}
+  .modal-card .typ{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--fog);margin-bottom:11px}
+  .modal-card p{font-size:13.5px;color:var(--mist)}
+  .modal-card .btn{margin-top:18px;width:100%}
 
   footer{text-align:center;font-size:11px;color:var(--fog);padding:24px 16px 8px;line-height:1.6}
 </style>
@@ -371,14 +458,145 @@
 
     <div class="callout"><b>Damage counters vs. HP:</b> Froslass places <i>counters</i> (10 each). A Pokémon is Knocked Out when counters meet or exceed its HP — Munkidori just relocates those counters before they finish you off.</div>
   </section>
+
+  <!-- ============ TRAIN ============ -->
+  <section class="view" id="train">
+    <h2>Train</h2>
+    <p class="sub">Drill the deck until the lines are automatic — quiz yourself, run scenarios, and test your openers.</p>
+
+    <h3>Flashcards</h3>
+    <div class="scorebar">
+      <div class="chip gg"><b id="fcRight">0</b>Got it</div>
+      <div class="chip rr"><b id="fcWrong">0</b>Missed</div>
+      <div class="chip"><b id="fcLeft">0</b>Left</div>
+    </div>
+    <div class="flash" id="flash">
+      <div class="q" id="fcQ">Tap to start</div>
+      <div class="a" id="fcA" style="display:none"></div>
+      <div class="hint" id="fcHint">Tap the card to begin</div>
+    </div>
+    <div class="row" id="fcGrade" style="display:none;margin-top:12px">
+      <button class="btn" style="flex:1" data-grade="0">✕ Missed it</button>
+      <button class="btn primary" style="flex:1" data-grade="1">✓ Got it</button>
+    </div>
+    <button class="reset-btn" id="fcReset" style="margin-top:12px">↺ Reshuffle deck</button>
+
+    <h3>Scenario trainer</h3>
+    <div id="scenario"></div>
+    <div class="row" style="margin-top:8px;align-items:center">
+      <button class="btn ghost sm" id="scPrev">‹ Prev</button>
+      <button class="btn ghost sm" id="scNext">Next ›</button>
+      <span id="scCount" style="margin-left:auto;color:var(--fog);font-size:12px"></span>
+    </div>
+
+    <h3>Mulligan / opener check</h3>
+    <p class="sub" style="margin-bottom:10px">Tap the key cards in your opening 7, then judge the hand.</p>
+    <div class="row g" id="openerChips"></div>
+    <button class="btn primary" id="openerCheck" style="width:100%;margin-top:13px">Judge my opener</button>
+    <div id="openerVerdict"></div>
+
+    <h3>The dream opening line</h3>
+    <div class="card raised">
+      <p>Going second, this is the line you're drilling toward:</p>
+      <ol style="margin:10px 0 0 18px;font-size:13.5px;color:var(--mist);line-height:1.95">
+        <li>Bench <b>Impidimp</b> + <b>Snorunt</b>, lead with one.</li>
+        <li>Turn 2: <span class="gl" data-g="rare-candy">Rare Candy</span> → Grimmsnarl ex.</li>
+        <li><span class="gl" data-g="punk-up">Punk Up</span> — pull up to 5 Darkness, land one on a <span class="gl" data-g="munkidori">Munkidori</span>.</li>
+        <li>Evolve Snorunt → <span class="gl" data-g="froslass">Froslass</span> (spreads next turn).</li>
+        <li><span class="gl" data-g="munkidori">Munkidori</span> shifts your counters onto their key target.</li>
+        <li>Attack for <b>180 + 30</b>; line up a multi-prize turn.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ TOOLS ============ -->
+  <section class="view" id="tools">
+    <h2>Tools</h2>
+    <p class="sub">Live helpers for practice games — prize math, counters, a coin and a clock.</p>
+
+    <h3>Prize &amp; KO calculator</h3>
+    <div class="card raised">
+      <label class="lbl">Your damage this attack</label>
+      <input class="field" type="number" id="calcDmg" inputmode="numeric" placeholder="e.g. 180" value="180">
+      <label class="lbl">Target's max HP</label>
+      <input class="field" type="number" id="calcHP" inputmode="numeric" placeholder="e.g. 320">
+      <label class="lbl">Damage already on it</label>
+      <input class="field" type="number" id="calcExist" inputmode="numeric" placeholder="0" value="0">
+      <label class="lbl" style="display:flex;align-items:center;gap:8px;margin-top:13px"><input type="checkbox" id="calcEx" style="width:auto">Target is a Pokémon ex / V (worth 2 prizes)</label>
+      <div id="calcOut" style="margin-top:14px"></div>
+    </div>
+
+    <h3>Live game tracker</h3>
+    <div class="counter"><div class="cn">Your prizes left</div><div class="stepper"><button data-c="myPrize" data-d="-1">−</button><span class="val" id="myPrize">6</span><button data-c="myPrize" data-d="1">+</button></div></div>
+    <div class="counter"><div class="cn">Opponent prizes left</div><div class="stepper"><button data-c="opPrize" data-d="-1">−</button><span class="val" id="opPrize">6</span><button data-c="opPrize" data-d="1">+</button></div></div>
+    <div class="counter"><div class="cn">Turn number</div><div class="stepper"><button data-c="turnNo" data-d="-1">−</button><span class="val" id="turnNo">1</span><button data-c="turnNo" data-d="1">+</button></div></div>
+    <button class="reset-btn" id="trackReset">↺ New game (reset to 6 · 6 · 1)</button>
+
+    <h3>Damage scratchpad</h3>
+    <p class="sub" style="margin-bottom:10px">Track counters while Froslass &amp; Munkidori shuffle them around. Turns red at KO.</p>
+    <div id="dmgList"></div>
+    <div class="row" style="margin-top:4px">
+      <input class="field" id="dmgName" placeholder="Pokémon" style="flex:2;margin-top:0">
+      <input class="field" id="dmgHP" type="number" inputmode="numeric" placeholder="HP" style="flex:1;margin-top:0">
+      <button class="btn primary" id="dmgAdd">Add</button>
+    </div>
+
+    <h3>Coin flip &amp; clock</h3>
+    <div class="row">
+      <div class="card raised" style="flex:1;min-width:130px;text-align:center">
+        <div class="bigcoin" id="coinFace">🪙</div>
+        <button class="btn primary" id="coinBtn" style="width:100%">Flip coin</button>
+      </div>
+      <div class="card raised" style="flex:1;min-width:130px;text-align:center">
+        <div class="clock" id="clock">00:00</div>
+        <div class="row" style="margin-top:10px">
+          <button class="btn sm" id="clockStart" style="flex:1">Start</button>
+          <button class="btn sm" id="clockReset" style="flex:1">Reset</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ JOURNAL ============ -->
+  <section class="view" id="log">
+    <h2>Game Journal</h2>
+    <p class="sub">Log every practice game — the patterns in your losses are where the wins hide.</p>
+    <div class="record" id="record"></div>
+    <div class="card raised">
+      <label class="lbl">Opponent deck</label>
+      <input class="field" id="jOpp" placeholder="e.g. Dragapult ex">
+      <label class="lbl">Result</label>
+      <div class="row g" style="margin-top:6px" id="jResult">
+        <button class="btn sm" data-r="W" style="flex:1">Win</button>
+        <button class="btn sm" data-r="L" style="flex:1">Loss</button>
+        <button class="btn sm" data-r="T" style="flex:1">Tie</button>
+      </div>
+      <label class="lbl">One lesson (optional)</label>
+      <input class="field" id="jNote" placeholder="e.g. over-committed Froslass into spread">
+      <button class="btn primary" id="jSave" style="width:100%;margin-top:15px">Save game</button>
+    </div>
+    <div id="logList" style="margin-top:18px"></div>
+  </section>
 </main>
+
+<div class="modal" id="glModal">
+  <div class="modal-card">
+    <h4 id="glName"></h4>
+    <div class="typ" id="glTyp"></div>
+    <p id="glText"></p>
+    <button class="btn primary" id="glClose">Close</button>
+  </div>
+</div>
 
 <nav>
   <button class="on" data-go="deck"><span class="ic">🃏</span>Deck</button>
   <button data-go="pros"><span class="ic">⚖️</span>Pros/Cons</button>
   <button data-go="play"><span class="ic">✓</span>Play</button>
-  <button data-go="match"><span class="ic">⚔️</span>Matchups</button>
+  <button data-go="match"><span class="ic">⚔️</span>Match</button>
   <button data-go="rules"><span class="ic">💡</span>Secrets</button>
+  <button data-go="train"><span class="ic">🎓</span>Train</button>
+  <button data-go="tools"><span class="ic">🧮</span>Tools</button>
+  <button data-go="log"><span class="ic">📓</span>Log</button>
 </nav>
 
 <footer>
@@ -457,6 +675,263 @@
   netStatus();
   window.addEventListener('online',netStatus);
   window.addEventListener('offline',netStatus);
+
+  /* ===== storage helpers ===== */
+  const store={
+    get(k,f){try{const v=localStorage.getItem(k);return v?JSON.parse(v):f;}catch(e){return f;}},
+    set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  };
+
+  /* ===== glossary ===== */
+  const GLOSS={
+    'punk-up':['Punk Up','Grimmsnarl ex · attack','Search up to 5 Basic Darkness Energy from your deck and attach them to your Marnie\'s Pokémon. It powers your board for free — these attachments don\'t count against your one-energy-per-turn limit.'],
+    'froslass':['Froslass','Stage 1 · Ability','Between turns, its ability puts a damage counter on every Pokémon in play that has an Ability — both sides. This is your only self-damage source, so protect it.'],
+    'munkidori':['Munkidori','Basic · Adrena-Brain','While it has Darkness Energy attached, move up to 3 damage counters from one of your Pokémon onto one of your opponent\'s. Heals you and pressures them. You run 4.'],
+    'unfair-stamp':['Unfair Stamp','ACE SPEC · Item','Each player shuffles their hand into their deck; you draw 5, opponent draws 2. One per deck — your comeback button on a key turn.'],
+    'spikemuth-gym':['Spikemuth Gym','Stadium','Search your deck for any Marnie\'s Pokémon — every stage of the Grimmsnarl line. Your tutor and consistency engine. The list runs 4.'],
+    'rare-candy':['Rare Candy','Item','Evolve one of your Basic Pokémon straight to its Stage 2, skipping Stage 1 (Impidimp → Grimmsnarl ex). The exception to the no-evolve-the-turn-you-played-it rule.'],
+    'boss':['Boss\'s Orders','Supporter','Switch one of your opponent\'s Benched Pokémon into the Active spot. Drag up a sitting duck or pull a setup piece you can KO.'],
+    'petrel':['Team Rocket\'s Petrel','Supporter','Hand disruption that shrinks the opponent\'s options — a key piece of your post-Iono disruption package alongside Judge.']
+  };
+  const glModal=document.getElementById('glModal');
+  function openGloss(g){const d=GLOSS[g];if(!d)return;
+    document.getElementById('glName').textContent=d[0];
+    document.getElementById('glTyp').textContent=d[1];
+    document.getElementById('glText').textContent=d[2];
+    glModal.classList.add('on');}
+  document.addEventListener('click',e=>{const g=e.target.closest('.gl');if(g){openGloss(g.dataset.g);}});
+  document.getElementById('glClose').addEventListener('click',()=>glModal.classList.remove('on'));
+  glModal.addEventListener('click',e=>{if(e.target===glModal)glModal.classList.remove('on');});
+
+  /* ===== flashcards ===== */
+  const CARDS=[
+    ['What does Punk Up do?','Searches up to 5 Basic Darkness Energy from your deck onto your Marnie\'s Pokémon — make sure one lands on a Munkidori.'],
+    ['How many Boss\'s Orders are in the list?','3 — your main way to drag up a setup piece or a sitting duck.'],
+    ['What does Munkidori need before it can move damage?','Darkness Energy attached. Then Adrena-Brain shifts up to 3 counters off you onto them.'],
+    ['Go first or second with this deck?','Second — you can evolve and use Budew on turn 1, and you don\'t miss an attack you\'d want anyway.'],
+    ['What is your only source of self-damage?','Froslass. Protect it — lose it and the Munkidori engine sputters.'],
+    ['What does Rare Candy let you do?','Jump a Basic straight to Stage 2 (Impidimp → Grimmsnarl ex), skipping Morgrem.'],
+    ['How many prizes for KOing a Pokémon ex?','2 — and remember the opponent also takes 2 when they KO your Grimmsnarl ex.'],
+    ['What does Spikemuth Gym search for?','Any Marnie\'s Pokémon — every stage of the Grimmsnarl line. You run 4.'],
+    ['How many Energy can you attach from hand per turn?','One. Punk Up\'s deck-attachments are extra and don\'t count.'],
+    ['When should you fire Unfair Stamp?','As a comeback — disrupt their hand on a key turn while you refill to 5. ACE SPEC, one per deck.'],
+    ['Your two hardest matchups?','Mega Venusaur (Grass weakness) and Mega Feraligatr (raw power). Race them, don\'t grind.'],
+    ['When does Froslass spread damage?','Between turns — a counter on every Pokémon with an Ability, both sides of the board.']
+  ];
+  const fc={q:document.getElementById('fcQ'),a:document.getElementById('fcA'),hint:document.getElementById('fcHint'),
+            grade:document.getElementById('fcGrade'),right:document.getElementById('fcRight'),
+            wrong:document.getElementById('fcWrong'),left:document.getElementById('fcLeft'),flash:document.getElementById('flash')};
+  let fcQueue=[],fcCur=-1,fcFlipped=false,fcR=0,fcW=0;
+  function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+  function fcStart(){fcQueue=shuffle(CARDS.map((_,i)=>i));fcCur=-1;fcR=0;fcW=0;fcRender();}
+  function fcRender(){
+    fc.right.textContent=fcR;fc.wrong.textContent=fcW;fc.left.textContent=fcQueue.length-(fcCur>=0?1:0)<0?0:fcQueue.length;
+    if(fcCur<0){fc.q.textContent='Tap to start';fc.a.style.display='none';fc.hint.style.display='block';fc.hint.textContent='Tap the card to begin';fc.grade.style.display='none';fc.left.textContent=fcQueue.length;return;}
+    if(fcCur>=fcQueue.length){fc.q.textContent=`Done — ${fcR}/${fcR+fcW} on the first pass.`;fc.a.style.display='none';fc.hint.style.display='block';fc.hint.textContent='Reshuffle to go again';fc.grade.style.display='none';fc.left.textContent=0;return;}
+    const c=CARDS[fcQueue[fcCur]];
+    fc.q.textContent=c[0];fc.a.textContent=c[1];
+    fc.left.textContent=fcQueue.length-fcCur;
+    if(fcFlipped){fc.a.style.display='block';fc.hint.style.display='none';fc.grade.style.display='flex';}
+    else{fc.a.style.display='none';fc.hint.style.display='block';fc.hint.textContent='Tap to reveal';fc.grade.style.display='none';}
+  }
+  fc.flash.addEventListener('click',()=>{
+    if(fcCur<0){fcCur=0;fcFlipped=false;fcRender();return;}
+    if(fcCur>=fcQueue.length)return;
+    if(!fcFlipped){fcFlipped=true;fcRender();}
+  });
+  fc.grade.addEventListener('click',e=>{const b=e.target.closest('[data-grade]');if(!b)return;
+    if(b.dataset.grade==='1'){fcR++;}else{fcW++;fcQueue.push(fcQueue[fcCur]);}
+    fcCur++;fcFlipped=false;fcRender();});
+  document.getElementById('fcReset').addEventListener('click',fcStart);
+  fcStart();
+
+  /* ===== scenario trainer ===== */
+  const SCEN=[
+    {s:'Turn 3 vs Dragapult ex. They have a Dusknoir benched about to snowball, and you have Boss\'s Orders plus a charged Grimmsnarl. Best play?',
+     o:['Attack the Active Dragapult head-on','Boss up the Dusknoir and KO it','Pass and set up more','Judge their hand first'],c:1,
+     e:'Removing Dusknoir stops the damage-shifting snowball before it starts. Boss + KO the support piece, not the bulky Active.'},
+    {s:'Opening 7: Impidimp, Rare Candy, Lillie\'s Determination, 2 Darkness, Poké Pad, Spikemuth Gym. Keep or mulligan?',
+     o:['Mulligan — too slow','Keep — that\'s a dream opener','Keep only on the play'],c:1,
+     e:'Basic + Rare Candy + Grimmsnarl tutor (Spikemuth) + draw (Lillie\'s/Poké Pad) sets up Grimmsnarl on turn 2. Snap keep.'},
+    {s:'Your Grimmsnarl has 120 damage on it and dies next turn. You have 2 Munkidori with Darkness and it\'s your turn. Best line?',
+     o:['Retreat Grimmsnarl to the bench','Shift the damage onto their attacker with Munkidori','Evolve something to heal'],c:1,
+     e:'Each Munkidori moves up to 3 counters — two of them clear the 120 off you AND dump it onto their board. You survive and they take damage.'},
+    {s:'You\'re facing Mega Venusaur (Grass — your weakness). What\'s the game plan?',
+     o:['Grind slowly and out-value them','Present a lone Grimmsnarl as a wall','Spread wide with Froslass + Munkidori and race'],c:2,
+     e:'You can\'t wall a deck that doubles your weakness. Spread so you trade prizes even as attackers fall, and play fast and aggressive.'},
+    {s:'Turn 1 on the play against a fast deck, and you have Budew in hand. What do you do with it?',
+     o:['Bench it for later','Lead Budew to item-lock and slow them','Evolve toward your attacker'],c:1,
+     e:'Budew\'s lead locks items on their turn, slowing fast decks while you assemble your Stage 2 line.'},
+    {s:'You can take your last 2 prizes by KOing their Active ex, but doing so leaves your benched Froslass exposed to a return KO. They have 2 prizes left too. Do you go for it?',
+     o:['Yes — taking your last 2 prizes wins immediately','No, play safe and protect Froslass'],c:0,
+     e:'Taking your final prizes ends the game on the spot — there is no return turn. When the KO wins, take it; exposure only matters if the game continues.'}
+  ];
+  let scCur=0;
+  function scRender(){
+    const sc=SCEN[scCur];
+    document.getElementById('scCount').textContent=`${scCur+1} / ${SCEN.length}`;
+    document.getElementById('scenario').innerHTML=
+      `<div class="card raised"><p style="color:var(--paper);font-weight:600;margin-bottom:4px">${sc.s}</p>`+
+      sc.o.map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join('')+
+      `<div class="explain" id="scExplain" style="display:none"></div></div>`;
+  }
+  document.getElementById('scenario').addEventListener('click',e=>{
+    const b=e.target.closest('.opt');if(!b)return;
+    const sc=SCEN[scCur],pick=+b.dataset.i;
+    document.querySelectorAll('#scenario .opt').forEach((o,i)=>{
+      o.style.pointerEvents='none';
+      if(i===sc.c)o.classList.add('correct');
+      else if(i===pick)o.classList.add('wrong');
+      else o.classList.add('dim');
+    });
+    const ex=document.getElementById('scExplain');
+    ex.innerHTML=(pick===sc.c?'<b style="color:var(--grass)">Correct. </b>':'<b style="color:var(--ember)">Not quite. </b>')+sc.e;
+    ex.style.display='block';
+  });
+  document.getElementById('scPrev').addEventListener('click',()=>{scCur=(scCur-1+SCEN.length)%SCEN.length;scRender();});
+  document.getElementById('scNext').addEventListener('click',()=>{scCur=(scCur+1)%SCEN.length;scRender();});
+  scRender();
+
+  /* ===== mulligan / opener check ===== */
+  const OPENER=['Impidimp','Snorunt','Budew','Munkidori','Rare Candy','Spikemuth Gym','Lillie\'s Determination','Poké Pad','Darkness Energy'];
+  const openSel=new Set();
+  const chipWrap=document.getElementById('openerChips');
+  chipWrap.innerHTML=OPENER.map(n=>`<button class="btn sm" data-o="${n}">${n}</button>`).join('');
+  chipWrap.addEventListener('click',e=>{const b=e.target.closest('[data-o]');if(!b)return;
+    const n=b.dataset.o;if(openSel.has(n)){openSel.delete(n);b.classList.remove('sel');}else{openSel.add(n);b.classList.add('sel');}});
+  document.getElementById('openerCheck').addEventListener('click',()=>{
+    const has=n=>openSel.has(n);
+    const basic=['Impidimp','Snorunt','Budew','Munkidori'].some(has);
+    const draw=has('Lillie\'s Determination')||has('Poké Pad');
+    const path=has('Impidimp')&&(has('Rare Candy')||has('Spikemuth Gym'));
+    let cls,title,body;
+    if(!basic){cls='v-bad';title='Mulligan';body='No Basic Pokémon in hand — you can\'t start. Reveal your hand, reshuffle, and redraw 7 (your opponent draws +1).';}
+    else if(path&&draw){cls='v-keep';title='Strong keep';body='You have the whole line: a Basic, a way to Grimmsnarl (Rare Candy / Spikemuth), and draw to keep digging. Lead Impidimp and go.';}
+    else if(has('Impidimp')&&(draw||has('Spikemuth Gym'))){cls='v-ok';title='Keepable';body='You can start and dig toward your pieces. Lead Impidimp and lean on draw / Spikemuth to find Rare Candy + Grimmsnarl.';}
+    else if(has('Budew')){cls='v-ok';title='Keepable (defensive)';body='Budew can lead to stall while you draw into your line — fine against fast decks, slower against the field.';}
+    else{cls='v-bad';title='Risky';body='You have a Basic but no clear path to Grimmsnarl. Keep only if going second and you can\'t do better — this is a near-brick on the play.';}
+    document.getElementById('openerVerdict').innerHTML=`<div class="verdict ${cls}"><b>${title}</b>${body}</div>`;
+  });
+
+  /* ===== prize & KO calculator ===== */
+  function calc(){
+    const d=+document.getElementById('calcDmg').value||0;
+    const hp=+document.getElementById('calcHP').value||0;
+    const ex=+document.getElementById('calcExist').value||0;
+    const out=document.getElementById('calcOut');
+    if(!hp){out.innerHTML='<p class="sub" style="margin:0">Enter the target\'s HP to see the result.</p>';return;}
+    const total=ex+d,remaining=hp-total,prizes=document.getElementById('calcEx').checked?2:1;
+    if(remaining<=0){
+      out.innerHTML=`<div class="verdict v-keep"><b>Knock Out — take ${prizes} prize${prizes>1?'s':''}</b>`+
+        `${total} damage vs ${hp} HP${remaining<0?` (${-remaining} overkill)`:' (exact)'}. Line up the next KO for a multi-prize turn.</div>`;
+    }else{
+      const swings=Math.ceil(remaining/(d||1));
+      out.innerHTML=`<div class="verdict v-ok"><b>Not a KO — ${remaining} HP left</b>`+
+        `After this hit it\'s at ${total}/${hp}. You need ${remaining} more${d?` — about ${swings} more swing${swings>1?'s':''} at ${d}`:''}. Consider Froslass + Munkidori to finish it.</div>`;
+    }
+  }
+  ['calcDmg','calcHP','calcExist'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+  document.getElementById('calcEx').addEventListener('change',calc);
+  calc();
+
+  /* ===== live game tracker ===== */
+  const TRACK=store.get('gs_track',{myPrize:6,opPrize:6,turnNo:1});
+  function trackRender(){
+    for(const k in TRACK){const el=document.getElementById(k);if(el){el.textContent=TRACK[k];
+      el.classList.toggle('ko',(k!=='turnNo'&&TRACK[k]===0));}}
+    store.set('gs_track',TRACK);
+  }
+  document.querySelectorAll('.stepper button[data-c]').forEach(b=>b.addEventListener('click',()=>{
+    const k=b.dataset.c,d=+b.dataset.d;
+    const min=k==='turnNo'?1:0,max=k==='turnNo'?99:6;
+    TRACK[k]=Math.max(min,Math.min(max,TRACK[k]+d));trackRender();
+  }));
+  document.getElementById('trackReset').addEventListener('click',()=>{TRACK.myPrize=6;TRACK.opPrize=6;TRACK.turnNo=1;trackRender();});
+  trackRender();
+
+  /* ===== damage scratchpad ===== */
+  let DMG=store.get('gs_dmg',[]);
+  const dmgList=document.getElementById('dmgList');
+  function dmgRender(){
+    dmgList.innerHTML=DMG.length?DMG.map((p,i)=>{
+      const ko=p.dmg>=p.hp;
+      return `<div class="counter"><div class="cn ${ko?'ko':''}" style="${ko?'color:var(--ember)':''}">${p.name} ${ko?'— KO\'d':''}<small>${p.dmg} / ${p.hp} HP</small></div>`+
+        `<div class="stepper"><button data-di="${i}" data-dd="-10">−</button><span class="val${ko?' ko':''}">${p.dmg}</span><button data-di="${i}" data-dd="10">+</button>`+
+        `<button class="del" data-del="${i}">✕</button></div></div>`;
+    }).join(''):'<p class="sub" style="margin:0 0 10px">No Pokémon tracked yet — add one below.</p>';
+    store.set('gs_dmg',DMG);
+  }
+  dmgList.addEventListener('click',e=>{
+    const inc=e.target.closest('[data-di]'),del=e.target.closest('[data-del]');
+    if(inc){const i=+inc.dataset.di;DMG[i].dmg=Math.max(0,DMG[i].dmg+ +inc.dataset.dd);dmgRender();}
+    else if(del){DMG.splice(+del.dataset.del,1);dmgRender();}
+  });
+  document.getElementById('dmgAdd').addEventListener('click',()=>{
+    const name=document.getElementById('dmgName').value.trim();
+    const hp=+document.getElementById('dmgHP').value||0;
+    if(!name||!hp)return;
+    DMG.push({name,hp,dmg:0});
+    document.getElementById('dmgName').value='';document.getElementById('dmgHP').value='';
+    dmgRender();
+  });
+  dmgRender();
+
+  /* ===== coin & clock ===== */
+  const coinFace=document.getElementById('coinFace');
+  document.getElementById('coinBtn').addEventListener('click',()=>{
+    coinFace.textContent='🪙';let n=0;
+    const spin=setInterval(()=>{coinFace.textContent=n++%2?'⚪':'⚫';},80);
+    setTimeout(()=>{clearInterval(spin);coinFace.textContent=Math.random()<.5?'Heads':'Tails';},640);
+  });
+  let clockSec=0,clockTimer=null;
+  const clockEl=document.getElementById('clock');
+  function clockRender(){const m=String(Math.floor(clockSec/60)).padStart(2,'0'),s=String(clockSec%60).padStart(2,'0');clockEl.textContent=`${m}:${s}`;}
+  document.getElementById('clockStart').addEventListener('click',e=>{
+    if(clockTimer){clearInterval(clockTimer);clockTimer=null;e.target.textContent='Start';}
+    else{clockTimer=setInterval(()=>{clockSec++;clockRender();},1000);e.target.textContent='Pause';}
+  });
+  document.getElementById('clockReset').addEventListener('click',()=>{
+    clearInterval(clockTimer);clockTimer=null;clockSec=0;clockRender();
+    document.getElementById('clockStart').textContent='Start';
+  });
+
+  /* ===== game journal ===== */
+  let LOG=store.get('gs_log',[]),jRes='W';
+  const jResWrap=document.getElementById('jResult');
+  function jResRender(){jResWrap.querySelectorAll('[data-r]').forEach(b=>b.classList.toggle('sel',b.dataset.r===jRes));}
+  jResWrap.addEventListener('click',e=>{const b=e.target.closest('[data-r]');if(!b)return;jRes=b.dataset.r;jResRender();});
+  jResRender();
+  function logRender(){
+    const w=LOG.filter(x=>x.r==='W').length,l=LOG.filter(x=>x.r==='L').length,t=LOG.filter(x=>x.r==='T').length;
+    document.getElementById('record').innerHTML=
+      `<div class="chip gg"><b>${w}</b>Wins</div><div class="chip rr"><b>${l}</b>Losses</div><div class="chip g"><b>${t}</b>Ties</div>`;
+    document.getElementById('logList').innerHTML=LOG.length?LOG.map((x,i)=>
+      `<div class="log-entry"><div class="res ${x.r}">${x.r}</div><div class="le"><b>${x.opp||'Unknown deck'}</b>${x.note?`<small>${x.note}</small>`:''}</div><button class="del" data-jdel="${i}">✕</button></div>`
+    ).join(''):'<p class="sub" style="text-align:center">No games logged yet.</p>';
+    store.set('gs_log',LOG);
+  }
+  document.getElementById('jSave').addEventListener('click',()=>{
+    const opp=document.getElementById('jOpp').value.trim();
+    const note=document.getElementById('jNote').value.trim();
+    LOG.unshift({opp,r:jRes,note});
+    document.getElementById('jOpp').value='';document.getElementById('jNote').value='';
+    logRender();
+  });
+  document.getElementById('logList').addEventListener('click',e=>{const b=e.target.closest('[data-jdel]');if(!b)return;
+    LOG.splice(+b.dataset.jdel,1);logRender();});
+  logRender();
+
+  /* ===== editable matchup notes ===== */
+  const NOTES=store.get('gs_notes',{});
+  document.querySelectorAll('#match [data-mu]').forEach(mu=>{
+    const key=mu.querySelector('.mu-name b').textContent;
+    const ta=document.createElement('textarea');
+    ta.className='field mu-note';ta.placeholder='Your notes on this matchup…';
+    ta.value=NOTES[key]||'';
+    ta.addEventListener('click',e=>e.stopPropagation());
+    ta.addEventListener('input',()=>{NOTES[key]=ta.value;store.set('gs_notes',NOTES);});
+    mu.querySelector('.mu-body').appendChild(ta);
+  });
 </script>
 </body>
 </html>
