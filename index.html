@@ -290,14 +290,24 @@
   .modal-card p{font-size:13.5px;color:var(--mist)}
   .modal-card .btn{margin-top:18px;width:100%}
 
+  /* ---- Deck picker ---- */
+  .deckpick{display:block;margin-top:14px;background:var(--slate2);color:var(--paper);
+    border:1px solid var(--line);border-radius:10px;padding:9px 34px 9px 12px;
+    font-family:inherit;font-size:13px;font-weight:700;letter-spacing:.02em;
+    width:100%;max-width:300px;cursor:pointer;-webkit-appearance:none;appearance:none;
+    background-image:linear-gradient(45deg,transparent 50%,var(--fog) 50%),linear-gradient(135deg,var(--fog) 50%,transparent 50%);
+    background-position:calc(100% - 18px) 19px,calc(100% - 13px) 19px;background-size:5px 5px;background-repeat:no-repeat}
+  .deckpick:focus{outline:none;border-color:var(--hex)}
+
   footer{text-align:center;font-size:11px;color:var(--fog);padding:24px 16px 8px;line-height:1.6}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="eyebrow">Standard Format · Field Manual</div>
-  <h1>Marnie's Grimmsnarl<span class="small">Spread · disrupt · grind them out.</span></h1>
+  <div class="eyebrow" id="eyebrow">Standard Format · Field Manual</div>
+  <h1 id="deckTitle">Marnie's Grimmsnarl<span class="small">Spread · disrupt · grind them out.</span></h1>
+  <select class="deckpick" id="deckPick" aria-label="Choose deck"></select>
   <span class="badge" id="netBadge">◆ Checking…</span>
 </header>
 
@@ -305,80 +315,15 @@
   <!-- ============ DECK ============ -->
   <section class="view on" id="deck">
     <h2>Practice Decklist</h2>
-    <p class="sub">A standard 60-card tournament-style list. Gold = the cards your whole game runs on. <span style="color:var(--frost)">Tap any card for its role.</span></p>
-
-    <div class="deck-meta">
-      <div class="chip"><b>21</b>Pokémon</div>
-      <div class="chip g"><b>30</b>Trainer</div>
-      <div class="chip f"><b>9</b>Energy</div>
-    </div>
-
-    <div class="card" style="padding:8px 14px">
-      <div class="grp-label">Pokémon — 21</div>
-      <div class="line-row"><span class="qty">3</span><span class="nm">Marnie's Impidimp <small>Basic · start of the line</small></span><span class="set">DRI 134</span></div>
-      <div class="line-row"><span class="qty">2</span><span class="nm">Marnie's Morgrem <small>Stage 1</small></span><span class="set">DRI 135</span></div>
-      <div class="line-row key"><span class="qty">3</span><span class="nm">Marnie's Grimmsnarl ex <small>Main attacker · 180 + 30 bench</small></span><span class="set">DRI 136</span></div>
-      <div class="line-row"><span class="qty">3</span><span class="nm">Snorunt <small>Basic · evolves to Froslass</small></span><span class="set">ASC 227</span></div>
-      <div class="line-row key"><span class="qty">3</span><span class="nm">Froslass <small>Auto-spreads damage every turn</small></span><span class="set">TWM 174</span></div>
-      <div class="line-row key"><span class="qty">4</span><span class="nm">Munkidori <small>Moves damage off you, onto them</small></span><span class="set">SFA 72</span></div>
-      <div class="line-row"><span class="qty">1</span><span class="nm">Budew <small>Early item-lock tech (great vs Dawn Zard)</small></span><span class="set">ASC 221</span></div>
-      <div class="line-row"><span class="qty">1</span><span class="nm">Tatsugiri <small>Draw/consistency support</small></span><span class="set">TWM 131</span></div>
-      <div class="line-row"><span class="qty">1</span><span class="nm">Yveltal <small>Dark attacker / tech</small></span><span class="set">MEG 88</span></div>
-    </div>
-
-    <div class="card" style="padding:8px 14px">
-      <div class="grp-label">Trainer — 30</div>
-      <div class="line-row key"><span class="qty">4</span><span class="nm">Team Rocket's Petrel <small>Supporter · hand disruption</small></span><span class="set">DRI 176</span></div>
-      <div class="line-row key"><span class="qty">4</span><span class="nm">Lillie's Determination <small>Main draw Supporter (post-Iono)</small></span><span class="set">MEG 184</span></div>
-      <div class="line-row"><span class="qty">1</span><span class="nm">Judge <small>Reset both hands to 4</small></span><span class="set">DRI 222</span></div>
-      <div class="line-row"><span class="qty">3</span><span class="nm">Boss's Orders <small>Drag up a target</small></span><span class="set">PAL 265</span></div>
-      <div class="line-row key"><span class="qty">4</span><span class="nm">Poké Pad <small>Item · draw/consistency engine</small></span><span class="set">POR 113</span></div>
-      <div class="line-row"><span class="qty">3</span><span class="nm">Buddy-Buddy Poffin <small>2 small Basics from deck</small></span><span class="set">TWM 223</span></div>
-      <div class="line-row key"><span class="qty">3</span><span class="nm">Rare Candy <small>Basic → Stage 2 instantly</small></span><span class="set">GRI 165</span></div>
-      <div class="line-row"><span class="qty">2</span><span class="nm">Night Stretcher <small>Recover Pokémon/Energy</small></span><span class="set">SSP 251</span></div>
-      <div class="line-row"><span class="qty">1</span><span class="nm">Air Balloon <small>Tool · free-ish retreat, anti deck-out</small></span><span class="set">SSH 213</span></div>
-      <div class="line-row"><span class="qty">1</span><span class="nm">Unfair Stamp <small>ACE SPEC · disrupt + draw 5</small></span><span class="set">TWM 165</span></div>
-      <div class="line-row key"><span class="qty">4</span><span class="nm">Spikemuth Gym <small>★ Search any Marnie's Pokémon</small></span><span class="set">DRI 169</span></div>
-    </div>
-
-    <div class="card" style="padding:8px 14px">
-      <div class="grp-label">Energy — 9</div>
-      <div class="line-row energy"><span class="qty">9</span><span class="nm">Basic Darkness Energy <small>Mono-Dark — keeps Punk Up &amp; Munkidori online</small></span><span class="set">MEE 7</span></div>
-    </div>
-
-    <div class="callout"><b>Why so few Energy:</b> Grimmsnarl's <span class="pu">Punk Up</span> pulls up to five Darkness straight from the deck, so you don't need to draw into it manually. 9 is plenty — more would clog your draws.</div>
-    <div class="callout warn"><b>Post-rotation note:</b> This is the verified 2026-legal build (post G-rotation). Iono, Nest Ball, TM: Evolution and TM: Devolution are <b>gone from Standard</b> — the deck now leans on Lillie's Determination, Team Rocket's Petrel, Poké Pad and Judge for draw/disruption. Always re-check card legality before a sanctioned event.</div>
+    <p class="sub" id="deckSub"></p>
+    <div id="deckBody"></div>
   </section>
 
   <!-- ============ PROS / CONS ============ -->
   <section class="view" id="pros">
     <h2>Strengths &amp; Weaknesses</h2>
     <p class="sub">Know what the deck wants to do — and exactly where it falls apart.</p>
-    <div class="pc">
-      <div class="pc-block pros">
-        <h4>◆ What it's great at</h4>
-        <ul>
-          <li><b>Self-powering attacker.</b> Punk Up loads energy from the deck, so Grimmsnarl can attack the turn it evolves.</li>
-          <li><b>Two-target damage.</b> 180 to the Active plus 30 to a benched Pokémon sets up multi-prize turns.</li>
-          <li><b>Heals itself.</b> Munkidori shovels your own damage onto the opponent, punishing 2-hit-KO attempts.</li>
-          <li><b>Hard to one-shot.</b> Stage 2 ex bulk means most non-Grass decks can't KO it in one hit.</li>
-          <li><b>Strong disruption.</b> Team Rocket's Petrel, Judge, Boss's Orders and Budew let you stall and stunt their setup.</li>
-          <li><b>Skill-rewarding.</b> In practiced hands it wins almost every game it doesn't brick.</li>
-        </ul>
-      </div>
-      <div class="pc-block cons">
-        <h4>◆ Where it struggles</h4>
-        <ul>
-          <li><b>Bricks often.</b> Stage 2 + two support lines = clunky opening hands. Bad hand = bad game.</li>
-          <li><b>Slow.</b> It's a grind deck. High tie rate — "there is no Game 3" if you stumble early.</li>
-          <li><b>Grass weakness.</b> Grass attackers (e.g. Mega Venusaur) hit Grimmsnarl for double — a real threat.</li>
-          <li><b>Aggro &amp; Mega pressure.</b> Fast decks and Mega Feraligatr's hitting power can race you before you set up.</li>
-          <li><b>Froslass is fragile.</b> It's your only self-damage source — lose it and the engine sputters.</li>
-          <li><b>Tight bench.</b> Froslass + Munkidori eat bench space, leaving little room for support.</li>
-        </ul>
-      </div>
-    </div>
-    <div class="callout warn"><b>One-line takeaway:</b> Every decision should buy consistency. Mulligan your hands honestly, don't overload your bench into your own Froslass damage, and respect Grass decks.</div>
+    <div id="prosBody"></div>
   </section>
 
   <!-- ============ TURN PLAY ============ -->
@@ -392,73 +337,21 @@
     <div id="turn-steps"></div>
 
     <button class="reset-btn" id="resetBtn">↺ Reset checklist for next game</button>
-    <div class="callout" style="margin-top:16px"><b>Energy rule to never forget:</b> you may attach only <b>one</b> Energy from your hand per turn — but Punk Up's attachments come from your deck and don't count against that limit.</div>
+    <div id="playNote" style="margin-top:16px"></div>
   </section>
 
   <!-- ============ MATCHUPS ============ -->
   <section class="view" id="match">
     <h2>Matchup Cheat Sheet</h2>
     <p class="sub">Tap a matchup to expand the game plan. Color = how the matchup leans for you.</p>
-
-    <div class="mu open" data-mu>
-      <div class="mu-head"><span class="tier t-bad">✕</span><span class="mu-name"><b>Mega Venusaur</b><span>Grass — hits your weakness</span></span><span class="arrow">▶</span></div>
-      <div class="mu-body"><div>Rough matchup: Grass weakness lets it KO Grimmsnarl efficiently. <b>Plan:</b> don't present a lone Grimmsnarl; spread hard with Froslass + Munkidori so you can trade prizes even when your attacker falls. Use Boss's Orders to pick off their setup before they stabilize, and aim for a fast, aggressive line rather than a grind.</div></div>
-    </div>
-
-    <div class="mu" data-mu>
-      <div class="mu-head"><span class="tier t-bad">✕</span><span class="mu-name"><b>Mega Feraligatr</b><span>Sheer hitting power</span></span><span class="arrow">▶</span></div>
-      <div class="mu-body"><div>Loses to raw damage output — it hits hard enough to push through your bulk. <b>Plan:</b> race it. Use Munkidori healing to survive a hit, Unfair Stamp to disrupt its setup turn, and Boss's Orders to remove its key attacker rather than trading head-on.</div></div>
-    </div>
-
-    <div class="mu" data-mu>
-      <div class="mu-head"><span class="tier t-even">=</span><span class="mu-name"><b>Dragapult ex</b><span>The format's top deck</span></span><span class="arrow">▶</span></div>
-      <div class="mu-body"><div>The big survivor of rotation and still king — dicey, especially with Dusknoir. <b>Plan:</b> it spreads damage too, so Munkidori's damage-shifting is huge here. Keep your board healthy, use Judge/Petrel to disrupt their hand, and Boss up their Dusknoir or Drakloak before they snowball.</div></div>
-    </div>
-
-    <div class="mu" data-mu>
-      <div class="mu-head"><span class="tier t-even">=</span><span class="mu-name"><b>Well-built Team Rocket's decks</b><span>Punish your slow setup</span></span><span class="arrow">▶</span></div>
-      <div class="mu-body"><div>Tricky because you're a Stage 2 deck with a relatively slow setup — they exploit that. <b>Plan:</b> mulligan for a fast Spikemuth Gym + Rare Candy line, lead Budew to slow them, and don't over-commit Pokémon you can't protect.</div></div>
-    </div>
-
-    <div class="mu" data-mu>
-      <div class="mu-head"><span class="tier t-good">✓</span><span class="mu-name"><b>Other Stage 2 decks</b><span>Your natural prey</span></span><span class="arrow">▶</span></div>
-      <div class="mu-body"><div>Grimmsnarl has a built-in edge against slower Stage 2 evolution decks. <b>Plan:</b> play your normal grindy game — spread with Froslass, shift with Munkidori, swing for 180+30. Your damage math out-races their setup.</div></div>
-    </div>
-
-    <div class="mu" data-mu>
-      <div class="mu-head"><span class="tier t-good">✓</span><span class="mu-name"><b>Most everything else</b><span>The broad field</span></span><span class="arrow">▶</span></div>
-      <div class="mu-body"><div>Outside its weakness and the two Mega problem decks, Grimmsnarl does well against the bulk of the field. <b>Plan:</b> the 3× Boss's Orders shines against slower decks — pressure setup, drag up sitting ducks, let Froslass + Munkidori bury them. Patience wins.</div></div>
-    </div>
-
-    <div class="callout"><b>Reading the colors:</b> <span style="color:var(--grass)">✓ favored</span> · <span style="color:var(--gold)">= skill matchup</span> · <span style="color:var(--ember)">✕ uphill</span>. Even the ✕ games are winnable with a good opener — they just punish bricks hard.</div>
+    <div id="matchBody"></div>
   </section>
 
   <!-- ============ RULES / SECRETS ============ -->
   <section class="view" id="rules">
     <h2>Secrets &amp; Quick Rules</h2>
     <p class="sub">Tech tricks for this deck, plus the core rules a beginner needs at the table.</p>
-
-    <h3>Deck secrets</h3>
-    <div class="card raised"><p><b class="pu">Punk Up feeds Munkidori.</b> Punk Up pulls Darkness from your deck onto your Marnie's Pokémon — make sure a Munkidori ends up with Darkness so its Adrena-Brain can move damage that turn.</p></div>
-    <div class="card raised"><p><b class="cy">Run 4 Munkidori for a reason.</b> Multiple Munkidori let you shift big chunks of damage each turn and punish 2-hit-KO attempts by healing yourself — the more in play, the more you move.</p></div>
-    <div class="card raised"><p><b class="hi">Unfair Stamp is your comeback button.</b> As an ACE SPEC you get one — save it to disrupt their hand on a key turn while refilling your own to 5.</p></div>
-    <div class="card raised"><p><b class="pu">Team Rocket's Petrel + Judge.</b> With Iono gone, these are your hand disruption. Use them when the opponent is holding a loaded hand, especially before they combo off.</p></div>
-    <div class="card raised"><p><b class="cy">Spikemuth Gym = your tutor.</b> It fetches <i>any</i> Marnie's Pokémon, so it pulls every stage of the Grimmsnarl line. Keep one in play — you run 4 for consistency.</p></div>
-    <div class="card raised"><p><b class="cy">Protect Froslass.</b> It's your only self-damage source. If it dies before you've banked damage on your own board, your engine stalls — bench it behind something when you can.</p></div>
-    <div class="card raised"><p><b class="hi">Air Balloon vs. deck-out.</b> Against grindy/mill plans, Air Balloon keeps you mobile and helps avoid being decked out in long games.</p></div>
-
-    <h3>Core rules (beginner)</h3>
-    <dl class="gloss">
-      <dt>Going first?</dt><dd>You skip your attack on turn one. Use the turn to flood your bench with Impidimp and Snorunt.</dd>
-      <dt>One Energy per turn</dt><dd>From your hand. Punk Up's deck-attachments are extra and don't count.</dd>
-      <dt>One Supporter per turn</dt><dd>Lillie's Determination, Team Rocket's Petrel, Judge, Boss's Orders all share this limit. Items (Poké Pad, Poffin, Rare Candy) are unlimited.</dd>
-      <dt>Evolving</dt><dd>Can't evolve a Pokémon the turn you played it (Rare Candy is the exception — it jumps a Basic straight to Stage 2).</dd>
-      <dt>Prizes</dt><dd>Take 1 per Knock Out — but <b>2</b> for KOing an ex. Remember the opponent takes 2 when they KO <i>your</i> Grimmsnarl.</dd>
-      <dt>Bench limit</dt><dd>Max 5 benched Pokémon. With Froslass + Munkidori eating slots, plan your space.</dd>
-      <dt>Win conditions</dt><dd>Take all 6 prizes · opponent has no Pokémon in play · opponent can't draw at start of turn.</dd>
-    </dl>
-
-    <div class="callout"><b>Damage counters vs. HP:</b> Froslass places <i>counters</i> (10 each). A Pokémon is Knocked Out when counters meet or exceed its HP — Munkidori just relocates those counters before they finish you off.</div>
+    <div id="rulesBody"></div>
   </section>
 
   <!-- ============ TRAIN ============ -->
@@ -511,17 +404,7 @@
     <button class="btn primary" id="dealBtn" style="width:100%;margin-top:12px">Deal 7 cards</button>
 
     <h3>The dream opening line</h3>
-    <div class="card raised">
-      <p>Going second, this is the line you're drilling toward:</p>
-      <ol style="margin:10px 0 0 18px;font-size:13.5px;color:var(--mist);line-height:1.95">
-        <li>Bench <b>Impidimp</b> + <b>Snorunt</b>, lead with one.</li>
-        <li>Turn 2: <span class="gl" data-g="rare-candy">Rare Candy</span> → Grimmsnarl ex.</li>
-        <li><span class="gl" data-g="punk-up">Punk Up</span> — pull up to 5 Darkness, land one on a <span class="gl" data-g="munkidori">Munkidori</span>.</li>
-        <li>Evolve Snorunt → <span class="gl" data-g="froslass">Froslass</span> (spreads next turn).</li>
-        <li><span class="gl" data-g="munkidori">Munkidori</span> shifts your counters onto their key target.</li>
-        <li>Attack for <b>180 + 30</b>; line up a multi-prize turn.</li>
-      </ol>
-    </div>
+    <div id="dreamBody"></div>
   </section>
 
   <!-- ============ TOOLS ============ -->
@@ -614,9 +497,7 @@
   <button data-go="log"><span class="ic">📓</span>Log</button>
 </nav>
 
-<footer>
-  Reference for the Marnie's Grimmsnarl ex archetype (Standard).<br>Save this page to your home screen to use it offline at the table.
-</footer>
+<footer id="footText"></footer>
 
 <script>
   /* ---- tab switching ---- */
@@ -629,23 +510,7 @@
     window.scrollTo({top:0,behavior:'smooth'});
   }));
 
-  /* ---- build interactive checklist ---- */
-  const setup=[
-    ["Mulligan check","Confirm you have a Basic Pokémon. No Basic = reveal hand, reshuffle, redraw 7 (opponent draws +1)."],
-    ["Coin flip","Winner picks who goes first. Going SECOND is usually better here — lets you start evolving and use Budew turn 1."],
-    ["Place Active + Bench","Lead with Impidimp (or Budew vs. fast decks). Bench more Impidimp + Snorunt face-down. Bench space is precious."],
-    ["Set 6 Prizes","Top 6 cards face-down. Flip your Pokémon up. Begin."]
-  ];
-  const turn=[
-    ["Draw","Draw your card for the turn."],
-    ["Draw engine","Use Lillie's Determination (or Poké Pad) to dig. Hold Petrel/Judge for when you want to disrupt their hand instead."],
-    ["Play Spikemuth Gym","Search any Marnie's Pokémon — pull the Grimmsnarl stages you're missing. You run 4, so lean on it."],
-    ["Set up evolutions","Use Rare Candy to jump Impidimp straight to Grimmsnarl ex, and evolve Snorunt → Froslass."],
-    ["Evolve Grimmsnarl → Punk Up","Evolve, then use Punk Up to pull up to 5 Darkness from your deck onto your Marnie's Pokémon (get one onto a Munkidori)."],
-    ["Spread with Froslass","Its ability places counters on every Pokémon with an ability, both sides, between turns."],
-    ["Shift damage with Munkidori","Move the counters off YOUR board onto a key opposing target (needs Darkness attached)."],
-    ["Attack","Swing for 180 to the Active + 30 to a benched Pokémon. Line up multi-prize turns. (This ends your turn.)"]
-  ];
+  /* ---- checklist render (data comes from the active deck) ---- */
   function render(list,el,prefix){
     el.innerHTML=list.map((s,i)=>`
       <div class="step" data-step>
@@ -659,19 +524,8 @@
         <div class="step-body">${s[1]}</div>
       </div>`).join('');
   }
-  render(setup,document.getElementById('setup-steps'),'Setup');
-  render(turn,document.getElementById('turn-steps'),'Step');
-
-  document.querySelectorAll('[data-step]').forEach(st=>{
-    st.querySelector('.step-head').addEventListener('click',()=>st.classList.toggle('done'));
-  });
-
-  /* ---- matchup expand/collapse ---- */
-  document.querySelectorAll('[data-mu]').forEach(mu=>{
-    mu.querySelector('.mu-head').addEventListener('click',()=>mu.classList.toggle('open'));
-  });
   document.getElementById('resetBtn').addEventListener('click',()=>{
-    document.querySelectorAll('[data-step]').forEach(s=>s.classList.remove('done'));
+    document.querySelectorAll('#play [data-step]').forEach(s=>s.classList.remove('done'));
   });
 
   /* ---- live offline status badge ---- */
@@ -697,37 +551,480 @@
     set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
   };
 
-  /* ===== coach: what should I do? ===== */
-  const COACH={
-    start:'q1',
-    nodes:{
-      q1:{q:'Do you have a Basic Pokémon in play and a stable board?',yes:'q2',no:'a_consistency'},
-      q2:{q:'Is Grimmsnarl ex in play and powered up (Punk Up done)?',yes:'q3',no:'a_attacker'},
-      q3:{q:'Is Froslass in play and spreading damage?',yes:'q4',no:'a_froslass'},
-      q4:{q:'Does a Munkidori have Darkness Energy attached?',yes:'q5',no:'a_munki'},
-      q5:{q:'Is your Active in danger — heavy damage, or about to be Knocked Out?',yes:'a_shift',no:'q6'},
-      q6:{q:'Is there a softer target on their bench (a setup piece or low-HP Pokémon) worth dragging up?',yes:'a_boss',no:'a_attack'}
+  /* ===== DECK PROFILES — all deck-specific strategy lives here ===== */
+  const DECKS=[
+  {
+    id:'grimmsnarl', name:"Marnie's Grimmsnarl", tagline:'Spread · disrupt · grind them out.',
+    eyebrow:'Standard Format · Field Manual',
+    footer:'Reference for the Marnie\'s Grimmsnarl ex archetype (Standard).',
+    deckSub:'A standard 60-card tournament-style list. Gold = the cards your whole game runs on. <span style="color:var(--frost)">Tap any card for its role.</span>',
+    meta:{pk:21,tr:30,en:9},
+    pokemon:[
+      {q:3,n:"Marnie's Impidimp",sub:'Basic · start of the line',set:'DRI 134',basic:1},
+      {q:2,n:"Marnie's Morgrem",sub:'Stage 1',set:'DRI 135'},
+      {q:3,n:"Marnie's Grimmsnarl ex",sub:'Main attacker · 180 + 30 bench',set:'DRI 136',key:1},
+      {q:3,n:'Snorunt',sub:'Basic · evolves to Froslass',set:'ASC 227',basic:1},
+      {q:3,n:'Froslass',sub:'Auto-spreads damage every turn',set:'TWM 174',key:1},
+      {q:4,n:'Munkidori',sub:'Moves damage off you, onto them',set:'SFA 72',key:1,basic:1},
+      {q:1,n:'Budew',sub:'Early item-lock tech',set:'ASC 221',basic:1},
+      {q:1,n:'Tatsugiri',sub:'Draw/consistency support',set:'TWM 131',basic:1},
+      {q:1,n:'Yveltal',sub:'Dark attacker / tech',set:'MEG 88',basic:1}
+    ],
+    trainer:[
+      {q:4,n:"Team Rocket's Petrel",sub:'Supporter · hand disruption',set:'DRI 176',key:1},
+      {q:4,n:"Lillie's Determination",sub:'Main draw Supporter (post-Iono)',set:'MEG 184',key:1,tag:'draw'},
+      {q:1,n:'Judge',sub:'Reset both hands to 4',set:'DRI 222'},
+      {q:3,n:"Boss's Orders",sub:'Drag up a target',set:'PAL 265'},
+      {q:4,n:'Poké Pad',sub:'Item · draw/consistency engine',set:'POR 113',key:1,tag:'draw'},
+      {q:3,n:'Buddy-Buddy Poffin',sub:'2 small Basics from deck',set:'TWM 223',tag:'draw'},
+      {q:3,n:'Rare Candy',sub:'Basic → Stage 2 instantly',set:'GRI 165',key:1,tag:'candy'},
+      {q:2,n:'Night Stretcher',sub:'Recover Pokémon/Energy',set:'SSP 251'},
+      {q:1,n:'Air Balloon',sub:'Tool · free-ish retreat, anti deck-out',set:'SSH 213'},
+      {q:1,n:'Unfair Stamp',sub:'ACE SPEC · disrupt + draw 5',set:'TWM 165'},
+      {q:4,n:'Spikemuth Gym',sub:'★ Search any Marnie\'s Pokémon',set:'DRI 169',key:1,tag:'search'}
+    ],
+    energy:[{q:9,n:'Basic Darkness Energy',sub:'Mono-Dark — keeps Punk Up & Munkidori online',set:'MEE 7',energy:1,tag:'energy'}],
+    deckNotes:[
+      {html:'<b>Why so few Energy:</b> Grimmsnarl\'s <span class="pu">Punk Up</span> pulls up to five Darkness straight from the deck, so you don\'t need to draw into it manually. 9 is plenty — more would clog your draws.'},
+      {warn:1,html:'<b>Post-rotation note:</b> This is the verified 2026-legal build (post G-rotation). Iono, Nest Ball, TM: Evolution and TM: Devolution are <b>gone from Standard</b> — the deck now leans on Lillie\'s Determination, Team Rocket\'s Petrel, Poké Pad and Judge for draw/disruption. Always re-check card legality before a sanctioned event.'}
+    ],
+    pros:[
+      '<b>Self-powering attacker.</b> Punk Up loads energy from the deck, so Grimmsnarl can attack the turn it evolves.',
+      '<b>Two-target damage.</b> 180 to the Active plus 30 to a benched Pokémon sets up multi-prize turns.',
+      '<b>Heals itself.</b> Munkidori shovels your own damage onto the opponent, punishing 2-hit-KO attempts.',
+      '<b>Hard to one-shot.</b> Stage 2 ex bulk means most non-Grass decks can\'t KO it in one hit.',
+      '<b>Strong disruption.</b> Team Rocket\'s Petrel, Judge, Boss\'s Orders and Budew let you stall and stunt their setup.',
+      '<b>Skill-rewarding.</b> In practiced hands it wins almost every game it doesn\'t brick.'
+    ],
+    cons:[
+      '<b>Bricks often.</b> Stage 2 + two support lines = clunky opening hands. Bad hand = bad game.',
+      '<b>Slow.</b> It\'s a grind deck. High tie rate — "there is no Game 3" if you stumble early.',
+      '<b>Grass weakness.</b> Grass attackers (e.g. Mega Venusaur) hit Grimmsnarl for double — a real threat.',
+      '<b>Aggro &amp; Mega pressure.</b> Fast decks and Mega Feraligatr\'s hitting power can race you before you set up.',
+      '<b>Froslass is fragile.</b> It\'s your only self-damage source — lose it and the engine sputters.',
+      '<b>Tight bench.</b> Froslass + Munkidori eat bench space, leaving little room for support.'
+    ],
+    prosTakeaway:'Every decision should buy consistency. Mulligan your hands honestly, don\'t overload your bench into your own Froslass damage, and respect Grass decks.',
+    setup:[
+      ['Mulligan check','Confirm you have a Basic Pokémon. No Basic = reveal hand, reshuffle, redraw 7 (opponent draws +1).'],
+      ['Coin flip','Winner picks who goes first. Going SECOND is usually better here — lets you start evolving and use Budew turn 1.'],
+      ['Place Active + Bench','Lead with Impidimp (or Budew vs. fast decks). Bench more Impidimp + Snorunt face-down. Bench space is precious.'],
+      ['Set 6 Prizes','Top 6 cards face-down. Flip your Pokémon up. Begin.']
+    ],
+    turn:[
+      ['Draw','Draw your card for the turn.'],
+      ['Draw engine','Use Lillie\'s Determination (or Poké Pad) to dig. Hold Petrel/Judge for when you want to disrupt their hand instead.'],
+      ['Play Spikemuth Gym','Search any Marnie\'s Pokémon — pull the Grimmsnarl stages you\'re missing. You run 4, so lean on it.'],
+      ['Set up evolutions','Use Rare Candy to jump Impidimp straight to Grimmsnarl ex, and evolve Snorunt → Froslass.'],
+      ['Evolve Grimmsnarl → Punk Up','Evolve, then use Punk Up to pull up to 5 Darkness from your deck onto your Marnie\'s Pokémon (get one onto a Munkidori).'],
+      ['Spread with Froslass','Its ability places counters on every Pokémon with an ability, both sides, between turns.'],
+      ['Shift damage with Munkidori','Move the counters off YOUR board onto a key opposing target (needs Darkness attached).'],
+      ['Attack','Swing for 180 to the Active + 30 to a benched Pokémon. Line up multi-prize turns. (This ends your turn.)']
+    ],
+    energyRule:'<b>Energy rule to never forget:</b> you may attach only <b>one</b> Energy from your hand per turn — but Punk Up\'s attachments come from your deck and don\'t count against that limit.',
+    matchups:[
+      {tier:'bad',name:'Mega Venusaur',sub:'Grass — hits your weakness',body:'Rough matchup: Grass weakness lets it KO Grimmsnarl efficiently. <b>Plan:</b> don\'t present a lone Grimmsnarl; spread hard with Froslass + Munkidori so you can trade prizes even when your attacker falls. Use Boss\'s Orders to pick off their setup before they stabilize, and aim for a fast, aggressive line rather than a grind.'},
+      {tier:'bad',name:'Mega Feraligatr',sub:'Sheer hitting power',body:'Loses to raw damage output — it hits hard enough to push through your bulk. <b>Plan:</b> race it. Use Munkidori healing to survive a hit, Unfair Stamp to disrupt its setup turn, and Boss\'s Orders to remove its key attacker rather than trading head-on.'},
+      {tier:'even',name:'Dragapult ex',sub:'The format\'s top deck',body:'The big survivor of rotation and still king — dicey, especially with Dusknoir. <b>Plan:</b> it spreads damage too, so Munkidori\'s damage-shifting is huge here. Keep your board healthy, use Judge/Petrel to disrupt their hand, and Boss up their Dusknoir or Drakloak before they snowball.'},
+      {tier:'even',name:"Well-built Team Rocket's decks",sub:'Punish your slow setup',body:'Tricky because you\'re a Stage 2 deck with a relatively slow setup — they exploit that. <b>Plan:</b> mulligan for a fast Spikemuth Gym + Rare Candy line, lead Budew to slow them, and don\'t over-commit Pokémon you can\'t protect.'},
+      {tier:'good',name:'Other Stage 2 decks',sub:'Your natural prey',body:'Grimmsnarl has a built-in edge against slower Stage 2 evolution decks. <b>Plan:</b> play your normal grindy game — spread with Froslass, shift with Munkidori, swing for 180+30. Your damage math out-races their setup.'},
+      {tier:'good',name:'Most everything else',sub:'The broad field',body:'Outside its weakness and the two Mega problem decks, Grimmsnarl does well against the bulk of the field. <b>Plan:</b> the 3× Boss\'s Orders shines against slower decks — pressure setup, drag up sitting ducks, let Froslass + Munkidori bury them. Patience wins.'}
+    ],
+    matchupLegend:'<b>Reading the colors:</b> <span style="color:var(--grass)">✓ favored</span> · <span style="color:var(--gold)">= skill matchup</span> · <span style="color:var(--ember)">✕ uphill</span>. Even the ✕ games are winnable with a good opener — they just punish bricks hard.',
+    secrets:[
+      {accent:'pu',title:'Punk Up feeds Munkidori.',body:'Punk Up pulls Darkness from your deck onto your Marnie\'s Pokémon — make sure a Munkidori ends up with Darkness so its Adrena-Brain can move damage that turn.'},
+      {accent:'cy',title:'Run 4 Munkidori for a reason.',body:'Multiple Munkidori let you shift big chunks of damage each turn and punish 2-hit-KO attempts by healing yourself — the more in play, the more you move.'},
+      {accent:'hi',title:'Unfair Stamp is your comeback button.',body:'As an ACE SPEC you get one — save it to disrupt their hand on a key turn while refilling your own to 5.'},
+      {accent:'pu',title:"Team Rocket's Petrel + Judge.",body:'With Iono gone, these are your hand disruption. Use them when the opponent is holding a loaded hand, especially before they combo off.'},
+      {accent:'cy',title:'Spikemuth Gym = your tutor.',body:'It fetches <i>any</i> Marnie\'s Pokémon, so it pulls every stage of the Grimmsnarl line. Keep one in play — you run 4 for consistency.'},
+      {accent:'cy',title:'Protect Froslass.',body:'It\'s your only self-damage source. If it dies before you\'ve banked damage on your own board, your engine stalls — bench it behind something when you can.'},
+      {accent:'hi',title:'Air Balloon vs. deck-out.',body:'Against grindy/mill plans, Air Balloon keeps you mobile and helps avoid being decked out in long games.'}
+    ],
+    coreRules:[
+      ['Going first?','You skip your attack on turn one. Use the turn to flood your bench with Impidimp and Snorunt.'],
+      ['One Energy per turn','From your hand. Punk Up\'s deck-attachments are extra and don\'t count.'],
+      ['One Supporter per turn','Lillie\'s Determination, Team Rocket\'s Petrel, Judge, Boss\'s Orders all share this limit. Items (Poké Pad, Poffin, Rare Candy) are unlimited.'],
+      ['Evolving','Can\'t evolve a Pokémon the turn you played it (Rare Candy is the exception — it jumps a Basic straight to Stage 2).'],
+      ['Prizes','Take 1 per Knock Out — but <b>2</b> for KOing an ex. Remember the opponent takes 2 when they KO <i>your</i> Grimmsnarl.'],
+      ['Bench limit','Max 5 benched Pokémon. With Froslass + Munkidori eating slots, plan your space.'],
+      ['Win conditions','Take all 6 prizes · opponent has no Pokémon in play · opponent can\'t draw at start of turn.']
+    ],
+    damageNote:'<b>Damage counters vs. HP:</b> Froslass places <i>counters</i> (10 each). A Pokémon is Knocked Out when counters meet or exceed its HP — Munkidori just relocates those counters before they finish you off.',
+    coach:{
+      start:'q1',
+      nodes:{
+        q1:{q:'Do you have a Basic Pokémon in play and a stable board?',yes:'q2',no:'a_consistency'},
+        q2:{q:'Is Grimmsnarl ex in play and powered up (Punk Up done)?',yes:'q3',no:'a_attacker'},
+        q3:{q:'Is Froslass in play and spreading damage?',yes:'q4',no:'a_froslass'},
+        q4:{q:'Does a Munkidori have Darkness Energy attached?',yes:'q5',no:'a_munki'},
+        q5:{q:'Is your Active in danger — heavy damage, or about to be Knocked Out?',yes:'a_shift',no:'q6'},
+        q6:{q:'Is there a softer target on their bench (a setup piece or low-HP Pokémon) worth dragging up?',yes:'a_boss',no:'a_attack'}
+      },
+      advice:{
+        a_consistency:['v-bad','Stabilize first','Consistency beats damage when you\'re shaky. Dig with Lillie\'s Determination / Poké Pad and play Spikemuth Gym to fetch a Marnie\'s Pokémon. Don\'t throw attackers into a brick — get your board legal and stable before anything else.'],
+        a_attacker:['v-ok','Get your attacker online','Your #1 job this turn: Rare Candy an Impidimp into Grimmsnarl ex, then Punk Up to pull Darkness from your deck — and make sure one lands on a Munkidori. No attacker, no game plan.'],
+        a_froslass:['v-ok','Set up Froslass','Evolve Snorunt → Froslass so it spreads a counter onto every Ability Pokémon between turns. That spread is the damage Munkidori later moves. Bench it behind a wall so it survives.'],
+        a_munki:['v-ok','Load a Munkidori','Get Darkness onto a Munkidori (Punk Up is the easiest way). Without Darkness attached, Adrena-Brain can\'t move counters — your heal-and-shift engine is offline.'],
+        a_shift:['v-keep','Shift damage with Munkidori','Use Adrena-Brain now: each Munkidori moves up to 3 counters off your Pokémon onto their key target. You heal your attacker AND pile damage where it matters. Two Munkidori = up to 60 moved.'],
+        a_boss:['v-keep','Boss the soft target','Play Boss\'s Orders to drag up that benched piece — a Dusknoir or other setup Pokémon, or a low-HP sitting duck — and KO it. Trade up on prizes or remove their engine before they stabilize.'],
+        a_attack:['v-keep','Swing and disrupt','You\'re set up — attack for 180 to the Active + 30 to a benched Pokémon, lining up a multi-prize turn. Before you pass, ask whether Judge or Petrel would wreck their hand. Patience wins the grind.']
+      }
     },
-    advice:{
-      a_consistency:['v-bad','Stabilize first','Consistency beats damage when you\'re shaky. Dig with Lillie\'s Determination / Poké Pad and play Spikemuth Gym to fetch a Marnie\'s Pokémon. Don\'t throw attackers into a brick — get your board legal and stable before anything else.'],
-      a_attacker:['v-ok','Get your attacker online','Your #1 job this turn: Rare Candy an Impidimp into Grimmsnarl ex, then Punk Up to pull Darkness from your deck — and make sure one lands on a Munkidori. No attacker, no game plan.'],
-      a_froslass:['v-ok','Set up Froslass','Evolve Snorunt → Froslass so it spreads a counter onto every Ability Pokémon between turns. That spread is the damage Munkidori later moves. Bench it behind a wall so it survives.'],
-      a_munki:['v-ok','Load a Munkidori','Get Darkness onto a Munkidori (Punk Up is the easiest way). Without Darkness attached, Adrena-Brain can\'t move counters — your heal-and-shift engine is offline.'],
-      a_shift:['v-keep','Shift damage with Munkidori','Use Adrena-Brain now: each Munkidori moves up to 3 counters off your Pokémon onto their key target. You heal your attacker AND pile damage where it matters. Two Munkidori = up to 60 moved.'],
-      a_boss:['v-keep','Boss the soft target','Play Boss\'s Orders to drag up that benched piece — a Dusknoir or other setup Pokémon, or a low-HP sitting duck — and KO it. Trade up on prizes or remove their engine before they stabilize.'],
-      a_attack:['v-keep','Swing and disrupt','You\'re set up — attack for 180 to the Active + 30 to a benched Pokémon, lining up a multi-prize turn. Before you pass, ask whether Judge or Petrel would wreck their hand. Patience wins the grind.']
+    flashcards:[
+      ['What does Punk Up do?','Searches up to 5 Basic Darkness Energy from your deck onto your Marnie\'s Pokémon — make sure one lands on a Munkidori.'],
+      ['How many Boss\'s Orders are in the list?','3 — your main way to drag up a setup piece or a sitting duck.'],
+      ['What does Munkidori need before it can move damage?','Darkness Energy attached. Then Adrena-Brain shifts up to 3 counters off you onto them.'],
+      ['Go first or second with this deck?','Second — you can evolve and use Budew on turn 1, and you don\'t miss an attack you\'d want anyway.'],
+      ['What is your only source of self-damage?','Froslass. Protect it — lose it and the Munkidori engine sputters.'],
+      ['What does Rare Candy let you do?','Jump a Basic straight to Stage 2 (Impidimp → Grimmsnarl ex), skipping Morgrem.'],
+      ['How many prizes for KOing a Pokémon ex?','2 — and remember the opponent also takes 2 when they KO your Grimmsnarl ex.'],
+      ['What does Spikemuth Gym search for?','Any Marnie\'s Pokémon — every stage of the Grimmsnarl line. You run 4.'],
+      ['How many Energy can you attach from hand per turn?','One. Punk Up\'s deck-attachments are extra and don\'t count.'],
+      ['When should you fire Unfair Stamp?','As a comeback — disrupt their hand on a key turn while you refill to 5. ACE SPEC, one per deck.'],
+      ['Your two hardest matchups?','Mega Venusaur (Grass weakness) and Mega Feraligatr (raw power). Race them, don\'t grind.'],
+      ['When does Froslass spread damage?','Between turns — a counter on every Pokémon with an Ability, both sides of the board.']
+    ],
+    scenarios:[
+      {s:'Turn 3 vs Dragapult ex. They have a Dusknoir benched about to snowball, and you have Boss\'s Orders plus a charged Grimmsnarl. Best play?',o:['Attack the Active Dragapult head-on','Boss up the Dusknoir and KO it','Pass and set up more','Judge their hand first'],c:1,e:'Removing Dusknoir stops the damage-shifting snowball before it starts. Boss + KO the support piece, not the bulky Active.'},
+      {s:'Opening 7: Impidimp, Rare Candy, Lillie\'s Determination, 2 Darkness, Poké Pad, Spikemuth Gym. Keep or mulligan?',o:['Mulligan — too slow','Keep — that\'s a dream opener','Keep only on the play'],c:1,e:'Basic + Rare Candy + Grimmsnarl tutor (Spikemuth) + draw (Lillie\'s/Poké Pad) sets up Grimmsnarl on turn 2. Snap keep.'},
+      {s:'Your Grimmsnarl has 120 damage on it and dies next turn. You have 2 Munkidori with Darkness and it\'s your turn. Best line?',o:['Retreat Grimmsnarl to the bench','Shift the damage onto their attacker with Munkidori','Evolve something to heal'],c:1,e:'Each Munkidori moves up to 3 counters — two of them clear the 120 off you AND dump it onto their board. You survive and they take damage.'},
+      {s:'You\'re facing Mega Venusaur (Grass — your weakness). What\'s the game plan?',o:['Grind slowly and out-value them','Present a lone Grimmsnarl as a wall','Spread wide with Froslass + Munkidori and race'],c:2,e:'You can\'t wall a deck that doubles your weakness. Spread so you trade prizes even as attackers fall, and play fast and aggressive.'},
+      {s:'Turn 1 on the play against a fast deck, and you have Budew in hand. What do you do with it?',o:['Bench it for later','Lead Budew to item-lock and slow them','Evolve toward your attacker'],c:1,e:'Budew\'s lead locks items on their turn, slowing fast decks while you assemble your Stage 2 line.'},
+      {s:'You can take your last 2 prizes by KOing their Active ex, but doing so leaves your benched Froslass exposed to a return KO. They have 2 prizes left too. Do you go for it?',o:['Yes — taking your last 2 prizes wins immediately','No, play safe and protect Froslass'],c:0,e:'Taking your final prizes ends the game on the spot — there is no return turn. When the KO wins, take it; exposure only matters if the game continues.'}
+    ],
+    opener:{keyStarter:"Marnie's Impidimp",starter:'Impidimp',path:'Rare Candy / Spikemuth',target:'Grimmsnarl'},
+    openerChips:[["Marnie's Impidimp",'Impidimp'],['Snorunt'],['Budew'],['Munkidori'],['Rare Candy'],['Spikemuth Gym'],["Lillie's Determination","Lillie's"],['Poké Pad'],['Basic Darkness Energy','Darkness']],
+    sequencing:[
+      {p:'Turn 2, going second. Impidimp is already in play. Hand: Rare Candy, Grimmsnarl ex, Lillie\'s Determination, Spikemuth Gym.',steps:['Lillie\'s Determination — draw first','Spikemuth Gym — search a missing piece','Rare Candy → Grimmsnarl ex','Punk Up — attack (ends your turn)'],e:'Always draw and search BEFORE you commit Rare Candy — you might find something that changes the plan, and you can\'t un-Candy. Punk Up is an attack, so it\'s always last.'},
+      {p:'Your Grimmsnarl is badly damaged and dies next turn. You have 2 Munkidori with Darkness, Boss\'s Orders, and a charged attacker.',steps:['Munkidori — shift damage off you onto their target','Boss\'s Orders — drag up what you want to KO','Attack for 180 + 30'],e:'Heal yourself with Munkidori first so you survive and add damage, THEN set up the KO with Boss, then swing. Attacking first can leave you dead on the return.'},
+      {p:'You\'re set up and ahead. Their hand is loaded and they\'re about to combo off. You have a charged attacker and Judge.',steps:['Attack for 180 + 30 — take your damage','Judge — reset their loaded hand to 4 as you pass'],e:'Take your damage first, then end the turn by Judging their loaded hand down to 4 so they draw into a wrecked hand. Note: Judge and Boss are both Supporters, so you only get one per turn.'}
+    ],
+    dreamIntro:'Going second, this is the line you\'re drilling toward:',
+    dreamSteps:[
+      'Bench <b>Impidimp</b> + <b>Snorunt</b>, lead with one.',
+      'Turn 2: <span class="gl" data-g="rare-candy">Rare Candy</span> → Grimmsnarl ex.',
+      '<span class="gl" data-g="punk-up">Punk Up</span> — pull up to 5 Darkness, land one on a <span class="gl" data-g="munkidori">Munkidori</span>.',
+      'Evolve Snorunt → <span class="gl" data-g="froslass">Froslass</span> (spreads next turn).',
+      '<span class="gl" data-g="munkidori">Munkidori</span> shifts your counters onto their key target.',
+      'Attack for <b>180 + 30</b>; line up a multi-prize turn.'
+    ],
+    glossary:{
+      'punk-up':['Punk Up','Grimmsnarl ex · attack','Search up to 5 Basic Darkness Energy from your deck and attach them to your Marnie\'s Pokémon. It powers your board for free — these attachments don\'t count against your one-energy-per-turn limit.'],
+      'froslass':['Froslass','Stage 1 · Ability','Between turns, its ability puts a damage counter on every Pokémon in play that has an Ability — both sides. This is your only self-damage source, so protect it.'],
+      'munkidori':['Munkidori','Basic · Adrena-Brain','While it has Darkness Energy attached, move up to 3 damage counters from one of your Pokémon onto one of your opponent\'s. Heals you and pressures them. You run 4.'],
+      'rare-candy':['Rare Candy','Item','Evolve one of your Basic Pokémon straight to its Stage 2, skipping Stage 1 (Impidimp → Grimmsnarl ex). The exception to the no-evolve-the-turn-you-played-it rule.']
+    },
+    cardRoles:{
+      "Marnie's Impidimp":['Basic Pokémon · ×3','The start of your attacker line. Open with it and Rare Candy up to Grimmsnarl ex. Bench extras early.'],
+      "Marnie's Morgrem":['Stage 1 · ×2','The middle of the line — usually skipped via Rare Candy, but a backup route to Grimmsnarl if you can\'t Candy.'],
+      "Marnie's Grimmsnarl ex":['Stage 2 ex · ×3','Your main attacker. Punk Up loads Darkness straight from the deck; it then hits 180 to the Active + 30 to a benched Pokémon.'],
+      'Snorunt':['Basic Pokémon · ×3','Evolves into Froslass, your spread engine. Bench it early so Froslass is online when you need it.'],
+      'Froslass':['Stage 1 · ×3','Spreads a damage counter onto every Ability Pokémon between turns — the damage Munkidori then moves. Your only self-damage source; protect it.'],
+      'Munkidori':['Basic Pokémon · ×4','With Darkness attached, moves up to 3 counters off your Pokémon onto the opponent. Heals you and pressures them. You run 4 to move big chunks.'],
+      'Budew':['Basic Pokémon · ×1','Turn-1 tech to slow fast decks while you set up your Stage 2 line.'],
+      'Tatsugiri':['Basic Pokémon · ×1','Draw/consistency support to smooth your setup.'],
+      'Yveltal':['Basic Pokémon · ×1','A Dark attacker / tech option for specific board states.'],
+      "Team Rocket's Petrel":['Supporter · ×4','Hand disruption that shrinks the opponent\'s options — a key piece of your post-Iono disruption.'],
+      "Lillie's Determination":['Supporter · ×4','Your main draw engine after Iono\'s rotation. Lean on it to dig.'],
+      'Judge':['Supporter · ×1','Resets both hands to 4 — disruption when the opponent is loaded.'],
+      "Boss's Orders":['Supporter · ×3','Drags a benched Pokémon into the Active spot to KO setup pieces or sitting ducks. The 3-count shines vs slower decks.'],
+      'Poké Pad':['Item · ×4','Draw/consistency you can play every turn — unlike Supporters, it doesn\'t use your one-per-turn slot.'],
+      'Buddy-Buddy Poffin':['Item · ×3','Pulls 2 small Basics from the deck to flood your bench early.'],
+      'Rare Candy':['Item · ×3','Jumps a Basic straight to Stage 2 (Impidimp → Grimmsnarl ex), skipping Morgrem. The exception to the no-evolve-turn-played rule.'],
+      'Night Stretcher':['Item · ×2','Recovers a Pokémon or Energy from your discard — rebuild after trades.'],
+      'Air Balloon':['Tool · ×1','Cheap retreat and an anti-deck-out tool for long, grindy games.'],
+      'Unfair Stamp':['ACE SPEC Item · ×1','Comeback button — disrupt their hand while you draw 5. One per deck.'],
+      'Spikemuth Gym':['Stadium · ×4','Searches ANY Marnie\'s Pokémon — your tutor for every stage of the Grimmsnarl line. Run 4 for consistency.'],
+      'Basic Darkness Energy':['Energy · ×9','Mono-Dark fuel for Punk Up and Munkidori. Only 9 because Punk Up pulls Darkness from the deck for you.']
     }
-  };
+  },
+  {
+    id:'dragapult', name:'Dragapult ex', tagline:'Snipe the bench · pick off prizes.',
+    eyebrow:'Standard Format · Field Manual · DRAFT',
+    footer:'Drafted Dragapult ex reference (Standard) — verify the list before sanctioned play.',
+    deckSub:'A <b>drafted</b> Standard Dragapult ex list — spread with Phantom Dive, finish with Dusknoir. Gold = key cards. <span style="color:var(--frost)">Tap any card for its role.</span>',
+    meta:{pk:19,tr:31,en:10},
+    pokemon:[
+      {q:4,n:'Dreepy',sub:'Basic · start of the line',set:'TWM 128',basic:1},
+      {q:3,n:'Drakloak',sub:'Stage 1 · bridge + draw',set:'TWM 129'},
+      {q:3,n:'Dragapult ex',sub:'Main attacker · 200 + 6 counters',set:'TWM 130',key:1},
+      {q:2,n:'Duskull',sub:'Basic · Dusknoir line',set:'SFA 67',basic:1},
+      {q:2,n:'Dusclops',sub:'Stage 1',set:'SFA 68'},
+      {q:2,n:'Dusknoir',sub:'Cursed Blast finisher',set:'SFA 69',key:1},
+      {q:1,n:'Budew',sub:'Turn-1 item-lock tech',set:'PRE 004',basic:1},
+      {q:1,n:'Fezandipiti ex',sub:'Draw 3 after a prize',set:'SFA 38',key:1,basic:1},
+      {q:1,n:'Manaphy',sub:'Bench protection',set:'SSP 042',basic:1}
+    ],
+    trainer:[
+      {q:4,n:"Lillie's Determination",sub:'Main draw Supporter',set:'MEG 184',key:1,tag:'draw'},
+      {q:4,n:'Buddy-Buddy Poffin',sub:'2 small Basics from deck',set:'TWM 223',tag:'draw'},
+      {q:4,n:'Poké Pad',sub:'Every-turn draw',set:'POR 113',tag:'draw'},
+      {q:2,n:'Pokégear 3.0',sub:'Find a Supporter',set:'SVI 186',tag:'draw'},
+      {q:3,n:'Rare Candy',sub:'Basic → Stage 2',set:'GRI 165',key:1,tag:'candy'},
+      {q:3,n:"Boss's Orders",sub:'Drag up a target',set:'PAL 265'},
+      {q:2,n:'Earthen Vessel',sub:'Search 2 Basic Energy',set:'PAR 163',tag:'search'},
+      {q:2,n:'Night Stretcher',sub:'Recover Pokémon/Energy',set:'SSP 251'},
+      {q:2,n:'Counter Catcher',sub:'Gust when behind',set:'PAR 160'},
+      {q:1,n:'Counter Gym',sub:'Stadium',set:'PAR 165'},
+      {q:1,n:'Unfair Stamp',sub:'ACE SPEC · disrupt + draw 5',set:'TWM 165'},
+      {q:1,n:'Air Balloon',sub:'Free-ish retreat',set:'SSH 213'},
+      {q:1,n:'Bravery Charm',sub:'+50 HP tool',set:'PAL 173'},
+      {q:1,n:'Defiance Band',sub:'Damage when behind',set:'SVI 169'}
+    ],
+    energy:[
+      {q:6,n:'Basic Psychic Energy',sub:'Half of Phantom Dive',set:'',energy:1,tag:'energy'},
+      {q:4,n:'Basic Fire Energy',sub:'Other half of Phantom Dive',set:'',energy:1,tag:'energy'}
+    ],
+    deckNotes:[
+      {html:'<b>Two-type engine:</b> Phantom Dive needs a <span class="hi">Fire</span> and a <span class="pu">Psychic</span> on Dragapult. Keep both available — Earthen Vessel digs energy so you\'re never one type short.'},
+      {warn:1,html:'<b>DRAFT list — verify before play.</b> This is a representative post-rotation Dragapult ex build I drafted for you to check. Confirm the exact counts (Dusknoir line, energy split, tech slots) and set codes against the current Standard legal pool before sleeving it up.'}
+    ],
+    pros:[
+      '<b>Bench snipe.</b> Phantom Dive places 6 damage counters on the Bench every turn — you set up KOs your opponent can\'t see coming.',
+      '<b>Multi-prize math.</b> Spread plus Dusknoir\'s Cursed Blast can take several KOs in a single turn.',
+      '<b>Fast for a Stage 2.</b> Rare Candy + strong draw means Dragapult can attack by turn 2.',
+      '<b>Dusknoir finisher.</b> Cursed Blast dumps 13 counters anywhere — it converts spread into prizes.',
+      '<b>Refuels itself.</b> Drakloak and Fezandipiti ex keep your hand full through the grind.',
+      '<b>Picks its targets.</b> Boss + spread means you choose which prizes you take and when.'
+    ],
+    cons:[
+      '<b>Two energy types.</b> Needing Fire AND Psychic makes you more prone to awkward energy draws.',
+      '<b>Stage 2 fragility.</b> The Dreepy and Duskull lines can be disrupted before they come online.',
+      '<b>Dusknoir is a commitment.</b> Cursed Blast discards Dusknoir — one-shot value, plus bench space and setup cost.',
+      '<b>Bench-protect counters.</b> Manaphy or Mist Energy on their side blanks your snipe damage.',
+      '<b>Tight bench.</b> Two Stage 2 lines plus techs crowd your five slots fast.',
+      '<b>Grindy mirror.</b> Dragapult mirrors come down to prize trades and disruption — high variance.'
+    ],
+    prosTakeaway:'Every turn asks one question: where do the 6 counters go? Plan your Phantom Dive spread a turn ahead so your next attack (or Dusknoir) converts it into a multi-prize KO.',
+    setup:[
+      ['Mulligan check','Confirm a Basic (Dreepy, Duskull, Budew, Fezandipiti ex, Manaphy). No Basic = reveal, reshuffle, redraw 7 (opponent +1).'],
+      ['Coin flip','Going second is usually fine — you get an attack a turn sooner and can lead Budew turn 1.'],
+      ['Place Active + Bench','Lead Dreepy (or Budew vs fast decks). Bench more Dreepy + a Duskull. Protect your fragile basics.'],
+      ['Set 6 Prizes','Top 6 face-down. Flip your Pokémon up. Begin.']
+    ],
+    turn:[
+      ['Draw','Draw your card for the turn.'],
+      ['Draw engine','Lillie\'s Determination / Poké Pad / Drakloak to dig. Fezandipiti ex refills after you take a prize.'],
+      ['Find your pieces','Earthen Vessel for energy, Buddy-Buddy Poffin for basics, Rare Candy to jump stages.'],
+      ['Evolve to Dragapult ex','Rare Candy a Dreepy to Dragapult ex (or evolve up through Drakloak).'],
+      ['Attach Fire + Psychic','Get both energy types onto Dragapult so Phantom Dive is online.'],
+      ['Phantom Dive','200 to the Active + place 6 damage counters on their Bench however you like. Aim the counters to set up KOs.'],
+      ['Dusknoir finish (when set)','Cursed Blast: dump 13 counters anywhere to convert spread into KOs — then Dusknoir is discarded.'],
+      ['Pick your prizes','Boss up the target you\'ve softened and take the prizes you\'ve lined up.']
+    ],
+    energyRule:'<b>Energy rule to never forget:</b> one Energy from hand per turn. Phantom Dive needs BOTH a Fire and a Psychic on Dragapult — plan attachments a turn ahead, and use Earthen Vessel to catch up.',
+    matchups:[
+      {tier:'even',name:'Mega Venusaur',sub:'Grass wall',body:'Bulky and self-healing. <b>Plan:</b> use bench snipe + Dusknoir to KO around the wall instead of trading into it head-on, and Boss past it to softer targets.'},
+      {tier:'even',name:"Marnie's Grimmsnarl ex",sub:'The grind mirror of spread',body:'They shift damage with Munkidori and out-grind. <b>Plan:</b> pressure with Phantom Dive snipe they can\'t heal fast enough, and Boss their Froslass or Munkidori to break the engine.'},
+      {tier:'even',name:'Dragapult ex mirror',sub:'Prize-trade coin-flip',body:'Whoever sets up cleaner and disrupts wins. <b>Plan:</b> race to the first multi-prize Dusknoir turn, use Counter Catcher when behind, and protect your own Dreepy line.'},
+      {tier:'good',name:'Single-prize / low-HP decks',sub:'Snipe heaven',body:'Phantom Dive\'s 6 counters and Dusknoir devour low-HP boards. <b>Plan:</b> spread early, then Cursed Blast a cluster of KOs in one turn.'},
+      {tier:'bad',name:'Bench-protect / Mist decks',sub:'Blanks your snipe',body:'Manaphy / Mist Energy stop bench damage. <b>Plan:</b> Boss the protector into the Active and KO it, or pivot to straight 200-damage Phantom Dives on the Active.'}
+    ],
+    matchupLegend:'<b>Reading the colors:</b> <span style="color:var(--grass)">✓ favored</span> · <span style="color:var(--gold)">= skill matchup</span> · <span style="color:var(--ember)">✕ uphill</span>. Even the ✕ games are winnable with a good opener.',
+    secrets:[
+      {accent:'pu',title:'Plan the 6 counters.',body:'Phantom Dive\'s spread is the whole deck — place counters where your NEXT turn (or Dusknoir) converts them into KOs, not randomly.'},
+      {accent:'cy',title:'Dusknoir is a nuke, not a wall.',body:'Cursed Blast discards Dusknoir, so set it up to cash out a multi-prize turn — don\'t sit on it.'},
+      {accent:'hi',title:'Fezandipiti ex refuels.',body:'After you take a prize, Flip the Script draws you 3 — sequence your KO before you need the cards.'},
+      {accent:'pu',title:'Two types, one plan.',body:'Always keep a Fire AND a Psychic available. Earthen Vessel digs energy so you\'re never one type short.'},
+      {accent:'cy',title:'Boss converts spread.',body:'Your snipe softens the bench; Boss\'s Orders drags the softened target up so you take the prize.'}
+    ],
+    coreRules:[
+      ['Going first?','You skip your attack on turn one — use it to bench Dreepy/Duskull and set up.'],
+      ['One Energy per turn','From hand. Phantom Dive needs both a Fire and a Psychic on Dragapult, so plan ahead.'],
+      ['One Supporter per turn','Lillie\'s Determination and Boss\'s Orders share the limit. Items (Poké Pad, Poffin, Rare Candy, Earthen Vessel) are unlimited.'],
+      ['Evolving','Can\'t evolve a Pokémon the turn you played it — Rare Candy is the exception (Basic → Stage 2).'],
+      ['Prizes','1 per KO, 2 for an ex. Phantom Dive spread + Dusknoir can take several KOs in one turn.'],
+      ['Bench limit','Max 5. Two Stage 2 lines + Dusknoir eat space — plan it.'],
+      ['Win conditions','All 6 prizes · opponent has no Pokémon in play · opponent can\'t draw at start of turn.']
+    ],
+    damageNote:'<b>Counters vs HP:</b> Phantom Dive places 6 counters (10 each = 60 spread). A Pokémon is KO\'d when counters meet its HP — Dusknoir\'s Cursed Blast adds 13 more (130) anywhere to finish multiples at once.',
+    coach:{
+      start:'q1',
+      nodes:{
+        q1:{q:'Do you have a Basic Pokémon in play and a stable board?',yes:'q2',no:'a_consistency'},
+        q2:{q:'Is Dragapult ex in play with BOTH a Fire and a Psychic attached (Phantom Dive online)?',yes:'q3',no:'a_attacker'},
+        q3:{q:'Have you been spreading — are there softened Pokémon on their bench?',yes:'q4',no:'a_spread'},
+        q4:{q:'Is Dusknoir set up (or can you set it this turn) to convert that spread?',yes:'a_dusknoir',no:'q5'},
+        q5:{q:'Can you Boss up a softened target and KO it now?',yes:'a_boss',no:'a_phantom'}
+      },
+      advice:{
+        a_consistency:['v-bad','Stabilize first','Dig with Lillie\'s / Poké Pad / Drakloak and use Poffin + Earthen Vessel to find your basics and energy. Get a legal, stable board before you start attacking.'],
+        a_attacker:['v-ok','Get Phantom Dive online','Rare Candy a Dreepy into Dragapult ex and attach so it has BOTH a Fire and a Psychic. No two-type setup, no attack.'],
+        a_spread:['v-ok','Start spreading','Phantom Dive for 200 + place all 6 counters on their Bench — aim them at the Pokémon you\'ll KO next turn or with Dusknoir. Spread is your setup.'],
+        a_dusknoir:['v-keep','Cash out with Dusknoir','Cursed Blast: dump 13 counters to finish every softened target you can. Convert the spread into a multi-prize turn — Dusknoir is discarded after, so make it count.'],
+        a_boss:['v-keep','Boss and take it','Drag the softened Pokémon into the Active with Boss\'s Orders and KO it for the prizes you\'ve been setting up.'],
+        a_phantom:['v-keep','Phantom Dive and set up','Hit 200 to the Active and place the 6 counters to line up next turn\'s KOs. Keep building the spread until you can cash a big turn.']
+      }
+    },
+    flashcards:[
+      ['What does Phantom Dive do?','200 damage to the Active, then place 6 damage counters on your opponent\'s Benched Pokémon any way you like.'],
+      ['What two Energy types does Dragapult ex need?','Fire and Psychic — keep both available or you can\'t attack.'],
+      ['What does Dusknoir\'s Cursed Blast do?','Put 13 damage counters on your opponent\'s Pokémon any way you like — then Dusknoir is discarded.'],
+      ['Why place Phantom Dive counters carefully?','So your next attack or Dusknoir converts the spread into KOs — random counters waste the snipe.'],
+      ['What does Fezandipiti ex give you?','After you take a prize, Flip the Script draws you 3 cards — refuel after a KO.'],
+      ['What stops your bench snipe?','Manaphy or Mist Energy on their side. Boss the protector up and KO it, or attack the Active directly.'],
+      ['How do you get Dragapult out fast?','Rare Candy a Dreepy straight to Dragapult ex, skipping Drakloak.'],
+      ['Go first or second?','Second is usually fine — you get an attack a turn sooner and can lead Budew.'],
+      ['How many prizes can a Dusknoir turn take?','Several — Cursed Blast plus existing spread can KO multiple Benched Pokémon at once.'],
+      ['What does Earthen Vessel do for you?','Searches Basic Energy from your deck — key for keeping both Fire and Psychic online.']
+    ],
+    scenarios:[
+      {s:'You Phantom Dive this turn. Their bench has a 70-HP Pokémon, a 120-HP attacker, and a fresh Stage-1. Where do the 6 counters (60) go?',o:['All 60 onto the 120-HP attacker','60 onto the 70-HP Pokémon','Spread 20/20/20 evenly','All on the fresh Stage-1'],c:0,e:'60 can\'t KO the 70, and even spread sets up nothing. Loading the 120-HP attacker means next turn\'s Phantom Dive (or Dusknoir) finishes a real threat. Set up the KO you actually want.'},
+      {s:'You have Dusknoir ready and their board has three Pokémon already at 60, 80, and 110 damage from earlier spread. Best line?',o:['Attack normally and save Dusknoir','Cursed Blast: 40 + 30 + 20 to KO all three','Boss the biggest threat and attack it'],c:1,e:'Cursed Blast\'s 13 counters (130) finish all three softened Pokémon at once — a huge multi-prize turn. That\'s exactly what the spread was for.'},
+      {s:'They just dropped a Manaphy that blocks your Bench snipe. You still have a charged Dragapult. What now?',o:['Keep spreading and ignore it','Boss the Manaphy up and KO it','Stop attacking and set up'],c:1,e:'Manaphy blanks your most important tool. Boss it into the Active and KO it with the 200, then your bench snipe is back online next turn.'},
+      {s:'Mirror match. You\'re a turn behind on setup but have Counter Catcher and a charged attacker. Best use of the turn?',o:['Counter Catcher their Dreepy/Drakloak and KO it','Race with a plain Active KO','Pass to set up Dusknoir'],c:0,e:'Behind in the mirror, attack their line — Counter Catcher a Dreepy or Drakloak and KO it to slow their Dragapult before it comes online.'}
+    ],
+    opener:{keyStarter:'Dreepy',starter:'Dreepy',path:'Rare Candy',target:'Dragapult ex'},
+    openerChips:[['Dreepy'],['Duskull'],['Budew'],['Fezandipiti ex','Fezandipiti'],['Rare Candy'],["Lillie's Determination","Lillie's"],['Poké Pad'],['Earthen Vessel'],['Basic Psychic Energy','Psychic']],
+    sequencing:[
+      {p:'Turn 2. Dreepy in play. Hand: Rare Candy, Dragapult ex, Lillie\'s Determination, Fire Energy, Psychic Energy.',steps:['Lillie\'s Determination — draw first','Rare Candy → Dragapult ex','Attach Fire + Psychic to Dragapult','Phantom Dive — attack (ends turn)'],e:'Draw before you commit Rare Candy in case you find more. You need BOTH energy types on before Phantom Dive — then attack, which ends your turn.'},
+      {p:'Their board is softened and you have Dusknoir ready (Dusclops in play), a charged Dragapult, and Boss\'s Orders.',steps:['Evolve Dusclops → Dusknoir','Cursed Blast — 13 counters to KO the softened Pokémon','Phantom Dive the Active for the rest'],e:'Set up Dusknoir, fire Cursed Blast to cash the spread (Dusknoir is discarded), then Phantom Dive for your remaining damage and more spread. Boss isn\'t needed if the KOs are already on the bench.'},
+      {p:'You can take a prize this turn and you need cards to set up Dusknoir next turn. You have Fezandipiti ex benched.',steps:['Take your KO / prize first','Fezandipiti ex — Flip the Script to draw 3'],e:'Take the prize BEFORE using Flip the Script — its draw triggers off having taken a prize. Then draw into your Dusknoir pieces.'}
+    ],
+    dreamIntro:'Going second, the line you\'re drilling toward:',
+    dreamSteps:[
+      'Bench <b>Dreepy</b> (+ a Duskull), lead one.',
+      'Turn 2: <span class="gl" data-g="rare-candy">Rare Candy</span> → Dragapult ex.',
+      'Attach a <b>Fire</b> and a <b>Psychic</b> so <span class="gl" data-g="phantom-dive">Phantom Dive</span> is online.',
+      'Phantom Dive: 200 + place <b>6 counters</b> to soften their bench.',
+      'Build <span class="gl" data-g="dusknoir">Dusknoir</span> behind it.',
+      '<span class="gl" data-g="dusknoir">Cursed Blast</span> + Boss to cash a multi-prize turn.'
+    ],
+    glossary:{
+      'phantom-dive':['Phantom Dive','Dragapult ex · attack','200 damage to the Active, then place 6 damage counters on your opponent\'s Benched Pokémon in any way you like. The spread is the deck\'s engine.'],
+      'dusknoir':['Dusknoir','Stage 2 · Cursed Blast','Put 13 damage counters on your opponent\'s Pokémon any way you like — then discard Dusknoir and everything attached. A one-shot multi-prize finisher.'],
+      'rare-candy':['Rare Candy','Item','Evolve a Basic straight to Stage 2 (Dreepy → Dragapult ex), skipping Drakloak.']
+    },
+    cardRoles:{
+      'Dreepy':['Basic Pokémon · ×4','The start of your attacker line — Rare Candy it into Dragapult ex. Bench extras early.'],
+      'Drakloak':['Stage 1 · ×3','The bridge to Dragapult and a draw/consistency body. Often skipped with Rare Candy, but useful evolved normally.'],
+      'Dragapult ex':['Stage 2 ex · ×3','Your main attacker. Phantom Dive hits 200 to the Active and places 6 counters on their Bench. Needs Fire + Psychic.'],
+      'Duskull':['Basic Pokémon · ×2','Start of the Dusknoir line — your finisher engine.'],
+      'Dusclops':['Stage 1 · ×2','The bridge to Dusknoir; Rare Candy can skip it.'],
+      'Dusknoir':['Stage 2 · ×2','Cursed Blast dumps 13 counters anywhere, then discards itself. Converts your spread into a multi-prize KO turn.'],
+      'Budew':['Basic Pokémon · ×1','Turn-1 tech to slow fast / item-reliant decks while you set up.'],
+      'Fezandipiti ex':['Basic ex · ×1','Flip the Script draws 3 after you take a prize — your refuel engine. Worth 2 prizes if KO\'d.'],
+      'Manaphy':['Basic Pokémon · ×1','Protects your own Bench from snipe damage — insurance vs other spread decks.'],
+      "Lillie's Determination":['Supporter · ×4','Main draw engine post-Iono.'],
+      'Buddy-Buddy Poffin':['Item · ×4','Pulls 2 small Basics (Dreepy/Duskull) to develop fast.'],
+      'Poké Pad':['Item · ×4','Every-turn draw that doesn\'t use your Supporter slot.'],
+      'Pokégear 3.0':['Item · ×2','Digs for the Supporter you need.'],
+      'Rare Candy':['Item · ×3','Dreepy → Dragapult ex (or Duskull → Dusknoir), skipping the Stage 1.'],
+      "Boss's Orders":['Supporter · ×3','Drags a softened Bench target up so you take the prize.'],
+      'Earthen Vessel':['Item · ×2','Searches up to 2 Basic Energy — keeps Fire + Psychic online.'],
+      'Night Stretcher':['Item · ×2','Recovers a Pokémon or Energy from the discard.'],
+      'Counter Catcher':['Item · ×2','When behind on prizes, gust a Benched Pokémon up — great in the mirror.'],
+      'Counter Gym':['Stadium · ×1','Stadium utility / counters opposing stadiums.'],
+      'Unfair Stamp':['ACE SPEC Item · ×1','Comeback button — disrupt their hand while you draw 5. One per deck.'],
+      'Air Balloon':['Tool · ×1','Free-ish retreat to reposition your attacker.'],
+      'Bravery Charm':['Tool · ×1','+50 HP on the holder to dodge key KO numbers.'],
+      'Defiance Band':['Tool · ×1','Extra damage when you\'re behind on prizes — pushes KO math.'],
+      'Basic Psychic Energy':['Energy · ×6','Half of Phantom Dive\'s cost.'],
+      'Basic Fire Energy':['Energy · ×4','The other half of Phantom Dive\'s cost.']
+    }
+  }
+  ];
+
+  /* ===== active deck + per-deck data slots (filled by applyDeck) ===== */
+  let active=0, D=DECKS[0];
+  let CARDS=[], SCEN=[], PUZZLES=[], GLOSS={}, CARD_ROLES={}, DECK=[];
+  const NOTES=store.get('gs_notes',{});
+
+  /* ===== render functions for the static-content tabs ===== */
+  function renderHeader(){
+    document.getElementById('eyebrow').textContent=D.eyebrow;
+    document.getElementById('deckTitle').innerHTML=`${D.name}<span class="small">${D.tagline}</span>`;
+    document.getElementById('footText').innerHTML=D.footer+'<br>Save this page to your home screen to use it offline at the table.';
+  }
+  function deckGroup(label,arr){
+    return `<div class="card" style="padding:8px 14px"><div class="grp-label">${label}</div>`+
+      arr.map(c=>`<div class="line-row${c.key?' key':''}${c.energy?' energy':''}"><span class="qty">${c.q}</span><span class="nm">${c.n} <small>${c.sub}</small></span><span class="set">${c.set||''}</span></div>`).join('')+`</div>`;
+  }
+  function renderDeck(){
+    document.getElementById('deckSub').innerHTML=D.deckSub;
+    document.getElementById('deckBody').innerHTML=
+      `<div class="deck-meta"><div class="chip"><b>${D.meta.pk}</b>Pokémon</div><div class="chip g"><b>${D.meta.tr}</b>Trainer</div><div class="chip f"><b>${D.meta.en}</b>Energy</div></div>`+
+      deckGroup('Pokémon — '+D.meta.pk,D.pokemon)+deckGroup('Trainer — '+D.meta.tr,D.trainer)+deckGroup('Energy — '+D.meta.en,D.energy)+
+      D.deckNotes.map(n=>`<div class="callout${n.warn?' warn':''}">${n.html}</div>`).join('');
+  }
+  function renderPros(){
+    document.getElementById('prosBody').innerHTML=
+      `<div class="pc"><div class="pc-block pros"><h4>◆ What it's great at</h4><ul>`+D.pros.map(x=>`<li>${x}</li>`).join('')+`</ul></div>`+
+      `<div class="pc-block cons"><h4>◆ Where it struggles</h4><ul>`+D.cons.map(x=>`<li>${x}</li>`).join('')+`</ul></div></div>`+
+      `<div class="callout warn"><b>One-line takeaway:</b> ${D.prosTakeaway}</div>`;
+  }
+  function renderPlay(){
+    render(D.setup,document.getElementById('setup-steps'),'Setup');
+    render(D.turn,document.getElementById('turn-steps'),'Step');
+    document.getElementById('playNote').innerHTML=`<div class="callout">${D.energyRule}</div>`;
+  }
+  function renderMatch(){
+    const tier={good:['t-good','✓'],even:['t-even','='],bad:['t-bad','✕']};
+    const wrap=document.getElementById('matchBody');
+    wrap.innerHTML=D.matchups.map((m,i)=>{const t=tier[m.tier];
+      return `<div class="mu${i===0?' open':''}" data-mu><div class="mu-head"><span class="tier ${t[0]}">${t[1]}</span><span class="mu-name"><b>${m.name}</b><span>${m.sub}</span></span><span class="arrow">▶</span></div><div class="mu-body"><div>${m.body}</div></div></div>`;
+    }).join('')+`<div class="callout">${D.matchupLegend}</div>`;
+    wrap.querySelectorAll('[data-mu]').forEach(mu=>{
+      const key=D.id+'|'+mu.querySelector('.mu-name b').textContent;
+      const ta=document.createElement('textarea');
+      ta.className='field mu-note';ta.placeholder='Your notes on this matchup…';
+      ta.value=NOTES[key]||'';
+      ta.addEventListener('click',e=>e.stopPropagation());
+      ta.addEventListener('input',()=>{NOTES[key]=ta.value;store.set('gs_notes',NOTES);});
+      mu.querySelector('.mu-body').appendChild(ta);
+    });
+  }
+  function renderRules(){
+    document.getElementById('rulesBody').innerHTML=
+      `<h3>Deck secrets</h3>`+D.secrets.map(s=>`<div class="card raised"><p><b class="${s.accent}">${s.title}</b> ${s.body}</p></div>`).join('')+
+      `<h3>Core rules (beginner)</h3><dl class="gloss">`+D.coreRules.map(r=>`<dt>${r[0]}</dt><dd>${r[1]}</dd>`).join('')+`</dl>`+
+      `<div class="callout">${D.damageNote}</div>`;
+  }
+  function renderDream(){
+    document.getElementById('dreamBody').innerHTML=
+      `<div class="card raised"><p>${D.dreamIntro}</p><ol style="margin:10px 0 0 18px;font-size:13.5px;color:var(--mist);line-height:1.95">`+
+      D.dreamSteps.map(s=>`<li>${s}</li>`).join('')+`</ol></div>`;
+  }
+
+  /* ===== delegated handlers that survive re-render ===== */
+  document.addEventListener('click',e=>{const h=e.target.closest('#play .step-head');if(h)h.closest('.step').classList.toggle('done');});
+  document.addEventListener('click',e=>{const h=e.target.closest('#matchBody .mu-head');if(h)h.closest('.mu').classList.toggle('open');});
+  document.addEventListener('click',e=>{
+    const r=e.target.closest('#deckBody .line-row');if(!r)return;
+    const name=r.querySelector('.nm').firstChild.textContent.trim();
+    const role=CARD_ROLES[name];if(!role)return;
+    document.getElementById('glName').textContent=name;
+    document.getElementById('glTyp').textContent=role[0];
+    document.getElementById('glText').textContent=role[1];
+    document.getElementById('glModal').classList.add('on');
+  });
+
+  /* ===== apply a deck: swap data + re-render everything ===== */
+  function applyDeck(i){
+    active=i; D=DECKS[i]; store.set('gs_deck',D.id);
+    D._cards=[...D.pokemon,...D.trainer,...D.energy];
+    D._map={}; D._cards.forEach(c=>{D._map[c.n]={basic:!!c.basic,tag:c.tag||''};});
+    DECK=[]; D._cards.forEach(c=>{for(let k=0;k<c.q;k++)DECK.push({name:c.n,basic:!!c.basic,tag:c.tag||''});});
+    CARDS=D.flashcards; SCEN=D.scenarios; PUZZLES=D.sequencing; GLOSS=D.glossary; CARD_ROLES=D.cardRoles;
+    renderHeader(); renderDeck(); renderPros(); renderPlay(); renderMatch(); renderRules(); renderDream();
+    coachReset(); fcStart(); scCur=0; scRender(); pzCur=0; pzInit();
+    openSel.clear(); renderOpenerChips(); document.getElementById('openerVerdict').innerHTML='';
+    currentHand=null; handCalled=null; handRender();
+    document.getElementById('deckPick').value=String(i);
+  }
+
+  /* ===== coach: what should I do? (reads D.coach) ===== */
   const coachEl=document.getElementById('coach');
-  let coachAt=COACH.start,coachHist=[];
+  let coachAt='q1',coachHist=[];
   function coachRender(){
-    if(COACH.advice[coachAt]){
-      const a=COACH.advice[coachAt];
+    const C=D.coach;
+    if(C.advice[coachAt]){
+      const a=C.advice[coachAt];
       coachEl.innerHTML=`<div class="verdict ${a[0]}"><b>▶ ${a[1]}</b>${a[2]}</div>`+
         `<button class="reset-btn" id="coachRestart" style="margin-top:12px">↺ Start over</button>`;
       document.getElementById('coachRestart').addEventListener('click',coachReset);
     }else{
-      const n=COACH.nodes[coachAt];
+      const n=C.nodes[coachAt];
       coachEl.innerHTML=`<div class="card raised"><p style="color:var(--paper);font-weight:600;font-size:15px">${n.q}</p>`+
         `<div class="row" style="margin-top:12px"><button class="btn" style="flex:1" data-coach="no">No</button>`+
         `<button class="btn primary" style="flex:1" data-coach="yes">Yes</button></div>`+
@@ -736,22 +1033,11 @@
       if(back)back.addEventListener('click',()=>{coachAt=coachHist.pop();coachRender();});
     }
   }
-  function coachReset(){coachAt=COACH.start;coachHist=[];coachRender();}
+  function coachReset(){coachAt=D.coach.start;coachHist=[];coachRender();}
   coachEl.addEventListener('click',e=>{const b=e.target.closest('[data-coach]');if(!b)return;
-    const n=COACH.nodes[coachAt];coachHist.push(coachAt);coachAt=n[b.dataset.coach];coachRender();});
-  coachReset();
+    const n=D.coach.nodes[coachAt];coachHist.push(coachAt);coachAt=n[b.dataset.coach];coachRender();});
 
-  /* ===== glossary ===== */
-  const GLOSS={
-    'punk-up':['Punk Up','Grimmsnarl ex · attack','Search up to 5 Basic Darkness Energy from your deck and attach them to your Marnie\'s Pokémon. It powers your board for free — these attachments don\'t count against your one-energy-per-turn limit.'],
-    'froslass':['Froslass','Stage 1 · Ability','Between turns, its ability puts a damage counter on every Pokémon in play that has an Ability — both sides. This is your only self-damage source, so protect it.'],
-    'munkidori':['Munkidori','Basic · Adrena-Brain','While it has Darkness Energy attached, move up to 3 damage counters from one of your Pokémon onto one of your opponent\'s. Heals you and pressures them. You run 4.'],
-    'unfair-stamp':['Unfair Stamp','ACE SPEC · Item','Each player shuffles their hand into their deck; you draw 5, opponent draws 2. One per deck — your comeback button on a key turn.'],
-    'spikemuth-gym':['Spikemuth Gym','Stadium','Search your deck for any Marnie\'s Pokémon — every stage of the Grimmsnarl line. Your tutor and consistency engine. The list runs 4.'],
-    'rare-candy':['Rare Candy','Item','Evolve one of your Basic Pokémon straight to its Stage 2, skipping Stage 1 (Impidimp → Grimmsnarl ex). The exception to the no-evolve-the-turn-you-played-it rule.'],
-    'boss':['Boss\'s Orders','Supporter','Switch one of your opponent\'s Benched Pokémon into the Active spot. Drag up a sitting duck or pull a setup piece you can KO.'],
-    'petrel':['Team Rocket\'s Petrel','Supporter','Hand disruption that shrinks the opponent\'s options — a key piece of your post-Iono disruption package alongside Judge.']
-  };
+  /* ===== glossary (GLOSS set per deck by applyDeck) ===== */
   const glModal=document.getElementById('glModal');
   function openGloss(g){const d=GLOSS[g];if(!d)return;
     document.getElementById('glName').textContent=d[0];
@@ -762,21 +1048,7 @@
   document.getElementById('glClose').addEventListener('click',()=>glModal.classList.remove('on'));
   glModal.addEventListener('click',e=>{if(e.target===glModal)glModal.classList.remove('on');});
 
-  /* ===== flashcards ===== */
-  const CARDS=[
-    ['What does Punk Up do?','Searches up to 5 Basic Darkness Energy from your deck onto your Marnie\'s Pokémon — make sure one lands on a Munkidori.'],
-    ['How many Boss\'s Orders are in the list?','3 — your main way to drag up a setup piece or a sitting duck.'],
-    ['What does Munkidori need before it can move damage?','Darkness Energy attached. Then Adrena-Brain shifts up to 3 counters off you onto them.'],
-    ['Go first or second with this deck?','Second — you can evolve and use Budew on turn 1, and you don\'t miss an attack you\'d want anyway.'],
-    ['What is your only source of self-damage?','Froslass. Protect it — lose it and the Munkidori engine sputters.'],
-    ['What does Rare Candy let you do?','Jump a Basic straight to Stage 2 (Impidimp → Grimmsnarl ex), skipping Morgrem.'],
-    ['How many prizes for KOing a Pokémon ex?','2 — and remember the opponent also takes 2 when they KO your Grimmsnarl ex.'],
-    ['What does Spikemuth Gym search for?','Any Marnie\'s Pokémon — every stage of the Grimmsnarl line. You run 4.'],
-    ['How many Energy can you attach from hand per turn?','One. Punk Up\'s deck-attachments are extra and don\'t count.'],
-    ['When should you fire Unfair Stamp?','As a comeback — disrupt their hand on a key turn while you refill to 5. ACE SPEC, one per deck.'],
-    ['Your two hardest matchups?','Mega Venusaur (Grass weakness) and Mega Feraligatr (raw power). Race them, don\'t grind.'],
-    ['When does Froslass spread damage?','Between turns — a counter on every Pokémon with an Ability, both sides of the board.']
-  ];
+  /* ===== flashcards (CARDS set per deck by applyDeck) ===== */
   const fc={q:document.getElementById('fcQ'),a:document.getElementById('fcA'),hint:document.getElementById('fcHint'),
             grade:document.getElementById('fcGrade'),right:document.getElementById('fcRight'),
             wrong:document.getElementById('fcWrong'),left:document.getElementById('fcLeft'),flash:document.getElementById('flash')};
@@ -802,29 +1074,8 @@
     if(b.dataset.grade==='1'){fcR++;}else{fcW++;fcQueue.push(fcQueue[fcCur]);}
     fcCur++;fcFlipped=false;fcRender();});
   document.getElementById('fcReset').addEventListener('click',fcStart);
-  fcStart();
 
-  /* ===== scenario trainer ===== */
-  const SCEN=[
-    {s:'Turn 3 vs Dragapult ex. They have a Dusknoir benched about to snowball, and you have Boss\'s Orders plus a charged Grimmsnarl. Best play?',
-     o:['Attack the Active Dragapult head-on','Boss up the Dusknoir and KO it','Pass and set up more','Judge their hand first'],c:1,
-     e:'Removing Dusknoir stops the damage-shifting snowball before it starts. Boss + KO the support piece, not the bulky Active.'},
-    {s:'Opening 7: Impidimp, Rare Candy, Lillie\'s Determination, 2 Darkness, Poké Pad, Spikemuth Gym. Keep or mulligan?',
-     o:['Mulligan — too slow','Keep — that\'s a dream opener','Keep only on the play'],c:1,
-     e:'Basic + Rare Candy + Grimmsnarl tutor (Spikemuth) + draw (Lillie\'s/Poké Pad) sets up Grimmsnarl on turn 2. Snap keep.'},
-    {s:'Your Grimmsnarl has 120 damage on it and dies next turn. You have 2 Munkidori with Darkness and it\'s your turn. Best line?',
-     o:['Retreat Grimmsnarl to the bench','Shift the damage onto their attacker with Munkidori','Evolve something to heal'],c:1,
-     e:'Each Munkidori moves up to 3 counters — two of them clear the 120 off you AND dump it onto their board. You survive and they take damage.'},
-    {s:'You\'re facing Mega Venusaur (Grass — your weakness). What\'s the game plan?',
-     o:['Grind slowly and out-value them','Present a lone Grimmsnarl as a wall','Spread wide with Froslass + Munkidori and race'],c:2,
-     e:'You can\'t wall a deck that doubles your weakness. Spread so you trade prizes even as attackers fall, and play fast and aggressive.'},
-    {s:'Turn 1 on the play against a fast deck, and you have Budew in hand. What do you do with it?',
-     o:['Bench it for later','Lead Budew to item-lock and slow them','Evolve toward your attacker'],c:1,
-     e:'Budew\'s lead locks items on their turn, slowing fast decks while you assemble your Stage 2 line.'},
-    {s:'You can take your last 2 prizes by KOing their Active ex, but doing so leaves your benched Froslass exposed to a return KO. They have 2 prizes left too. Do you go for it?',
-     o:['Yes — taking your last 2 prizes wins immediately','No, play safe and protect Froslass'],c:0,
-     e:'Taking your final prizes ends the game on the spot — there is no return turn. When the KO wins, take it; exposure only matters if the game continues.'}
-  ];
+  /* ===== scenario trainer (SCEN set per deck by applyDeck) ===== */
   let scCur=0;
   function scRender(){
     const sc=SCEN[scCur];
@@ -849,27 +1100,32 @@
   });
   document.getElementById('scPrev').addEventListener('click',()=>{scCur=(scCur-1+SCEN.length)%SCEN.length;scRender();});
   document.getElementById('scNext').addEventListener('click',()=>{scCur=(scCur+1)%SCEN.length;scRender();});
-  scRender();
 
-  /* ===== mulligan / opener check ===== */
-  const OPENER=['Impidimp','Snorunt','Budew','Munkidori','Rare Candy','Spikemuth Gym','Lillie\'s Determination','Poké Pad','Darkness Energy'];
+  /* ===== opener grading — shared by chip-check + opening-hand sim ===== */
+  function assess(hand){
+    const o=D.opener;
+    const hasBasic=hand.some(c=>c.basic);
+    const support=hand.filter(c=>c.tag==='draw'||c.tag==='search').length;
+    const hasStarter=hand.some(c=>c.name===o.keyStarter);
+    const hasCandy=hand.some(c=>c.tag==='candy');
+    const hasSearch=hand.some(c=>c.tag==='search');
+    if(!hasBasic)return{tier:'mull',cls:'v-bad',title:'Mulligan',body:'No Basic Pokémon in hand — you legally must mulligan. Reveal, reshuffle, redraw 7 (opponent draws +1).'};
+    if(support>=1&&(hasStarter||hasSearch))return{tier:'keep',cls:'v-keep',title:'Strong keep',body:`A Basic, a path to ${o.target} (${o.path}), and draw to dig.${hasStarter&&hasCandy?` ${o.starter} + Rare Candy means a fast ${o.target}.`:''} Lead ${o.starter} and go.`};
+    if(support>=1)return{tier:'ok',cls:'v-ok',title:'Keepable',body:`You can start and dig toward your pieces with your draw/search. A fine keep — lead ${o.starter}.`};
+    if(hand.some(c=>c.name==='Budew'))return{tier:'ok',cls:'v-ok',title:'Keepable (defensive)',body:'Budew can lead to stall while you draw into your line — fine vs fast decks, slower vs the field.'};
+    return{tier:'mull',cls:'v-bad',title:'Risky',body:'A Basic but no draw or search to dig — this stalls. Near-mulligan, especially on the play.'};
+  }
+
+  /* ===== mulligan / opener chip check (chips from D.openerChips) ===== */
   const openSel=new Set();
   const chipWrap=document.getElementById('openerChips');
-  chipWrap.innerHTML=OPENER.map(n=>`<button class="btn sm" data-o="${n}">${n}</button>`).join('');
+  function renderOpenerChips(){chipWrap.innerHTML=D.openerChips.map(c=>`<button class="btn sm" data-o="${c[0]}">${c[1]||c[0]}</button>`).join('');}
   chipWrap.addEventListener('click',e=>{const b=e.target.closest('[data-o]');if(!b)return;
     const n=b.dataset.o;if(openSel.has(n)){openSel.delete(n);b.classList.remove('sel');}else{openSel.add(n);b.classList.add('sel');}});
   document.getElementById('openerCheck').addEventListener('click',()=>{
-    const has=n=>openSel.has(n);
-    const basic=['Impidimp','Snorunt','Budew','Munkidori'].some(has);
-    const draw=has('Lillie\'s Determination')||has('Poké Pad');
-    const path=has('Impidimp')&&(has('Rare Candy')||has('Spikemuth Gym'));
-    let cls,title,body;
-    if(!basic){cls='v-bad';title='Mulligan';body='No Basic Pokémon in hand — you can\'t start. Reveal your hand, reshuffle, and redraw 7 (your opponent draws +1).';}
-    else if(path&&draw){cls='v-keep';title='Strong keep';body='You have the whole line: a Basic, a way to Grimmsnarl (Rare Candy / Spikemuth), and draw to keep digging. Lead Impidimp and go.';}
-    else if(has('Impidimp')&&(draw||has('Spikemuth Gym'))){cls='v-ok';title='Keepable';body='You can start and dig toward your pieces. Lead Impidimp and lean on draw / Spikemuth to find Rare Candy + Grimmsnarl.';}
-    else if(has('Budew')){cls='v-ok';title='Keepable (defensive)';body='Budew can lead to stall while you draw into your line — fine against fast decks, slower against the field.';}
-    else{cls='v-bad';title='Risky';body='You have a Basic but no clear path to Grimmsnarl. Keep only if going second and you can\'t do better — this is a near-brick on the play.';}
-    document.getElementById('openerVerdict').innerHTML=`<div class="verdict ${cls}"><b>${title}</b>${body}</div>`;
+    const hand=[...openSel].map(n=>({name:n,basic:(D._map[n]||{}).basic,tag:(D._map[n]||{}).tag||''}));
+    const g=assess(hand);
+    document.getElementById('openerVerdict').innerHTML=`<div class="verdict ${g.cls}"><b>${g.title}</b>${g.body}</div>`;
   });
 
   /* ===== prize & KO calculator ===== */
@@ -980,30 +1236,7 @@
     LOG.splice(+b.dataset.jdel,1);logRender();});
   logRender();
 
-  /* ===== editable matchup notes ===== */
-  const NOTES=store.get('gs_notes',{});
-  document.querySelectorAll('#match [data-mu]').forEach(mu=>{
-    const key=mu.querySelector('.mu-name b').textContent;
-    const ta=document.createElement('textarea');
-    ta.className='field mu-note';ta.placeholder='Your notes on this matchup…';
-    ta.value=NOTES[key]||'';
-    ta.addEventListener('click',e=>e.stopPropagation());
-    ta.addEventListener('input',()=>{NOTES[key]=ta.value;store.set('gs_notes',NOTES);});
-    mu.querySelector('.mu-body').appendChild(ta);
-  });
-
-  /* ===== sequencing puzzles ===== */
-  const PUZZLES=[
-    {p:'Turn 2, going second. Impidimp is already in play. Hand: Rare Candy, Grimmsnarl ex, Lillie\'s Determination, Spikemuth Gym.',
-     steps:['Lillie\'s Determination — draw first','Spikemuth Gym — search a missing piece','Rare Candy → Grimmsnarl ex','Punk Up — attack (ends your turn)'],
-     e:'Always draw and search BEFORE you commit Rare Candy — you might find something that changes the plan, and you can\'t un-Candy. Punk Up is an attack, so it\'s always last.'},
-    {p:'Your Grimmsnarl is badly damaged and dies next turn. You have 2 Munkidori with Darkness, Boss\'s Orders, and a charged attacker.',
-     steps:['Munkidori — shift damage off you onto their target','Boss\'s Orders — drag up what you want to KO','Attack for 180 + 30'],
-     e:'Heal yourself with Munkidori first so you survive and add damage, THEN set up the KO with Boss, then swing. Attacking first can leave you dead on the return.'},
-    {p:'You\'re set up and ahead. Their hand is loaded and they\'re about to combo off. You have a charged attacker and Judge.',
-     steps:['Attack for 180 + 30 — take your damage','Judge — reset their loaded hand to 4 as you pass'],
-     e:'Take your damage first, then end the turn by Judging their loaded hand down to 4 so they draw into a wrecked hand. Note: Judge and Boss are both Supporters, so you only get one per turn.'}
-  ];
+  /* ===== sequencing puzzles (PUZZLES set per deck by applyDeck) ===== */
   let pzCur=0,pzChosen=[],pzShuf=[],pzChecked=false,pzOK=false;
   const seqEl=document.getElementById('seq');
   function pzInit(){pzChosen=[];pzChecked=false;pzShuf=shuffle(PUZZLES[pzCur].steps.map((_,i)=>i));pzRender();}
@@ -1029,42 +1262,20 @@
       else if(a==='prev'){pzCur=(pzCur-1+PUZZLES.length)%PUZZLES.length;pzInit();}
       else if(a==='next'){pzCur=(pzCur+1)%PUZZLES.length;pzInit();}}
   });
-  pzInit();
-
-  /* ===== opening-hand simulator ===== */
-  const DECKLIST=[
-    ['Marnie\'s Impidimp',3,'basic'],['Marnie\'s Morgrem',2,''],['Marnie\'s Grimmsnarl ex',3,''],
-    ['Snorunt',3,'basic'],['Froslass',3,''],['Munkidori',4,'basic'],['Budew',1,'basic'],
-    ['Tatsugiri',1,'basic'],['Yveltal',1,'basic'],['Team Rocket\'s Petrel',4,''],
-    ['Lillie\'s Determination',4,'draw'],['Judge',1,''],['Boss\'s Orders',3,''],['Poké Pad',4,'draw'],
-    ['Buddy-Buddy Poffin',3,'draw'],['Rare Candy',3,'candy'],['Night Stretcher',2,''],
-    ['Air Balloon',1,''],['Unfair Stamp',1,''],['Spikemuth Gym',4,'search'],['Basic Darkness Energy',9,'energy']
-  ];
-  const DECK=[];DECKLIST.forEach(c=>{for(let k=0;k<c[1];k++)DECK.push({name:c[0],tag:c[2]});});
+  /* ===== opening-hand simulator (deck flat list built by applyDeck) ===== */
   let currentHand=null,handCalled=null;
-  function gradeHand(hand){
-    const tags=hand.map(c=>c.tag);
-    const hasBasic=tags.includes('basic');
-    const support=hand.filter(c=>c.tag==='draw'||c.tag==='search').length;
-    const hasImp=hand.some(c=>c.name==='Marnie\'s Impidimp');
-    const hasCandy=tags.includes('candy'),hasSearch=tags.includes('search');
-    if(!hasBasic)return{rec:'mull',why:'No Basic Pokémon in the hand — you legally MUST mulligan.'};
-    if(support>=1&&(hasImp||hasSearch))return{rec:'keep',why:'A Basic, draw/search to dig, and a path to your attacker. '+(hasImp&&hasCandy?'Impidimp + Rare Candy means a fast Grimmsnarl. ':'')+'Snap keep.'};
-    if(support>=1)return{rec:'keep',why:'You can start and dig with your draw/search to find the rest of the line. A fine keep.'};
-    return{rec:'mull',why:'You have a Basic but no draw or search to dig out of it — this stalls badly. Mulligan-tier, especially on the play.'};
-  }
   const handArea=document.getElementById('handArea');
   function handRender(){
     if(!currentHand){handArea.innerHTML='<p class="sub" style="margin:0">Tap "Deal 7 cards" to start.</p>';return;}
     let h='<div class="card raised"><div class="grp-label">Your opening 7</div>';
     h+='<div style="display:flex;flex-direction:column;gap:5px;margin-top:7px">'+
-      currentHand.map(c=>`<div style="font-size:13.5px;color:${c.tag==='basic'?'var(--frost)':'var(--mist)'}">${c.tag==='basic'?'● ':'○ '}${c.name}</div>`).join('')+'</div>';
+      currentHand.map(c=>`<div style="font-size:13.5px;color:${c.basic?'var(--frost)':'var(--mist)'}">${c.basic?'● ':'○ '}${c.name}</div>`).join('')+'</div>';
     h+='<div style="font-size:11px;color:var(--fog);margin-top:8px">● = Basic Pokémon (you need at least one to start)</div>';
     if(!handCalled){
       h+='<div class="row" style="margin-top:14px"><button class="btn" style="flex:1" data-call="mull">Mulligan</button><button class="btn primary" style="flex:1" data-call="keep">Keep</button></div>';
     }else{
-      const g=gradeHand(currentHand),right=g.rec===handCalled;
-      h+=`<div class="verdict ${right?'v-keep':'v-bad'}" style="margin-top:14px"><b>${right?'✓ Right call':'✗ Reconsider'}</b>${g.why}</div>`;
+      const g=assess(currentHand),right=(handCalled==='keep'&&g.tier!=='mull')||(handCalled==='mull'&&g.tier==='mull');
+      h+=`<div class="verdict ${right?'v-keep':'v-bad'}" style="margin-top:14px"><b>${right?'✓ Right call':'✗ Reconsider'}</b>${g.body}</div>`;
     }
     handArea.innerHTML=h+'</div>';
   }
@@ -1073,42 +1284,14 @@
   });
   handArea.addEventListener('click',e=>{const b=e.target.closest('[data-call]');if(!b||handCalled)return;
     handCalled=b.dataset.call;handRender();});
-  handRender();
 
-  /* ===== interactive decklist (tap a card for its role) ===== */
-  const CARD_ROLES={
-    'Marnie\'s Impidimp':['Basic Pokémon · ×3','The start of your attacker line. Open with it and Rare Candy up to Grimmsnarl ex. Bench extras early.'],
-    'Marnie\'s Morgrem':['Stage 1 · ×2','The middle of the line — usually skipped via Rare Candy, but a backup route to Grimmsnarl if you can\'t Candy.'],
-    'Marnie\'s Grimmsnarl ex':['Stage 2 ex · ×3','Your main attacker. Punk Up loads Darkness straight from the deck; it then hits 180 to the Active + 30 to a benched Pokémon.'],
-    'Snorunt':['Basic Pokémon · ×3','Evolves into Froslass, your spread engine. Bench it early so Froslass is online when you need it.'],
-    'Froslass':['Stage 1 · ×3','Spreads a damage counter onto every Ability Pokémon between turns — the damage Munkidori then moves. Your only self-damage source; protect it.'],
-    'Munkidori':['Basic Pokémon · ×4','With Darkness attached, moves up to 3 counters off your Pokémon onto the opponent. Heals you and pressures them. You run 4 to move big chunks.'],
-    'Budew':['Basic Pokémon · ×1','Turn-1 tech to slow fast decks while you set up your Stage 2 line.'],
-    'Tatsugiri':['Basic Pokémon · ×1','Draw/consistency support to smooth your setup.'],
-    'Yveltal':['Basic Pokémon · ×1','A Dark attacker / tech option for specific board states.'],
-    'Team Rocket\'s Petrel':['Supporter · ×4','Hand disruption that shrinks the opponent\'s options — a key piece of your post-Iono disruption.'],
-    'Lillie\'s Determination':['Supporter · ×4','Your main draw engine after Iono\'s rotation. Lean on it to dig.'],
-    'Judge':['Supporter · ×1','Resets both hands to 4 — disruption when the opponent is loaded.'],
-    'Boss\'s Orders':['Supporter · ×3','Drags a benched Pokémon into the Active spot to KO setup pieces or sitting ducks. The 3-count shines vs slower decks.'],
-    'Poké Pad':['Item · ×4','Draw/consistency you can play every turn — unlike Supporters, it doesn\'t use your one-per-turn slot.'],
-    'Buddy-Buddy Poffin':['Item · ×3','Pulls 2 small Basics from the deck to flood your bench early.'],
-    'Rare Candy':['Item · ×3','Jumps a Basic straight to Stage 2 (Impidimp → Grimmsnarl ex), skipping Morgrem. The exception to the no-evolve-turn-played rule.'],
-    'Night Stretcher':['Item · ×2','Recovers a Pokémon or Energy from your discard — rebuild after trades.'],
-    'Air Balloon':['Tool · ×1','Cheap retreat and an anti-deck-out tool for long, grindy games.'],
-    'Unfair Stamp':['ACE SPEC Item · ×1','Comeback button — disrupt their hand while you draw 5. One per deck.'],
-    'Spikemuth Gym':['Stadium · ×4','Searches ANY Marnie\'s Pokémon — your tutor for every stage of the Grimmsnarl line. Run 4 for consistency.'],
-    'Basic Darkness Energy':['Energy · ×9','Mono-Dark fuel for Punk Up and Munkidori. Only 9 because Punk Up pulls Darkness from the deck for you.']
-  };
-  document.querySelectorAll('#deck .line-row').forEach(row=>{
-    row.addEventListener('click',()=>{
-      const name=row.querySelector('.nm').firstChild.textContent.trim();
-      const r=CARD_ROLES[name];if(!r)return;
-      document.getElementById('glName').textContent=name;
-      document.getElementById('glTyp').textContent=r[0];
-      document.getElementById('glText').textContent=r[1];
-      glModal.classList.add('on');
-    });
-  });
+  /* ===== deck picker + boot ===== */
+  const deckPick=document.getElementById('deckPick');
+  deckPick.innerHTML=DECKS.map((d,i)=>`<option value="${i}">${d.name}</option>`).join('');
+  deckPick.addEventListener('change',()=>applyDeck(+deckPick.value));
+  const savedId=store.get('gs_deck','grimmsnarl');
+  const startIdx=Math.max(0,DECKS.findIndex(d=>d.id===savedId));
+  applyDeck(startIdx);
 </script>
 </body>
 </html>
