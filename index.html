@@ -298,6 +298,15 @@
     background-image:linear-gradient(45deg,transparent 50%,var(--fog) 50%),linear-gradient(135deg,var(--fog) 50%,transparent 50%);
     background-position:calc(100% - 18px) 19px,calc(100% - 13px) 19px;background-size:5px 5px;background-repeat:no-repeat}
   .deckpick:focus{outline:none;border-color:var(--hex)}
+  .deck-actions{display:flex;gap:8px;margin-top:8px;max-width:300px}
+  .deck-actions .btn{flex:1;padding:7px 10px;font-size:12px}
+  .nd-grp{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--hex);font-weight:700;margin:13px 0 3px}
+  .nd-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px}
+  .nd-row .ndq{font-family:Georgia,serif;color:var(--hex);font-weight:700;min-width:20px;text-align:center}
+  .nd-row .ndn{flex:1;color:var(--paper)}
+  .nd-row label{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--fog);cursor:pointer;white-space:nowrap}
+  .nd-row select{background:var(--slate);border:1px solid var(--line);color:var(--mist);border-radius:7px;font-size:11px;padding:3px 5px;font-family:inherit}
+  .nd-err{color:var(--ember);font-size:12px;margin-top:8px}
 
   footer{text-align:center;font-size:11px;color:var(--fog);padding:24px 16px 8px;line-height:1.6}
 </style>
@@ -308,6 +317,7 @@
   <div class="eyebrow" id="eyebrow">Standard Format · Field Manual</div>
   <h1 id="deckTitle">Marnie's Grimmsnarl<span class="small">Spread · disrupt · grind them out.</span></h1>
   <select class="deckpick" id="deckPick" aria-label="Choose deck"></select>
+  <div class="deck-actions"><button class="btn" id="newDeckBtn">➕ Add deck</button><button class="btn" id="delDeckBtn" hidden>🗑 Delete</button></div>
   <span class="badge" id="netBadge">◆ Checking…</span>
 </header>
 
@@ -486,6 +496,30 @@
   </div>
 </div>
 
+<div class="modal" id="deckModal">
+  <div class="modal-card" style="max-width:430px;max-height:88vh;overflow:auto">
+    <h4>Add your own deck</h4>
+    <div class="typ">Saved in this browser · works offline</div>
+    <label class="lbl">Deck name</label>
+    <input class="field" id="ndName" placeholder="e.g. Charizard ex">
+    <label class="lbl">Tagline (optional)</label>
+    <input class="field" id="ndTag" placeholder="e.g. Burn it down.">
+    <label class="lbl">Paste your decklist</label>
+    <textarea class="field" id="ndList" style="min-height:120px;resize:vertical" placeholder="PTCGL export, or one card per line:&#10;&#10;Pokémon - 6&#10;3 Charmander OBF 26&#10;3 Charizard ex OBF 125&#10;Trainer - 4&#10;4 Rare Candy&#10;Energy - 9&#10;9 Basic Fire Energy"></textarea>
+    <button class="btn" id="ndParse" style="width:100%;margin-top:10px">Parse list →</button>
+    <div id="ndReview"></div>
+    <label class="lbl" id="ndKsLbl" hidden>Your line's first Basic (powers the mulligan tools)</label>
+    <select class="field" id="ndKeyStarter" hidden></select>
+    <label class="lbl">Game plan / notes (optional)</label>
+    <textarea class="field" id="ndNotes" style="min-height:56px;resize:vertical" placeholder="A line or two on how the deck wins — shows on the Secrets tab."></textarea>
+    <div class="nd-err" id="ndErr" hidden></div>
+    <div class="row" style="margin-top:16px">
+      <button class="btn ghost" id="ndCancel" style="flex:1">Cancel</button>
+      <button class="btn primary" id="ndSave" style="flex:1">Save deck</button>
+    </div>
+  </div>
+</div>
+
 <nav>
   <button class="on" data-go="deck"><span class="ic">🃏</span>Deck</button>
   <button data-go="pros"><span class="ic">⚖️</span>Pros/Cons</button>
@@ -551,8 +585,8 @@
     set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
   };
 
-  /* ===== DECK PROFILES — all deck-specific strategy lives here ===== */
-  const DECKS=[
+  /* ===== DECK PROFILES — built-in deck-specific strategy lives here ===== */
+  const BUILTIN=[
   {
     id:'grimmsnarl', name:"Marnie's Grimmsnarl", tagline:'Spread · disrupt · grind them out.',
     eyebrow:'Standard Format · Field Manual',
@@ -927,6 +961,10 @@
   }
   ];
 
+  /* ===== combine built-in decks with the user's saved custom decks ===== */
+  function loadCustom(){return store.get('gs_customDecks',[]);}
+  let DECKS=BUILTIN.concat(loadCustom());
+
   /* ===== active deck + per-deck data slots (filled by applyDeck) ===== */
   let active=0, D=DECKS[0];
   let CARDS=[], SCEN=[], PUZZLES=[], GLOSS={}, CARD_ROLES={}, DECK=[];
@@ -949,23 +987,28 @@
       deckGroup('Pokémon — '+D.meta.pk,D.pokemon)+deckGroup('Trainer — '+D.meta.tr,D.trainer)+deckGroup('Energy — '+D.meta.en,D.energy)+
       D.deckNotes.map(n=>`<div class="callout${n.warn?' warn':''}">${n.html}</div>`).join('');
   }
+  const customPH='<p class="sub">This is your custom deck — strategy here isn’t filled in yet. The Deck, card-roles, mulligan and opening-hand tools still work from your list. Ask Claude to draft this, or jot notes in the boxes that have them.</p>';
   function renderPros(){
-    document.getElementById('prosBody').innerHTML=
-      `<div class="pc"><div class="pc-block pros"><h4>◆ What it's great at</h4><ul>`+D.pros.map(x=>`<li>${x}</li>`).join('')+`</ul></div>`+
-      `<div class="pc-block cons"><h4>◆ Where it struggles</h4><ul>`+D.cons.map(x=>`<li>${x}</li>`).join('')+`</ul></div></div>`+
-      `<div class="callout warn"><b>One-line takeaway:</b> ${D.prosTakeaway}</div>`;
+    const el=document.getElementById('prosBody');
+    if(!(D.pros&&D.pros.length)&&!(D.cons&&D.cons.length)){el.innerHTML=customPH;return;}
+    el.innerHTML=
+      `<div class="pc"><div class="pc-block pros"><h4>◆ What it's great at</h4><ul>`+(D.pros||[]).map(x=>`<li>${x}</li>`).join('')+`</ul></div>`+
+      `<div class="pc-block cons"><h4>◆ Where it struggles</h4><ul>`+(D.cons||[]).map(x=>`<li>${x}</li>`).join('')+`</ul></div></div>`+
+      (D.prosTakeaway?`<div class="callout warn"><b>One-line takeaway:</b> ${D.prosTakeaway}</div>`:'');
   }
   function renderPlay(){
-    render(D.setup,document.getElementById('setup-steps'),'Setup');
-    render(D.turn,document.getElementById('turn-steps'),'Step');
-    document.getElementById('playNote').innerHTML=`<div class="callout">${D.energyRule}</div>`;
+    const s=document.getElementById('setup-steps'),t=document.getElementById('turn-steps');
+    if(D.setup&&D.setup.length)render(D.setup,s,'Setup'); else s.innerHTML=customPH;
+    if(D.turn&&D.turn.length)render(D.turn,t,'Step'); else t.innerHTML='';
+    document.getElementById('playNote').innerHTML=D.energyRule?`<div class="callout">${D.energyRule}</div>`:'';
   }
   function renderMatch(){
-    const tier={good:['t-good','✓'],even:['t-even','='],bad:['t-bad','✕']};
     const wrap=document.getElementById('matchBody');
-    wrap.innerHTML=D.matchups.map((m,i)=>{const t=tier[m.tier];
-      return `<div class="mu${i===0?' open':''}" data-mu><div class="mu-head"><span class="tier ${t[0]}">${t[1]}</span><span class="mu-name"><b>${m.name}</b><span>${m.sub}</span></span><span class="arrow">▶</span></div><div class="mu-body"><div>${m.body}</div></div></div>`;
-    }).join('')+`<div class="callout">${D.matchupLegend}</div>`;
+    if(!(D.matchups&&D.matchups.length)){wrap.innerHTML=customPH;return;}
+    const tier={good:['t-good','✓'],even:['t-even','='],bad:['t-bad','✕']};
+    wrap.innerHTML=D.matchups.map((m,i)=>{const t=tier[m.tier]||tier.even;
+      return `<div class="mu${i===0?' open':''}" data-mu><div class="mu-head"><span class="tier ${t[0]}">${t[1]}</span><span class="mu-name"><b>${m.name}</b><span>${m.sub||''}</span></span><span class="arrow">▶</span></div><div class="mu-body"><div>${m.body}</div></div></div>`;
+    }).join('')+(D.matchupLegend?`<div class="callout">${D.matchupLegend}</div>`:'');
     wrap.querySelectorAll('[data-mu]').forEach(mu=>{
       const key=D.id+'|'+mu.querySelector('.mu-name b').textContent;
       const ta=document.createElement('textarea');
@@ -977,14 +1020,16 @@
     });
   }
   function renderRules(){
-    document.getElementById('rulesBody').innerHTML=
-      `<h3>Deck secrets</h3>`+D.secrets.map(s=>`<div class="card raised"><p><b class="${s.accent}">${s.title}</b> ${s.body}</p></div>`).join('')+
-      `<h3>Core rules (beginner)</h3><dl class="gloss">`+D.coreRules.map(r=>`<dt>${r[0]}</dt><dd>${r[1]}</dd>`).join('')+`</dl>`+
-      `<div class="callout">${D.damageNote}</div>`;
+    let h='';
+    if(D.secrets&&D.secrets.length)h+=`<h3>Deck secrets</h3>`+D.secrets.map(s=>`<div class="card raised"><p><b class="${s.accent||'pu'}">${s.title}</b> ${s.body}</p></div>`).join('');
+    if(D.coreRules&&D.coreRules.length)h+=`<h3>Core rules (beginner)</h3><dl class="gloss">`+D.coreRules.map(r=>`<dt>${r[0]}</dt><dd>${r[1]}</dd>`).join('')+`</dl>`;
+    if(D.damageNote)h+=`<div class="callout">${D.damageNote}</div>`;
+    document.getElementById('rulesBody').innerHTML=h||customPH;
   }
   function renderDream(){
-    document.getElementById('dreamBody').innerHTML=
-      `<div class="card raised"><p>${D.dreamIntro}</p><ol style="margin:10px 0 0 18px;font-size:13.5px;color:var(--mist);line-height:1.95">`+
+    const el=document.getElementById('dreamBody');
+    if(!(D.dreamSteps&&D.dreamSteps.length)){el.innerHTML=customPH;return;}
+    el.innerHTML=`<div class="card raised"><p>${D.dreamIntro||''}</p><ol style="margin:10px 0 0 18px;font-size:13.5px;color:var(--mist);line-height:1.95">`+
       D.dreamSteps.map(s=>`<li>${s}</li>`).join('')+`</ol></div>`;
   }
 
@@ -1013,6 +1058,7 @@
     openSel.clear(); renderOpenerChips(); document.getElementById('openerVerdict').innerHTML='';
     currentHand=null; handCalled=null; handRender();
     document.getElementById('deckPick').value=String(i);
+    document.getElementById('delDeckBtn').hidden=!D.custom;
   }
 
   /* ===== coach: what should I do? (reads D.coach) ===== */
@@ -1035,7 +1081,9 @@
       if(back)back.addEventListener('click',()=>{coachAt=coachHist.pop();coachRender();});
     }
   }
-  function coachReset(){coachAt=D.coach.start;coachHist=[];coachRender();}
+  function coachReset(){
+    if(!D.coach){coachEl.innerHTML=customPH;return;}
+    coachAt=D.coach.start;coachHist=[];coachRender();}
   coachEl.addEventListener('click',e=>{const b=e.target.closest('[data-coach]');if(!b)return;
     const n=D.coach.nodes[coachAt];coachHist.push(coachAt);coachAt=n[b.dataset.coach];coachRender();});
 
@@ -1056,7 +1104,9 @@
             wrong:document.getElementById('fcWrong'),left:document.getElementById('fcLeft'),flash:document.getElementById('flash')};
   let fcQueue=[],fcCur=-1,fcFlipped=false,fcR=0,fcW=0;
   function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-  function fcStart(){fcQueue=shuffle(CARDS.map((_,i)=>i));fcCur=-1;fcR=0;fcW=0;fcRender();}
+  function fcStart(){
+    if(!CARDS||!CARDS.length){fcQueue=[];fcCur=-1;fc.q.textContent='No flashcards for this deck yet.';fc.a.style.display='none';fc.hint.style.display='none';fc.grade.style.display='none';fc.right.textContent='0';fc.wrong.textContent='0';fc.left.textContent='0';return;}
+    fcQueue=shuffle(CARDS.map((_,i)=>i));fcCur=-1;fcR=0;fcW=0;fcRender();}
   function fcRender(){
     fc.right.textContent=fcR;fc.wrong.textContent=fcW;fc.left.textContent=fcQueue.length-(fcCur>=0?1:0)<0?0:fcQueue.length;
     if(fcCur<0){fc.q.textContent='Tap to start';fc.a.style.display='none';fc.hint.style.display='block';fc.hint.textContent='Tap the card to begin';fc.grade.style.display='none';fc.left.textContent=fcQueue.length;return;}
@@ -1068,6 +1118,7 @@
     else{fc.a.style.display='none';fc.hint.style.display='block';fc.hint.textContent='Tap to reveal';fc.grade.style.display='none';}
   }
   fc.flash.addEventListener('click',()=>{
+    if(!CARDS||!CARDS.length)return;
     if(fcCur<0){fcCur=0;fcFlipped=false;fcRender();return;}
     if(fcCur>=fcQueue.length)return;
     if(!fcFlipped){fcFlipped=true;fcRender();}
@@ -1080,6 +1131,7 @@
   /* ===== scenario trainer (SCEN set per deck by applyDeck) ===== */
   let scCur=0;
   function scRender(){
+    if(!SCEN.length){document.getElementById('scenario').innerHTML=customPH;document.getElementById('scCount').textContent='';return;}
     const sc=SCEN[scCur];
     document.getElementById('scCount').textContent=`${scCur+1} / ${SCEN.length}`;
     document.getElementById('scenario').innerHTML=
@@ -1100,8 +1152,8 @@
     ex.innerHTML=(pick===sc.c?'<b style="color:var(--grass)">Correct. </b>':'<b style="color:var(--ember)">Not quite. </b>')+sc.e;
     ex.style.display='block';
   });
-  document.getElementById('scPrev').addEventListener('click',()=>{scCur=(scCur-1+SCEN.length)%SCEN.length;scRender();});
-  document.getElementById('scNext').addEventListener('click',()=>{scCur=(scCur+1)%SCEN.length;scRender();});
+  document.getElementById('scPrev').addEventListener('click',()=>{if(!SCEN.length)return;scCur=(scCur-1+SCEN.length)%SCEN.length;scRender();});
+  document.getElementById('scNext').addEventListener('click',()=>{if(!SCEN.length)return;scCur=(scCur+1)%SCEN.length;scRender();});
 
   /* ===== opener grading — shared by chip-check + opening-hand sim ===== */
   function assess(hand){
@@ -1122,7 +1174,7 @@
   /* ===== mulligan / opener chip check (chips from D.openerChips) ===== */
   const openSel=new Set();
   const chipWrap=document.getElementById('openerChips');
-  function renderOpenerChips(){chipWrap.innerHTML=D.openerChips.map(c=>`<button class="btn sm" data-o="${c[0]}">${c[1]||c[0]}</button>`).join('');}
+  function renderOpenerChips(){chipWrap.innerHTML=(D.openerChips&&D.openerChips.length)?D.openerChips.map(c=>`<button class="btn sm" data-o="${c[0]}">${c[1]||c[0]}</button>`).join(''):'<p class="sub" style="margin:0">No key cards flagged for this deck.</p>';}
   chipWrap.addEventListener('click',e=>{const b=e.target.closest('[data-o]');if(!b)return;
     const n=b.dataset.o;if(openSel.has(n)){openSel.delete(n);b.classList.remove('sel');}else{openSel.add(n);b.classList.add('sel');}});
   document.getElementById('openerCheck').addEventListener('click',()=>{
@@ -1242,7 +1294,9 @@
   /* ===== sequencing puzzles (PUZZLES set per deck by applyDeck) ===== */
   let pzCur=0,pzChosen=[],pzShuf=[],pzChecked=false,pzOK=false;
   const seqEl=document.getElementById('seq');
-  function pzInit(){pzChosen=[];pzChecked=false;pzShuf=shuffle(PUZZLES[pzCur].steps.map((_,i)=>i));pzRender();}
+  function pzInit(){
+    if(!PUZZLES.length){document.getElementById('seq').innerHTML=customPH;return;}
+    pzChosen=[];pzChecked=false;pzShuf=shuffle(PUZZLES[pzCur].steps.map((_,i)=>i));pzRender();}
   function pzRender(){
     const pz=PUZZLES[pzCur],avail=pzShuf.filter(i=>!pzChosen.includes(i));
     let h=`<div class="card raised"><p style="color:var(--paper);font-weight:600">${pz.p}</p>`;
@@ -1291,10 +1345,124 @@
   handArea.addEventListener('click',e=>{const b=e.target.closest('[data-call]');if(!b||handCalled)return;
     handCalled=b.dataset.call;handRender();});
 
-  /* ===== deck picker + boot ===== */
+  /* ===== deck picker ===== */
   const deckPick=document.getElementById('deckPick');
-  deckPick.innerHTML=DECKS.map((d,i)=>`<option value="${i}">${d.name}</option>`).join('');
+  function refreshPicker(){deckPick.innerHTML=DECKS.map((d,i)=>`<option value="${i}">${d.name}${d.custom?' ★':''}</option>`).join('');}
   deckPick.addEventListener('change',()=>applyDeck(+deckPick.value));
+
+  /* ===== add / delete custom decks ===== */
+  const deckModal=document.getElementById('deckModal');
+  let ndRows=[];
+  function guessTag(name,group){
+    if(group==='energy'||/\benergy\b/i.test(name))return 'energy';
+    if(/rare candy/i.test(name))return 'candy';
+    if(/\b(ball|arven|jacq|vessel|buddy)\b/i.test(name))return 'search';
+    if(/research|determination|iono|pad|pok[eé]gear|poffin|colress|marnie|cynthia|professor|vip pass|trekking|secret box|night stretcher/i.test(name))return 'draw';
+    return '';
+  }
+  const KNOWN_BASICS=new Set(BUILTIN.flatMap(d=>[...d.pokemon].filter(c=>c.basic).map(c=>c.n)));
+  function parseList(text){
+    const rows=[];let grp='pokemon';
+    text.split(/\r?\n/).forEach(line=>{
+      const l=line.trim();if(!l)return;
+      const hdr=l.match(/^(pok[eé]mon|trainers?|energy)\b/i);
+      if(hdr){const g=hdr[1].toLowerCase();grp=g.indexOf('pok')===0?'pokemon':(g.indexOf('energy')===0?'energy':'trainer');return;}
+      const m=l.match(/^(\d+)\s*x?\s+(.+)$/i);if(!m)return;
+      let q=parseInt(m[1],10);if(!q||q>30)return;
+      let name=m[2].trim(),set='';
+      const sm=name.match(/\s+([A-Z]{2,4})\s+([0-9]+[A-Za-z]?)$/);
+      if(sm){set=sm[1]+' '+sm[2];name=name.slice(0,name.length-sm[0].length).trim();}
+      let g=grp;if(/\benergy\b/i.test(name))g='energy';
+      rows.push({q,n:name,set,group:g,basic:g==='pokemon'&&KNOWN_BASICS.has(name),tag:guessTag(name,g)});
+    });
+    return rows;
+  }
+  function renderReview(){
+    const order=['pokemon','trainer','energy'],label={pokemon:'Pokémon',trainer:'Trainer',energy:'Energy'};
+    let h='';
+    order.forEach(g=>{
+      const rs=ndRows.map((r,i)=>({r,i})).filter(o=>o.r.group===g);
+      if(!rs.length)return;
+      h+=`<div class="nd-grp">${label[g]} — ${rs.reduce((s,o)=>s+o.r.q,0)}</div>`;
+      rs.forEach(({r,i})=>{
+        h+=`<div class="nd-row" data-idx="${i}"><span class="ndq">${r.q}</span><span class="ndn">${r.n}</span>`;
+        if(g==='pokemon')h+=`<label><input type="checkbox" class="ndBasic" ${r.basic?'checked':''}> Basic</label>`;
+        if(g!=='energy')h+=`<select class="ndTag"><option value="">—</option>${['draw','search','candy'].map(t=>`<option value="${t}" ${r.tag===t?'selected':''}>${t}</option>`).join('')}</select>`;
+        h+=`</div>`;
+      });
+    });
+    document.getElementById('ndReview').innerHTML=h;
+    syncStarter();
+  }
+  function syncStarter(){
+    const ks=document.getElementById('ndKeyStarter'),lbl=document.getElementById('ndKsLbl');
+    const basics=ndRows.filter(r=>r.group==='pokemon'&&r.basic).map(r=>r.n);
+    if(basics.length){ks.hidden=false;lbl.hidden=false;ks.innerHTML=basics.map(n=>`<option value="${n}">${n}</option>`).join('');}
+    else{ks.hidden=true;lbl.hidden=true;}
+  }
+  document.getElementById('ndReview').addEventListener('change',e=>{
+    const row=e.target.closest('.nd-row');if(!row)return;const i=+row.dataset.idx;
+    if(e.target.classList.contains('ndBasic')){ndRows[i].basic=e.target.checked;syncStarter();}
+    if(e.target.classList.contains('ndTag'))ndRows[i].tag=e.target.value;
+  });
+  function openDeckModal(){
+    ndRows=[];['ndName','ndTag','ndList','ndNotes'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('ndReview').innerHTML='';document.getElementById('ndErr').hidden=true;
+    document.getElementById('ndKeyStarter').hidden=true;document.getElementById('ndKsLbl').hidden=true;
+    deckModal.classList.add('on');
+  }
+  document.getElementById('newDeckBtn').addEventListener('click',openDeckModal);
+  document.getElementById('ndCancel').addEventListener('click',()=>deckModal.classList.remove('on'));
+  deckModal.addEventListener('click',e=>{if(e.target===deckModal)deckModal.classList.remove('on');});
+  document.getElementById('ndParse').addEventListener('click',()=>{
+    ndRows=parseList(document.getElementById('ndList').value);
+    const err=document.getElementById('ndErr');
+    if(!ndRows.length){err.textContent='Couldn’t read any cards. Use lines like "3 Charmander".';err.hidden=false;return;}
+    err.hidden=true;renderReview();
+  });
+  document.getElementById('ndSave').addEventListener('click',()=>{
+    const err=document.getElementById('ndErr');
+    const name=document.getElementById('ndName').value.trim();
+    if(!name){err.textContent='Give your deck a name.';err.hidden=false;return;}
+    if(!ndRows.length){err.textContent='Paste a list and tap "Parse list" first.';err.hidden=false;return;}
+    const mk=g=>ndRows.filter(r=>r.group===g).map(r=>{const c={q:r.q,n:r.n,sub:'',set:r.set};if(r.basic)c.basic=1;if(g==='energy')c.energy=1;if(r.tag)c.tag=r.tag;else if(g==='energy')c.tag='energy';return c;});
+    const pokemon=mk('pokemon'),trainer=mk('trainer'),energy=mk('energy');
+    const sum=a=>a.reduce((s,c)=>s+c.q,0);
+    const basics=pokemon.filter(c=>c.basic).map(c=>c.n);
+    const keyStarter=document.getElementById('ndKeyStarter').value||basics[0]||'';
+    const hasCandy=trainer.some(c=>c.tag==='candy');
+    const hasSearch=[...pokemon,...trainer].some(c=>c.tag==='search');
+    const path=hasCandy?'Rare Candy':(hasSearch?'a search card':'your draw');
+    const tagged=[...pokemon,...trainer,...energy].filter(c=>c.tag&&c.tag!=='energy').map(c=>c.n);
+    const chips=[...new Set([...basics,...tagged,...(energy[0]?[energy[0].n]:[])])].slice(0,10).map(n=>[n]);
+    const roleType={};[['pokemon','Pokémon',pokemon],['trainer','Trainer',trainer],['energy','Energy',energy]].forEach(([g,lab,arr])=>arr.forEach(c=>{roleType[c.n]=[`${lab} · ×${c.q}`,c.tag&&c.tag!=='energy'?`Tagged "${c.tag}" for the opener tools.`:'']}));
+    const notes=document.getElementById('ndNotes').value.trim();
+    const profile={
+      id:'custom-'+Date.now(),custom:true,name,tagline:document.getElementById('ndTag').value.trim()||'Your custom deck.',
+      eyebrow:'Custom Deck',footer:name+' — your custom deck (saved in this browser).',
+      deckSub:'Your imported list. <span style="color:var(--frost)">Tap any card for its role.</span>',
+      meta:{pk:sum(pokemon),tr:sum(trainer),en:sum(energy)},
+      pokemon,trainer,energy,
+      deckNotes:[{warn:1,html:'<b>Custom deck.</b> The Deck, card-roles, mulligan and opening-hand tools run off your list. The strategy tabs (Coach, Matchups, Scenarios, Secrets) are blank until you add them — ask Claude to draft them from this list.'}],
+      pros:[],cons:[],prosTakeaway:'',setup:[],turn:[],energyRule:'',matchups:[],matchupLegend:'',
+      secrets:notes?[{accent:'pu',title:'Game plan.',body:notes}]:[],coreRules:[],damageNote:'',
+      coach:null,flashcards:[],scenarios:[],sequencing:[],
+      opener:{keyStarter,starter:keyStarter||'your starter',path,target:name},
+      openerChips:chips,dreamIntro:'',dreamSteps:[],glossary:{},cardRoles:roleType
+    };
+    const custom=loadCustom();custom.push(profile);store.set('gs_customDecks',custom);
+    DECKS=BUILTIN.concat(custom);refreshPicker();
+    deckModal.classList.remove('on');applyDeck(DECKS.length-1);
+  });
+  document.getElementById('delDeckBtn').addEventListener('click',()=>{
+    if(!D.custom)return;
+    if(!confirm('Delete "'+D.name+'"? This can’t be undone.'))return;
+    const custom=loadCustom().filter(d=>d.id!==D.id);store.set('gs_customDecks',custom);
+    DECKS=BUILTIN.concat(custom);refreshPicker();applyDeck(0);
+  });
+
+  /* ===== boot ===== */
+  refreshPicker();
   const savedId=store.get('gs_deck','grimmsnarl');
   const startIdx=Math.max(0,DECKS.findIndex(d=>d.id===savedId));
   applyDeck(startIdx);
