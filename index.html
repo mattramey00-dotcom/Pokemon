@@ -393,13 +393,13 @@
     <div id="seq"></div>
 
     <h3>Mulligan / opener check</h3>
-    <p class="sub" style="margin-bottom:10px">Tap the key cards in your opening 7, then judge the hand.</p>
+    <p class="sub" style="margin-bottom:10px">Tap the key cards in your opening 7. Remember: you only mulligan with <b>no Basic Pokémon</b> — a legal hand is always a keep, this just rates how good it is.</p>
     <div class="row g" id="openerChips"></div>
     <button class="btn primary" id="openerCheck" style="width:100%;margin-top:13px">Judge my opener</button>
     <div id="openerVerdict"></div>
 
     <h3>Opening-hand simulator</h3>
-    <p class="sub" style="margin-bottom:10px">Deal a real random 7-card hand from the 60-card list, make your call, then see if it was right.</p>
+    <p class="sub" style="margin-bottom:10px">Deal a real random 7-card hand. Your only call is the rule: is it a <b>legal keep</b>, or a <b>forced mulligan</b> (no Basic Pokémon)?</p>
     <div id="handArea"></div>
     <button class="btn primary" id="dealBtn" style="width:100%;margin-top:12px">Deal 7 cards</button>
 
@@ -671,6 +671,7 @@
       }
     },
     flashcards:[
+      ['When are you allowed to mulligan?','Only when your opening hand has zero Basic Pokémon — then you reveal, reshuffle, and redraw 7 (opponent may draw +1). You can never mulligan a legal hand, even a weak one.'],
       ['What does Punk Up do?','Searches up to 5 Basic Darkness Energy from your deck onto your Marnie\'s Pokémon — make sure one lands on a Munkidori.'],
       ['How many Boss\'s Orders are in the list?','3 — your main way to drag up a setup piece or a sitting duck.'],
       ['What does Munkidori need before it can move damage?','Darkness Energy attached. Then Adrena-Brain shifts up to 3 counters off you onto them.'],
@@ -686,7 +687,7 @@
     ],
     scenarios:[
       {s:'Turn 3 vs Dragapult ex. They have a Dusknoir benched about to snowball, and you have Boss\'s Orders plus a charged Grimmsnarl. Best play?',o:['Attack the Active Dragapult head-on','Boss up the Dusknoir and KO it','Pass and set up more','Judge their hand first'],c:1,e:'Removing Dusknoir stops the damage-shifting snowball before it starts. Boss + KO the support piece, not the bulky Active.'},
-      {s:'Opening 7: Impidimp, Rare Candy, Lillie\'s Determination, 2 Darkness, Poké Pad, Spikemuth Gym. Keep or mulligan?',o:['Mulligan — too slow','Keep — that\'s a dream opener','Keep only on the play'],c:1,e:'Basic + Rare Candy + Grimmsnarl tutor (Spikemuth) + draw (Lillie\'s/Poké Pad) sets up Grimmsnarl on turn 2. Snap keep.'},
+      {s:'Opening 7: Impidimp, Rare Candy, Lillie\'s Determination, 2 Darkness, Poké Pad, Spikemuth Gym. What\'s the read?',o:['Mulligan it — too slow','Dream opener — you keep','Only keep on the play'],c:1,e:'It has a Basic (Impidimp), so you couldn\'t mulligan it even if you wanted to — a legal hand is always a keep. And it\'s great: Rare Candy + Spikemuth (Grimmsnarl tutor) + draw sets up Grimmsnarl on turn 2.'},
       {s:'Your Grimmsnarl has 120 damage on it and dies next turn. You have 2 Munkidori with Darkness and it\'s your turn. Best line?',o:['Retreat Grimmsnarl to the bench','Shift the damage onto their attacker with Munkidori','Evolve something to heal'],c:1,e:'Each Munkidori moves up to 3 counters — two of them clear the 120 off you AND dump it onto their board. You survive and they take damage.'},
       {s:'You\'re facing Mega Venusaur (Grass — your weakness). What\'s the game plan?',o:['Grind slowly and out-value them','Present a lone Grimmsnarl as a wall','Spread wide with Froslass + Munkidori and race'],c:2,e:'You can\'t wall a deck that doubles your weakness. Spread so you trade prizes even as attackers fall, and play fast and aggressive.'},
       {s:'Turn 1 on the play against a fast deck, and you have Budew in hand. What do you do with it?',o:['Bench it for later','Lead Budew to item-lock and slow them','Evolve toward your attacker'],c:1,e:'Budew\'s lead locks items on their turn, slowing fast decks while you assemble your Stage 2 line.'},
@@ -857,6 +858,7 @@
       }
     },
     flashcards:[
+      ['When are you allowed to mulligan?','Only when your opening hand has zero Basic Pokémon — then you reveal, reshuffle, and redraw 7 (opponent may draw +1). You can never mulligan a legal hand, even a weak one.'],
       ['What does Phantom Dive do?','200 damage to the Active, then place 6 damage counters on your opponent\'s Benched Pokémon any way you like.'],
       ['What two Energy types does Dragapult ex need?','Fire and Psychic — keep both available or you can\'t attack.'],
       ['What does Dusknoir\'s Cursed Blast do?','Put 13 damage counters on your opponent\'s Pokémon any way you like — then Dusknoir is discarded.'],
@@ -1109,11 +1111,12 @@
     const hasStarter=hand.some(c=>c.name===o.keyStarter);
     const hasCandy=hand.some(c=>c.tag==='candy');
     const hasSearch=hand.some(c=>c.tag==='search');
-    if(!hasBasic)return{tier:'mull',cls:'v-bad',title:'Mulligan',body:'No Basic Pokémon in hand — you legally must mulligan. Reveal, reshuffle, redraw 7 (opponent draws +1).'};
-    if(support>=1&&(hasStarter||hasSearch))return{tier:'keep',cls:'v-keep',title:'Strong keep',body:`A Basic, a path to ${o.target} (${o.path}), and draw to dig.${hasStarter&&hasCandy?` ${o.starter} + Rare Candy means a fast ${o.target}.`:''} Lead ${o.starter} and go.`};
-    if(support>=1)return{tier:'ok',cls:'v-ok',title:'Keepable',body:`You can start and dig toward your pieces with your draw/search. A fine keep — lead ${o.starter}.`};
-    if(hand.some(c=>c.name==='Budew'))return{tier:'ok',cls:'v-ok',title:'Keepable (defensive)',body:'Budew can lead to stall while you draw into your line — fine vs fast decks, slower vs the field.'};
-    return{tier:'mull',cls:'v-bad',title:'Risky',body:'A Basic but no draw or search to dig — this stalls. Near-mulligan, especially on the play.'};
+    // Mulligan is FORCED — and only happens — when there's no Basic Pokémon.
+    if(!hasBasic)return{tier:'mull',cls:'v-bad',title:'Forced mulligan',body:'No Basic Pokémon in hand — you have to mulligan: reveal your hand, reshuffle, and redraw 7 (your opponent may draw +1). This is the only time you mulligan.'};
+    // Any hand with a Basic is a legal hand — you MUST keep it. Rate the quality.
+    if(support>=1&&(hasStarter||hasSearch))return{tier:'keep',cls:'v-keep',title:'Keep — strong hand',body:`A Basic, a path to ${o.target} (${o.path}), and draw to dig.${hasStarter&&hasCandy?` ${o.starter} + Rare Candy means a fast ${o.target}.`:''} Lead ${o.starter} and go.`};
+    if(support>=1)return{tier:'keep',cls:'v-ok',title:'Keep — playable',body:`You have a Basic, so you keep — and you can dig toward your pieces with your draw/search. Lead ${o.starter}.`};
+    return{tier:'keep',cls:'v-ok',title:'Keep — but it’s slow',body:`You have a Basic, so you must keep — you can’t mulligan a legal hand just because it’s weak. No draw or search here, so lead ${o.starter} and dig hard for your line next turn.`};
   }
 
   /* ===== mulligan / opener chip check (chips from D.openerChips) ===== */
@@ -1272,10 +1275,13 @@
       currentHand.map(c=>`<div style="font-size:13.5px;color:${c.basic?'var(--frost)':'var(--mist)'}">${c.basic?'● ':'○ '}${c.name}</div>`).join('')+'</div>';
     h+='<div style="font-size:11px;color:var(--fog);margin-top:8px">● = Basic Pokémon (you need at least one to start)</div>';
     if(!handCalled){
-      h+='<div class="row" style="margin-top:14px"><button class="btn" style="flex:1" data-call="mull">Mulligan</button><button class="btn primary" style="flex:1" data-call="keep">Keep</button></div>';
+      h+='<div style="font-size:12px;color:var(--fog);margin-top:10px">Mulligan is forced only with no Basic — otherwise you must keep.</div>';
+      h+='<div class="row" style="margin-top:8px"><button class="btn" style="flex:1" data-call="mull">Must mulligan</button><button class="btn primary" style="flex:1" data-call="keep">Legal keep</button></div>';
     }else{
-      const g=assess(currentHand),right=(handCalled==='keep'&&g.tier!=='mull')||(handCalled==='mull'&&g.tier==='mull');
-      h+=`<div class="verdict ${right?'v-keep':'v-bad'}" style="margin-top:14px"><b>${right?'✓ Right call':'✗ Reconsider'}</b>${g.body}</div>`;
+      const g=assess(currentHand),isMull=g.tier==='mull';
+      const right=(handCalled==='keep'&&!isMull)||(handCalled==='mull'&&isMull);
+      const head=right?'✓ Right call':(handCalled==='mull'?'✗ You can’t mulligan this':'✗ This is a forced mulligan');
+      h+=`<div class="verdict ${right?'v-keep':'v-bad'}" style="margin-top:14px"><b>${head}</b>${g.body}</div>`;
     }
     handArea.innerHTML=h+'</div>';
   }
