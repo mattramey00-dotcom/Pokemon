@@ -1508,8 +1508,8 @@
       coreRules:{type:'array',items:{type:'object',additionalProperties:false,required:['term','def'],properties:{term:{type:'string'},def:{type:'string'}}}},
       energyRule:{type:'string'},damageNote:{type:'string'}
     }};
-  function aiPrompt(name,deckText,notes){
-    return `You are an expert Pokémon Trading Card Game coach. Produce a concise strategy guide as JSON matching the schema, for the deck named "${name}".\n\nDecklist (this is the ONLY source of truth for what's in the deck):\n${deckText}\n${notes?'\nThe deck owner\'s notes (weave in where relevant): '+notes+'\n':''}\nContents to produce:\n- tagline: <= 6 words capturing the plan.\n- pros / cons: 5 each, short, each starting with a bold lead like "<b>Fast setup.</b> ...".\n- takeaway: one guiding sentence.\n- matchups: 5 entries mixing favorable (tier "good"), even (tier "even") and uphill (tier "bad"). name = opposing deck/archetype; sub = short hook; body = the game plan.\n- secrets: 6 tech tips (title = short bold phrase; body explains).\n- coach: 5-6 priority steps ordered from most fundamental (stable board / attacker online) to finishing. Each step is a yes/no board-state question; adviceTitle/adviceBody = what to do if the answer is NO (not yet set up). finalTitle/finalBody = the main line once everything is set up.\n- flashcards: 10 Q/A pairs on key cards, combos, and rules.\n- scenarios: 4 in-game decisions; each 2-4 options, correctIndex (0-based, a valid index), explanation.\n- sequencing: 3 puzzles; "steps" MUST be in the correct play order; explanation says why.\n- dreamIntro + dreamSteps: ideal opening line, 5-6 steps.\n- coreRules: 7 beginner rules relevant to this deck.\n- energyRule and damageNote: one note each.\n\nACCURACY RULES — the user reported hallucinations, so correctness matters far more than completeness:\n- ONLY reference cards that appear in the decklist above. Never invent cards, energies, or counts that aren't listed.\n- Do NOT invent specifics you aren't sure of: no made-up HP totals, exact attack-damage numbers, set codes, card text, ability names, or precise rulings. If you don't know a card's exact stats, describe its role qualitatively ("your main attacker", "draw support") instead of guessing numbers.\n- For matchups, only name archetypes you are genuinely confident exist. If you are unsure whether a specific named deck is currently played, use a general category instead (e.g. "fast aggro decks", "other Stage 2 decks", "spread/control decks") rather than a specific name you might be misremembering.\n- Only describe card interactions, combos, and evolution lines you are confident are correct and legal. When unsure, give general, principle-level advice rather than a specific claim.\n- It is much better to be general and right than specific and wrong. Hedge or stay high-level whenever you're not certain.\n- Mulligan is FORCED only when the opening hand has zero Basic Pokémon — never present it as a free choice.\nKeep every string concise.`;
+  function aiPrompt(name,deckText,notes,briefing){
+    return `You are an expert Pokémon Trading Card Game coach. Produce a concise strategy guide as JSON matching the schema, for the deck named "${name}".\n\nDecklist (this is the ONLY source of truth for what's in the deck):\n${deckText}\n${notes?'\nThe deck owner\'s notes (weave in where relevant): '+notes+'\n':''}${briefing?'\nVERIFIED CURRENT-FORMAT BRIEFING (web-researched — ground your matchups and card facts in this; prefer it over your own memory, and do not contradict it):\n'+briefing+'\n':''}\nContents to produce:\n- tagline: <= 6 words capturing the plan.\n- pros / cons: 5 each, short, each starting with a bold lead like "<b>Fast setup.</b> ...".\n- takeaway: one guiding sentence.\n- matchups: 5 entries mixing favorable (tier "good"), even (tier "even") and uphill (tier "bad"). name = opposing deck/archetype; sub = short hook; body = the game plan.\n- secrets: 6 tech tips (title = short bold phrase; body explains).\n- coach: 5-6 priority steps ordered from most fundamental (stable board / attacker online) to finishing. Each step is a yes/no board-state question; adviceTitle/adviceBody = what to do if the answer is NO (not yet set up). finalTitle/finalBody = the main line once everything is set up.\n- flashcards: 10 Q/A pairs on key cards, combos, and rules.\n- scenarios: 4 in-game decisions; each 2-4 options, correctIndex (0-based, a valid index), explanation.\n- sequencing: 3 puzzles; "steps" MUST be in the correct play order; explanation says why.\n- dreamIntro + dreamSteps: ideal opening line, 5-6 steps.\n- coreRules: 7 beginner rules relevant to this deck.\n- energyRule and damageNote: one note each.\n\nACCURACY RULES — the user reported hallucinations, so correctness matters far more than completeness:\n- ONLY reference cards that appear in the decklist above. Never invent cards, energies, or counts that aren't listed.\n- Do NOT invent specifics you aren't sure of: no made-up HP totals, exact attack-damage numbers, set codes, card text, ability names, or precise rulings. If you don't know a card's exact stats, describe its role qualitatively ("your main attacker", "draw support") instead of guessing numbers.\n- For matchups, only name archetypes you are genuinely confident exist. If you are unsure whether a specific named deck is currently played, use a general category instead (e.g. "fast aggro decks", "other Stage 2 decks", "spread/control decks") rather than a specific name you might be misremembering.\n- Only describe card interactions, combos, and evolution lines you are confident are correct and legal. When unsure, give general, principle-level advice rather than a specific claim.\n- It is much better to be general and right than specific and wrong. Hedge or stay high-level whenever you're not certain.\n- Mulligan is FORCED only when the opening hand has zero Basic Pokémon — never present it as a free choice.\nKeep every string concise.`;
   }
   function buildCoach(c){
     const nodes={},advice={},steps=c.steps||[];
@@ -1533,40 +1533,63 @@
     p.coreRules=(s.coreRules||[]).map(r=>[r.term,r.def]);
     p.energyRule=s.energyRule||'';p.damageNote=s.damageNote||'';
     p.eyebrow='Custom Deck · AI';
-    p.deckNotes=[{warn:1,html:'<b>AI-generated strategy — verify before play.</b> Claude drafted these matchups, coach steps, scenarios, flashcards, and rules from your list. Confirm rulings, counts, and current-format details before relying on them.'}];
+    p.deckNotes=[{warn:1,html:'<b>AI-generated, web-researched strategy — still verify before play.</b> Claude searched the current meta and drafted these matchups, coach steps, scenarios, flashcards, and rules from your list. Web grounding cuts errors but doesn\'t eliminate them — confirm rulings and current-format details before relying on them.'}];
   }
-  async function aiGenerate(profile,key){
-    const deckText=[...profile.pokemon,...profile.trainer,...profile.energy].map(c=>`${c.q} ${c.n}`).join('\n');
+  function deckTextOf(p){return [...p.pokemon,...p.trainer,...p.energy].map(c=>`${c.q} ${c.n}`).join('\n');}
+  async function postMessages(key,body){
     const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
       headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-opus-4-8',max_tokens:16000,
-        thinking:{type:'adaptive'},
-        messages:[{role:'user',content:aiPrompt(profile.name,deckText,profile._notes||'')}],
-        output_config:{effort:'high',format:{type:'json_schema',schema:AI_SCHEMA}}})});
+      body:JSON.stringify(body)});
     if(res.status===401)throw new Error('Invalid API key (401). Reset it and re-enter.');
     if(res.status===429)throw new Error('Rate limited (429). Wait and retry.');
     if(!res.ok){let t='';try{t=((await res.json()).error||{}).message||'';}catch(e){}throw new Error('API '+res.status+(t?': '+t:''));}
     const data=await res.json();
     if(data.stop_reason==='refusal')throw new Error('The model declined this request.');
-    const tb=(data.content||[]).find(b=>b.type==='text');
-    if(!tb)throw new Error('No content returned.');
-    return JSON.parse(tb.text);
+    return data;
   }
-  async function aiCore(profile){const key=await ensureKey();const strat=await aiGenerate(profile,key);mergeStrategy(profile,strat);}
+  async function aiResearch(profile,key){
+    const prompt=`Research the CURRENT competitive Pokémon Trading Card Game Standard format for the deck "${profile.name}" with this list:\n${deckTextOf(profile)}\n\nUse web search to verify: (1) which decks are actually top-tier in Standard right now (so this deck's matchups are real, not outdated), and (2) the real current text — attack names, damage, abilities, HP — of this deck's key cards. Then write a concise factual briefing in plain text (~300 words) covering: the current top meta decks this deck would face, this deck's real key-card effects as currently printed, and any notable current rulings or rotation facts. Only state what you actually verified via search; if you couldn't verify something, leave it out. Do NOT write JSON.`;
+    const body={model:'claude-opus-4-8',max_tokens:4000,thinking:{type:'adaptive'},
+      tools:[{type:'web_search_20260209',name:'web_search',max_uses:5}],
+      messages:[{role:'user',content:prompt}]};
+    let data=await postMessages(key,body),msgs=body.messages,guard=0;
+    while(data.stop_reason==='pause_turn'&&guard++<3){msgs=msgs.concat([{role:'assistant',content:data.content}]);data=await postMessages(key,Object.assign({},body,{messages:msgs}));}
+    return (data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('\n').trim();
+  }
+  async function aiGenerate(profile,key,briefing){
+    const data=await postMessages(key,{model:'claude-opus-4-8',max_tokens:16000,thinking:{type:'adaptive'},
+      messages:[{role:'user',content:aiPrompt(profile.name,deckTextOf(profile),profile._notes||'',briefing)}],
+      output_config:{effort:'high',format:{type:'json_schema',schema:AI_SCHEMA}}});
+    const texts=(data.content||[]).filter(b=>b.type==='text').map(b=>b.text);
+    for(let i=texts.length-1;i>=0;i--){try{return JSON.parse(texts[i]);}catch(e){}}
+    throw new Error('No JSON content returned (try again).');
+  }
+  async function aiCore(profile,onStatus){
+    const key=await ensureKey();
+    let briefing='';
+    if(onStatus)onStatus('Researching the current meta on the web…');
+    try{briefing=await aiResearch(profile,key);}
+    catch(e){if(/401|429|declined/i.test(e.message))throw e;briefing='';}
+    if(onStatus)onStatus('Writing the strategy from the research…');
+    const strat=await aiGenerate(profile,key,briefing);
+    mergeStrategy(profile,strat);
+  }
 
   document.getElementById('ndAi').addEventListener('click',async()=>{
     const p=buildProfileFromForm();if(!p)return;
     const btn=document.getElementById('ndAi'),st=document.getElementById('aiStatus');
-    btn.disabled=true;st.hidden=false;st.style.color='var(--fog)';st.textContent='Generating strategy with Claude (thinking carefully)… ~30–60s';
-    try{await aiCore(p);}
+    const setSt=t=>{st.hidden=false;st.style.color='var(--fog)';st.textContent=t+' (~1–2 min)';};
+    btn.disabled=true;setSt('Starting…');
+    try{await aiCore(p,setSt);}
     catch(e){btn.disabled=false;if(e.message==='cancelled'){st.hidden=true;}else{st.style.color='var(--ember)';st.textContent='Failed: '+e.message;}return;}
     saveProfile(p);
   });
   document.getElementById('aiDeckBtn').addEventListener('click',async()=>{
     if(!D.custom)return;
     const profile=DECKS[active],btn=document.getElementById('aiDeckBtn'),orig=btn.textContent;
-    btn.disabled=true;btn.textContent='⏳ Generating…';
-    try{await aiCore(profile);}
+    btn.disabled=true;
+    const setSt=t=>{btn.textContent='⏳ '+t;};setSt('Researching…');
+    try{await aiCore(profile,setSt);}
     catch(e){btn.disabled=false;btn.textContent=orig;if(e.message!=='cancelled')alert('AI auto-fill failed: '+e.message);return;}
     const custom=loadCustom().map(d=>d.id===profile.id?profile:d);store.set('gs_customDecks',custom);DECKS=BUILTIN.concat(custom);
     btn.disabled=false;btn.textContent=orig;refreshPicker();applyDeck(DECKS.findIndex(d=>d.id===profile.id));
